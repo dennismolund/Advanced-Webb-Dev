@@ -1,0 +1,25 @@
+{
+  "name": "web-application",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon src/app.js -L"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dennismolund/Advanced-Webb-Dev.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dennismolund/Advanced-Webb-Dev/issues"
+  },
+  "homepage": "https://github.com/dennismolund/Advanced-Webb-Dev#readme",
+  "dependencies": {
+    "express": "^4.17.2",
+    "nodemon": "^2.0.15"
+  }
+}
