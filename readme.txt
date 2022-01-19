@@ -1,4 +1,4 @@
-You must first dowload docker desktop, if porblems, guide available in course material.
+You must first dowload docker desktop, if problems, guide available in course material.
 
 "Docker-compose up" will run the latest build of the image (webbapp & database). If you make changes to an image, 
 you need to rebuild it before using docker-compose up, or simply use the command docker-compose up --build.
