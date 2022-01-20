@@ -3,11 +3,13 @@ const hbs = require('express-handlebars');
 const bodyParser = require('body-parser')
 const fp = require('path');
 
+const accountRouter = require('./routers/account-router')
+
 const app = express();
 
 //connects the public folder
 app.use(express.static(fp.join(__dirname,'/public/')))
-app.use(bodyParser.json())
+
 
 app.engine('hbs', hbs.engine({
   partialsDir: [
@@ -18,12 +20,17 @@ app.engine('hbs', hbs.engine({
 app.set('view engine', 'hbs');
 app.set('views', fp.join(__dirname, 'views'));
 
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({
+    extended: false
+}))
+
 app.get('/', (req, res) => {
     res.render('login.hbs');
 });
 
 
-const accountRouter = require('./routers/account-router')
+
 
 app.use("/account", accountRouter)
 
