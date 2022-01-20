@@ -1,0 +1,72 @@
+<section class="hero is-fullheight bg-img-signup"> 
+<form action="signup" method="POST">
+  <div class="columns is-vcentered mt-2">
+    <div class="column"></div>
+    <div class="column">
+
+      <section class="box">
+          <div class="has-text-centered mb-4">
+        
+          <h3 class="subtitle is-3 mt-3"> </span> Registrera dig på BarRundan</h3>
+          <div class="line"></div>
+        </div>
+          <div class="field">
+            {{#each errors}}
+              <p class="has-text-centered">{{this}}</p>
+              {{/each}}
+            <label class="label">Användarnamn</label>
+            <div class="control has-icons-right">
+              <input class="input" type="text" name="username" value="{{username}}" placeholder="Skapa ditt användarnamn">
+              <span class="icon is-small is-right">
+                <i class="fa fa-user"></i>
+              </span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">E-post address</label>
+            <div class="control has-icons-right">
+              <input class="input" type="text" name="email" value="{{email}}" placeholder="Skriv din E-post address">
+              <span class="icon is-small is-right">
+                <i class="fa fa-envelope"></i>
+              </span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Lösenord</label>
+            <div class="control has-icons-right">
+              <input class="input" type="password" name="password" value="{{password}}" placeholder="Skapa ditt lösenord">
+              <span class="icon is-small is-right">
+                <i class="fa fa-key"></i>
+              </span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Bekräfta ditt lösenord</label>
+            <div class="control has-icons-right">
+              <input class="input" type="password" name="confirmationPassword" value="{{confirmationPassword}}" placeholder="Bekräfta ditt lösenord">
+              <span class="icon is-small is-right">
+                <i class="fa fa-key"></i>
+              </span>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="has-text-centered">
+              <input class="button is-vcentered is-rounded is-outlined" type="submit" value="Registrera dig"></input>
+            </div>
+          </div>
+          
+          <div class="field">
+            <div class="has-text-centered">
+            <a href="/account/login"> Har du redan ett konto?</a>
+          </div>
+          </div>
+        </section>
+    </div>
+    <div class="column"></div>
+  </div>
+</form>
+</section>

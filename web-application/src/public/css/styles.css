@@ -11,8 +11,16 @@ body{
     display: block;
 }
 
-.bg-img{
+.bg-img-login{
     background-image: url(../images/bar_background.jpg);
+    background-position: center center;
+    background-repeat:  no-repeat;
+    background-attachment: fixed;
+    background-size:  cover;
+}
+
+.bg-img-signup{
+    background-image: url(../images/winecellar.jpg);
     background-position: center center;
     background-repeat:  no-repeat;
     background-attachment: fixed;
