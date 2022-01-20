@@ -1,12 +1,20 @@
-const express = require('express')
+const express = require('express');
+const hbs = require('express-handlebars');
+const fp = require('path');
 
-const app = express()
+const app = express();
 
-app.get('/', function(request, response){
-  response.send("Hello, World!!")
-})
+app.engine('hbs', hbs.engine({
+  partialsDir: [
+    fp.join(__dirname, 'views/partials'),
+  ],
+  defaultLayout: fp.join(__dirname, 'views/mainLayout/main.hbs'),
+}));
+app.set('view engine', 'hbs');
+app.set('views', fp.join(__dirname, 'views'));
 
-app.listen(8080, function(){
-  console.log("Web application listening on port 8080.")
-})
+app.get('/', (req, res) => {
+    res.render('home.hbs');
+});
 
+app.listen(8080)

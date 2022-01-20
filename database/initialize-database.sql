@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS accounts (\
+/*CREATE TABLE IF NOT EXISTS accounts (\
     id INTEGER PRIMARY KEY AUTOINCREMENT, \
     username VARCHAR(50) NOT NULL UNIQUE, \
     email VARCHAR(50) NOT NULL UNIQUE, \
@@ -24,4 +24,4 @@ CREATE TABLE IF NOT EXISTS projects (\
     Title VARCHAR(50) NOT NULL, \
     Tag VARCHAR(350), \
     FOREIGN KEY(accountId) REFERENCES accounts(id), \
-    FOREIGN KEY(username) REFERENCES accounts(username))
+    FOREIGN KEY(username) REFERENCES accounts(username))*/

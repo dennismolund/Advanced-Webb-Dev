@@ -19,7 +19,9 @@
   },
   "homepage": "https://github.com/dennismolund/Advanced-Webb-Dev#readme",
   "dependencies": {
+    "body-parser": "^1.19.1",
     "express": "^4.17.2",
+    "express-handlebars": "^5.2.0",
     "nodemon": "^2.0.15"
   }
 }
