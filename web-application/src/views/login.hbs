@@ -1,0 +1,52 @@
+<section class="hero is-fullheight bg-img"> 
+<form action="login" method="POST">
+  <div class="columns is-vcentered mt-6">
+    <div class="column"></div>
+    <div class="column">
+
+      <section class="box mt-6">
+          <div class="has-text-centered mb-4">
+        
+          <h3 class="subtitle is-3 mt-3"> </span> Logga in till BarRundan</h3>
+          <div class="line"></div>
+        </div>
+        <div class="field">
+          <p class="has-text-centered">{{error}}</p>
+        <label class="label">Användarnamn</label>
+        <div class="control has-icons-right">
+          <input class="input" type="text" name="username" value="{{username}}" placeholder="Skriv ditt användarnamn här">
+          <span class="icon is-small is-right">
+            <i class="fa fa-user"></i>
+          </span>
+        </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Lösenord</label>
+          <div class="control has-icons-right">
+            <input class="input" type="password" name="password" value="{{password}}" placeholder="Skriv ditt lösenord här">
+            <span class="icon is-small is-right">
+              <i class="fa fa-key"></i>
+            </span>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="has-text-centered">
+            <input class="button is-vcentered is-rounded is-outlined" type="submit" value="Logga in"></input>
+          </div>
+        </div>
+
+       
+        <div class="field">
+          <div class="has-text-centered">
+            <a href="/account/signup"> Har du inget konto?</a>
+          </div>
+        </div> 
+          
+      </section>
+    </div>
+    <div class="column"></div>
+  </div>
+</form>
+</section>

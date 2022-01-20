@@ -1,0 +1,24 @@
+:root {
+    --green: #0D6853;
+  }
+
+body{
+    
+}
+
+.line {
+    border-bottom: 2px solid lightgray;
+    display: block;
+}
+
+.bg-img{
+    background-image: url(../images/bar_background.jpg);
+    background-position: center center;
+    background-repeat:  no-repeat;
+    background-attachment: fixed;
+    background-size:  cover;
+}
+
+.welcomeTxt {
+    color: white;
+}
