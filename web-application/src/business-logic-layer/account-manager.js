@@ -1,5 +1,6 @@
-const accountRepository = require('../data-access-layer/account-repository')
 const accountValidator = require('./account-validator')
+var bcrypt = require('bcryptjs');
+const saltRounds = 10;
 
 module.exports = function({accountRepository}){
     // Name all the dependencies in the curly brackets above.
@@ -20,7 +21,13 @@ module.exports = function({accountRepository}){
             callback(errors, null)
             return
         }
-        accountRepository.createAccount(account, callback)  
+
+        bcrypt.hash(account.password, saltRounds, function(err, hash) {
+            account.password = hash
+
+            accountRepository.createAccount(account, callback)  
+        });
+        
     },
     loginRequest: function(account, callback){
         // Validate the login credentials.
@@ -36,16 +43,18 @@ module.exports = function({accountRepository}){
             if(errors) callback(errors, null)
             else if (!results) callback (["Fel lösenord eller användarnamn"],null)
             else{
-                if(account.enteredPassword != results.password){
-                    callback(["Fel lösenord eller användarnamn"], null)
-                }else{
-                    //Only sending back username and email, excluding Id and password due to security.
-                    const activeAccount = {
-                        username: results.username,
-                        email: results.email
+                bcrypt.compare(account.enteredPassword, results.password, function(err, res){
+                    if(res){
+                        //Only sending back username and email, excluding Id and password due to security.
+                        const activeAccount = {
+                            username: results.username,
+                            email: results.email
+                        }
+                        callback(null, activeAccount)
+                    }else{
+                        callback(["Fel lösenord eller användarnamn"], null)
                     }
-                    callback(null, activeAccount)
-                }
+                })
             }
         })
     

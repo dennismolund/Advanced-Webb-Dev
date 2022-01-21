@@ -20,11 +20,14 @@
   "homepage": "https://github.com/dennismolund/Advanced-Webb-Dev#readme",
   "dependencies": {
     "awilix": "^6.0.0",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.1",
     "express": "^4.17.2",
     "express-handlebars": "^5.2.0",
     "express-session": "^1.17.2",
+    "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "sequelize": "^6.13.0"
   }
 }

@@ -1,5 +1,6 @@
 const express = require('express')
 
+
 module.exports = function({accountManager}){
     // Name all the dependencies in the curly brackets above.
     
@@ -20,7 +21,7 @@ module.exports = function({accountManager}){
             email: request.body.email,
             password: request.body.password,
             confirmationPassword: request.body.confirmationPassword
-        }  
+        } 
         accountManager.createAccount(account, function(errors, results){
             if(errors){
                 console.log("errors:" , errors)
