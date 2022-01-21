@@ -32,7 +32,14 @@ exports.loginRequest = function(account, callback){
         else{
             if(account.enteredPassword != results.password){
                 callback(["Fel lösenord eller användarnamn"], null)
-            }else callback(null, results)
+            }else{
+                //Only sending back username and email, excluding Id and password due to security.
+                const activeAccount = {
+                    username: results.username,
+                    email: results.email
+                }
+                callback(null, activeAccount)
+            }
         }
     })
 

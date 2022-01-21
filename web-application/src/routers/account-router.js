@@ -25,7 +25,7 @@ router.post("/signup", function(request, response){
             console.log("errors:" , errors)
             response.render("signup.hbs", {errors})
         }else{
-            //console.log("createAccount:", accountID)
+            
             response.render("login.hbs")
 
         }
@@ -45,12 +45,21 @@ router.post("/login", function(request, response){
             console.log("errors ", errors);
             response.render("login.hbs", {errors})
         }else{
-            console.log("successfull login with account:", results);
-            response.render("login.hbs")
+            request.session.activeAccount = results
+            console.log("active: ", request.session.activeAccount);
+            response.render("home.hbs")
         }
     })
     
    
+})
+
+router.get("/logout", function(request, response){
+    console.log("Destroying session")
+    request.session.destroy(function(error){
+        console.log(error)
+    })
+    response.redirect("/")
 })
 
 module.exports = router
