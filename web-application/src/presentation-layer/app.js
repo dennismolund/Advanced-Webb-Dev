@@ -50,9 +50,10 @@ app.get('/', async (req, res) => {
     if(req.session.activeAccount) {
       const bars = await getPlaces();
       const a = bars.getRandom(5);
-      a.logBy('name');
+      //a.logBy('name');
+      console.log(a.list[0].name);
       //console.log(bars);
-      res.render('home.hbs');
+      res.render('home.hbs', {bars: a.list});
     }
     //if account is not active, show login page
     else res.redirect('account/login')

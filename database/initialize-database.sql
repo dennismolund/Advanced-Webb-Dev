@@ -2,7 +2,20 @@ CREATE TABLE accounts (
     Id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     username VARCHAR(50) NOT NULL UNIQUE, 
     email VARCHAR(50) NOT NULL UNIQUE, 
-    password VARCHAR(100) NOT NULL);
+    password VARCHAR(100) NOT NULL,
+    currentRunda INT);
+    
 
-
-INSERT INTO accounts (username, email, password) VALUES("John Doe", "JD@gmail.com", "pass123");
+/*CREATE TABLE barrunda (
+    Id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    userID INT NOT NULL,
+    FOREIGN KEY (userID) REFERENCES accounts(Id)
+    );
+CREATE TABLE Bars (
+    Id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL,
+    address VARCHAR(80) NOT NULL,
+    barrundaId INT NOT NULL,
+    number INT NOT NULL,
+    FOREIGN KEY (barrundaId) REFERENCES barrunda(Id)
+);*/

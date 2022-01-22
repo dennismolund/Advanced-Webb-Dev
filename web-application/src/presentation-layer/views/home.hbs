@@ -9,11 +9,10 @@
         
             <h3 class="subtitle is-3 mt-3 chalk"> </span> Bar Rundan</h3>
             <div class="chalk">
-                <h4 class="subtitle is-4 mt-3 chalk line-through"> </span> Bar nbr 1</h4>
-                <h4 class="subtitle is-4 mt-3 chalk"> </span> Bar nbr 1</h4>
-                <h4 class="subtitle is-4 mt-3 chalk"> </span> ?</h4>
-                <h4 class="subtitle is-4 mt-3 chalk"> </span> ?</h4>
-                <h4 class="subtitle is-4 mt-3 chalk"> </span> ?</h4>
+                {{#each bars}}
+                    <h4 class="subtitle is-4 mt-3 chalk"> </span> {{this.name}}</h4>
+                {{/each}}
+        
             </div>
           </div>
       </section>
