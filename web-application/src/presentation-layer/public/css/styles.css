@@ -50,6 +50,19 @@ body{
     overflow-y: auto;
 }
 
+.nyrundabtn {
+    background-color: var(--darkgrey);
+    color: var(--chalk);
+    border: var(--woodenbrown) solid 7px;
+    font-family: "Walter Turncoat", cursive;
+    font-size: 25px;
+
+}
+
+.chalk-line{
+    border-bottom: 2px solid var(--chalk);
+    display: block;
+}
 .chalk {
     color: var(--chalk);
     font-family: "Walter Turncoat", cursive;
