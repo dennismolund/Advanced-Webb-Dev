@@ -2,15 +2,17 @@ CREATE TABLE accounts (
     Id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     username VARCHAR(50) NOT NULL UNIQUE, 
     email VARCHAR(50) NOT NULL UNIQUE, 
-    password VARCHAR(100) NOT NULL,
-    currentRunda INT);
+    password VARCHAR(100) NOT NULL);
     
 
-/*CREATE TABLE barrunda (
+CREATE TABLE barrunda (
     Id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    userID INT NOT NULL,
+    userid INT NOT NULL,
+    data JSON NOT NULL,
     FOREIGN KEY (userID) REFERENCES accounts(Id)
     );
+
+/*
 CREATE TABLE Bars (
     Id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL,
