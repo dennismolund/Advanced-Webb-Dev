@@ -1,3 +1,5 @@
+const { getPlaces } = require('../service/fetch.data.service.js');
+
 const express = require('express');
 const hbs = require('express-handlebars');
 const bodyParser = require('body-parser')
@@ -7,10 +9,12 @@ const awilix = require('awilix')
 
 const app = express();
 
+const engine = hbs.engine || hbs;
+
 //connects the public folder
 app.use(express.static(fp.join(__dirname,'/public/')))
 
-app.engine('hbs', hbs.engine({
+app.engine('hbs', engine({
   partialsDir: [
     fp.join(__dirname, 'views/partials'),
   ],
@@ -41,9 +45,15 @@ app.use(session({
 })
 */
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
     //if account is active, show home page
-    if(req.session.activeAccount) res.render('home.hbs');
+    if(req.session.activeAccount) {
+      const bars = await getPlaces();
+      const a = bars.getRandom(5);
+      a.logBy('name');
+      //console.log(bars);
+      res.render('home.hbs');
+    }
     //if account is not active, show login page
     else res.redirect('account/login')
 });
@@ -67,4 +77,6 @@ const theAccountRouter = container.resolve("accountRouter")
 
 app.use("/account", theAccountRouter)
 
-app.listen(8080)
+app.listen(8080, () => {
+  console.log('Server Running on 3000:8080');
+})

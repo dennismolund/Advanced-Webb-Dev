@@ -44,7 +44,7 @@ module.exports = function({accountManager}){
             }else{
                 request.session.activeAccount = results
                 console.log("active: ", request.session.activeAccount);
-                response.render("home.hbs")
+                response.redirect("/")
             }
         })
     })
