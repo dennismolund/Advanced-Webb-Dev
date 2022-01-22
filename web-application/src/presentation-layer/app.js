@@ -48,12 +48,9 @@ app.use(session({
 app.get('/', async (req, res) => {
     //if account is active, show home page
     if(req.session.activeAccount) {
-      const bars = await getPlaces();
-      const a = bars.getRandom(5);
+      await getPlaces();
       //a.logBy('name');
-      console.log(a.list[0].name);
-      //console.log(bars);
-      res.render('home.hbs', {bars: a.list});
+      res.render('home.hbs');
     }
     //if account is not active, show login page
     else res.redirect('account/login')
@@ -66,17 +63,26 @@ const accountRouter = require('./routers/account-router')
 const accountManager = require('../business-logic-layer/account-manager')
 const accountRepository = require('../data-access-layer/account-repository')
 
+const barsRouter = require('./routers/bars-router')
+const barsManager = require('../business-logic-layer/bars-manager')
+const barsRepository = require('../data-access-layer/bars-repository')
+
 // Create a container and add the dependencies we want to use.
 const container = awilix.createContainer()
 container.register("accountRouter", awilix.asFunction(accountRouter))
 container.register("accountManager", awilix.asFunction(accountManager))
 container.register("accountRepository", awilix.asFunction(accountRepository))
 
+container.register("barsRouter", awilix.asFunction(barsRouter))
+container.register("barsManager", awilix.asFunction(barsManager))
+container.register("barsRepository", awilix.asFunction(barsRepository))
+
 // Retrieve the router, which resolves all other dependencies.
 const theAccountRouter = container.resolve("accountRouter")
-
+const theBarsRouter = container.resolve("barsRouter")
 
 app.use("/account", theAccountRouter)
+app.use("/bars", theBarsRouter)
 
 app.listen(8080, ()=>{
   console.log("Server Running on: 3000:8080");

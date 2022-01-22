@@ -62,4 +62,4 @@ class Bar {
     }
 }
 
-module.exports = BarList;
+module.exports = new BarList();

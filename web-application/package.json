@@ -30,5 +30,8 @@
     "mysql": "^2.18.1",
     "nodemon": "^2.0.15",
     "sequelize": "^6.13.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.7.0"
   }
 }
