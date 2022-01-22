@@ -77,6 +77,6 @@ const theAccountRouter = container.resolve("accountRouter")
 
 app.use("/account", theAccountRouter)
 
-app.listen(8080, () => {
-  console.log('Server Running on 3000:8080');
+app.listen(8080, ()=>{
+  console.log("Server Running on: 3000:8080");
 })

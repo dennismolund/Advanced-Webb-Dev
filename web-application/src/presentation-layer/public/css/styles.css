@@ -1,5 +1,10 @@
+@import url(https://fonts.googleapis.com/css?family=Walter+Turncoat);
+
 :root {
     --green: #0D6853;
+    --darkgrey: #352922;
+    --woodenbrown: #B56239;
+    --chalk: #FEF0D6;
   }
 
 body{
@@ -29,4 +34,28 @@ body{
 
 .welcomeTxt {
     color: white;
+}
+
+.blackboard {
+    background-color: var(--darkgrey);
+    border-width: 30px;
+    border-radius: 5px;
+    border: var(--woodenbrown) solid 7px;
+    display: block;
+    width: 60%;
+    height: 80%;
+    min-height: auto;
+    margin: 30px auto 0 auto;
+    padding: 20px 30px;
+    overflow-y: auto;
+}
+
+.chalk {
+    color: var(--chalk);
+    font-family: "Walter Turncoat", cursive;
+}
+
+.line-through {
+    text-decoration: line-through;
+    text-decoration-thickness: 2px;
 }
