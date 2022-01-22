@@ -52,6 +52,7 @@ class BarList {
 
 class Bar {
     constructor(bar) {
+        this.raw = bar;
         this.name = bar.name;
         this.vicinity = bar.vicinity;
         this.rating = bar.rating;
