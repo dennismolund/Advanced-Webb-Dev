@@ -7,10 +7,12 @@ const awilix = require('awilix')
 
 const app = express();
 
+const engine = hbs.engine || hbs;
+
 //connects the public folder
 app.use(express.static(fp.join(__dirname,'/public/')))
 
-app.engine('hbs', hbs.engine({
+app.engine('hbs', engine({
   partialsDir: [
     fp.join(__dirname, 'views/partials'),
   ],
@@ -67,4 +69,6 @@ const theAccountRouter = container.resolve("accountRouter")
 
 app.use("/account", theAccountRouter)
 
-app.listen(8080)
+app.listen(8080, ()=>{
+  console.log("Server Running on: 3000:8080");
+})
