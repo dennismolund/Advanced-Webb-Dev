@@ -46,7 +46,7 @@ app.get('/', async (req, res) => {
       // res.render('home.hbs');
     }
     //if account is not active, show login page
-    else res.redirect('account/login')
+    else res.redirect('anvandare/login')
 });
 
 
@@ -74,7 +74,7 @@ container.register("barsRepository", awilix.asFunction(barsRepository))
 const theAccountRouter = container.resolve("accountRouter")
 const theBarsRouter = container.resolve("barsRouter")
 
-app.use("/account", theAccountRouter)
+app.use("/anvandare", theAccountRouter)
 app.use("/bars", theBarsRouter)
 
 app.listen(8080, ()=>{
