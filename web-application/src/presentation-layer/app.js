@@ -37,23 +37,16 @@ app.use(session({
   cookie: { secure: false }
 }))
 
-//Middleware checking if any acount is logged in
-/*app.use(function(request, response, next){
-	const activeAccount = request.session.activeAccount
-	response.locals.activeAccount = activeAccount
-	next()
-})
-*/
-
 app.get('/', async (req, res) => {
     //if account is active, show home page
     if(req.session.activeAccount) {
       await getPlaces();
       //a.logBy('name');
-      res.render('home.hbs');
+      res.redirect('/barer');
+      // res.render('home.hbs');
     }
     //if account is not active, show login page
-    else res.redirect('account/login')
+    else res.redirect('anvandare/login')
 });
 
 
@@ -81,8 +74,8 @@ container.register("barsRepository", awilix.asFunction(barsRepository))
 const theAccountRouter = container.resolve("accountRouter")
 const theBarsRouter = container.resolve("barsRouter")
 
-app.use("/account", theAccountRouter)
-app.use("/bars", theBarsRouter)
+app.use("/anvandare", theAccountRouter)
+app.use("/barer", theBarsRouter)
 
 app.listen(8080, ()=>{
   console.log("Server Running on: 3000:8080");
