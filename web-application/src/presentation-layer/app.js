@@ -23,6 +23,13 @@ app.engine('hbs', engine({
 app.set('view engine', 'hbs');
 app.set('views', fp.join(__dirname, 'views'));
 
+var hbshelper = hbs.create({});
+
+//helper function
+hbshelper.handlebars.registerHelper("counter", function (index){
+  return index + 1;
+});
+
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
     extended: false
