@@ -9,6 +9,8 @@ module.exports = function({ barsRepository }){
                 const e = new Error('Invalid Params');
                 callback(e, null);
             } else {
+
+
                 barsRepository.storeBarRunda(barRunda, account, callback)
             }
         },
@@ -34,6 +36,5 @@ module.exports = function({ barsRepository }){
                 });
             }
         }
-
     }
 }

@@ -42,11 +42,11 @@ app.get('/', async (req, res) => {
     if(req.session.activeAccount) {
       await getPlaces();
       //a.logBy('name');
-      res.redirect('/barer');
+      res.redirect('/bars');
       // res.render('home.hbs');
     }
     //if account is not active, show login page
-    else res.redirect('anvandare/login')
+    else res.redirect('account/login')
 });
 
 
@@ -74,8 +74,8 @@ container.register("barsRepository", awilix.asFunction(barsRepository))
 const theAccountRouter = container.resolve("accountRouter")
 const theBarsRouter = container.resolve("barsRouter")
 
-app.use("/anvandare", theAccountRouter)
-app.use("/barer", theBarsRouter)
+app.use("/account", theAccountRouter)
+app.use("/bars", theBarsRouter)
 
 app.listen(8080, ()=>{
   console.log("Server Running on: 3000:8080");
