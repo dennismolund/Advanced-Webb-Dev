@@ -15,10 +15,9 @@ const engine = hbs.engine || hbs;
 app.use(express.static(fp.join(__dirname,'/public/')))
 
 app.engine('hbs', engine({
-  partialsDir: [
-    fp.join(__dirname, 'views/partials'),
-  ],
+  extname: 'hbs',
   defaultLayout: fp.join(__dirname, 'views/mainLayout/main.hbs'),
+  partialsDir: fp.join(__dirname, '/views/partials')
 }));
 app.set('view engine', 'hbs');
 app.set('views', fp.join(__dirname, 'views'));

@@ -13,9 +13,10 @@ module.exports = function({barsManager}){
                 // TODO ?
             } else if (result){
                 console.log('Found existing barrunda');
-                res.render("home.hbs", {bars: result.list});
+
+                res.render("home.hbs", {bars: result.list, activeAccount: req.session.activeAccount});
             } else {
-                res.render("home.hbs", {bars: []});
+                res.render("home.hbs", {bars: [], activeAccount: req.session.activeAccount});
                 // There was no data found
             }
         });
@@ -35,7 +36,7 @@ module.exports = function({barsManager}){
                 // TODO ?
             }
         });
-        res.render("home.hbs", {bars: barRunda.list})
+        res.render("home.hbs", {bars: barRunda.list, activeAccount: req.session.activeAccount})
     });
     
     return router
