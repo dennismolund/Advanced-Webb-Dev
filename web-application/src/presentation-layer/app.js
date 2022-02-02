@@ -82,7 +82,7 @@ const theBarsRouter = container.resolve("barsRouter")
 
 app.use("/anvandare", theAccountRouter)
 app.use("/bars", theBarsRouter)
-
+ 
 app.listen(8080, ()=>{
   console.log("Server Running on: 3000:8080");
 })
