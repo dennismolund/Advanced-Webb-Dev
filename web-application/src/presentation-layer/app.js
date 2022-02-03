@@ -56,7 +56,6 @@ app.get('/', async (req, res) => {
 });
 
 
-
 // Import the ones we want to use (real or mockup), real in this case.
 const accountRouter = require('./routers/account-router')
 const accountManager = require('../business-logic-layer/account-manager')
@@ -65,6 +64,10 @@ const accountRepository = require('../data-access-layer/account-repository')
 const barsRouter = require('./routers/bars-router')
 const barsManager = require('../business-logic-layer/bars-manager')
 const barsRepository = require('../data-access-layer/bars-repository')
+
+const teamsRouter = require('./routers/teams-router')
+const teamsManager = require('../business-logic-layer/teams-manager')
+const teamsRepository = require('../data-access-layer/teams-repository')
 
 // Create a container and add the dependencies we want to use.
 const container = awilix.createContainer()
@@ -76,12 +79,19 @@ container.register("barsRouter", awilix.asFunction(barsRouter))
 container.register("barsManager", awilix.asFunction(barsManager))
 container.register("barsRepository", awilix.asFunction(barsRepository))
 
+container.register("teamsRouter", awilix.asFunction(teamsRouter))
+container.register("teamsManager", awilix.asFunction(teamsManager))
+container.register("teamsRepository", awilix.asFunction(teamsRepository))
+
 // Retrieve the router, which resolves all other dependencies.
 const theAccountRouter = container.resolve("accountRouter")
 const theBarsRouter = container.resolve("barsRouter")
+const theTeamsRouter = container.resolve("teamsRouter")
 
 app.use("/anvandare", theAccountRouter)
 app.use("/bars", theBarsRouter)
+app.use("/teams", theTeamsRouter)
+
  
 app.listen(8080, ()=>{
   console.log("Server Running on: 3000:8080");

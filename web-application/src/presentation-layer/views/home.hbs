@@ -23,6 +23,21 @@
           <input class="button nyrundabtn" type="submit" value="Starta ny runda"></input>
         </form>
     </div>
+    <div class="column has-text-centered mt-6">
+      
+        <form action="/teams" method="post">
+        <div class="field">
+          {{#each errors}}
+              <p class="has-text-centered">{{this}}</p>
+            {{/each}}
+        <label class="label">Användarnamn</label>
+        <div class="control has-icons-right">
+          <input class="input" type="text" name="teamName" value="{{teamName}}" placeholder="Skriv ditt team namn här">
+        </div>
+        </div>
+          <input class="button nyrundabtn" type="submit" value="Skapa team"></input>
+        </form>
+    </div>
     </div>
     <div class="column"></div>
   </div>

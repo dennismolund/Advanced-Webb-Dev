@@ -6,11 +6,26 @@ CREATE TABLE accounts (
     currentbarrunda INT
 );
     
-
 CREATE TABLE barrunda (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     data JSON NOT NULL
 );
+
+CREATE TABLE teams (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    teamname VARCHAR(50) NOT NULL,
+    creatorid INT NOT NULL,
+    FOREIGN KEY (creatorid) REFERENCES accounts(id)
+);
+
+CREATE TABLE teams_users (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    teamid INT NOT NULL,
+    userid INT NOT NULL,
+    FOREIGN KEY (teamid) REFERENCES teams(id),
+    FOREIGN KEY (userid) REFERENCES accounts(id)
+);
+
 
 /*
 CREATE TABLE Bars (

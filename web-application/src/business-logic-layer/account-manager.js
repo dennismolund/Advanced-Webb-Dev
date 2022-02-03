@@ -10,7 +10,15 @@ module.exports = function({accountRepository}){
         accountRepository.getAllAccounts(function(errors, accounts){
             callback(errors, accounts)
         })
+        
         },
+        getAccountIdByUsername: function(username, callback){
+            accountRepository.getAccountIdByUsername(username, function(errors, results){
+                if(errors) callback(errors, null)
+                else callback(null, results)
+            })
+        }
+        ,
         createAccount: function(account, callback){
 
         // Validate the account.
