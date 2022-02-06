@@ -29,6 +29,20 @@ module.exports = function({}){
                     
                 }
             })
+        },
+        getTeam: (user, callback)=>{
+            const query = `SELECT * FROM teams WHERE creatorid = ?`
+		    const values = [user]
+
+            db.query(query, values, function(error, results){
+                if(error){
+                    console.log("Error in database: ", error);
+                    callback(['databaseError'], null)
+                }else{
+                    console.log("success, results:", results);
+                    callback(null, results)
+                }
+            })
         }
     }
 }

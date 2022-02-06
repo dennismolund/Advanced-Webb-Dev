@@ -20,6 +20,8 @@ module.exports = function({barsManager}){
                 // There was no data found
             }
         });
+
+        
     });
 
     router.post('/', (req, res) => {

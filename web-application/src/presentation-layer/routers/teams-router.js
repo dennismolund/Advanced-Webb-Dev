@@ -31,8 +31,6 @@ module.exports = function({teamsManager, accountManager}){
                 })
             }
         })
-
-        
     })
 
     return router

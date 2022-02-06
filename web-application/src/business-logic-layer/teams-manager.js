@@ -16,6 +16,18 @@ module.exports = function({teamsRepository}){
                     callback(null, results)
                 }
             })
+        },
+        getTeam: function(user, callback){
+            //error handling
+
+            teamsRepository.getTeam(user, function(errors, results){
+                if(errors){
+                    console.log("Errors in teams-manager:", errors);
+                    callback(errors, null)
+                }else{
+                    callback(null, results)
+                }
+            })
         }
     }
 }
