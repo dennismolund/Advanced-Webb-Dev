@@ -2,9 +2,58 @@
 <section class="hero is-fullheight bg-img-login"> 
 
   <div class="columns">
-    <div class="column ">
-      
+
+
+    <div class="column mt-6">
+      <section>
+          <div class=" blackboard has-text-centered mb-4">
+            {{#if team}}
+             <h3 class="subtitle is-3 mt-3 chalk"> </span> {{team.teamname}}</h3>
+
+              <div class="chalk">
+                
+                {{#each errors}}
+                  <p class="has-text-centered">{{this}}</p>
+                {{/each}}
+                {{#each team.users}}
+                  <h4 class="subtitle is-4 mt-3 chalk"> </span> {{this}}</h4>
+
+                {{/each}}
+
+              </div>
+              <form action="/teams/delete/{{team.id}}" method="post">
+                <input class="button is-vcentered is-rounded is-outlined" type="submit" value="Ta bort team"></input>
+              </form>
+              
+
+            {{else}}
+              
+              <h3 class="subtitle is-3 mt-3 chalk"> </span> Skapa ett Team </h3>
+            <div class="chalk">
+              <form action="/teams" method="post">
+              <div class="field">
+                {{#each errors}}
+                    <p class="has-text-centered">{{this}}</p>
+                  {{/each}}
+              <label class="label chalk">Team namn</label>
+              <div class="control has-icons-right">
+                <input class="input" type="text" name="teamName" value="{{teamName}}" placeholder="Skriv ditt team namn här">
+              </div>
+              </div>
+                <input class="button nyrundabtn" type="submit" value="Skapa team"></input>
+              </form>
+            </div>
+            {{/if}}
+          </div>
+      </section>
+
+      <div class="column has-text-centered mt-6">
+
     </div>
+    
+    </div>
+
+
     <div class="column mt-6">
       <section>
           <div class=" blackboard has-text-centered mb-4">
@@ -21,21 +70,6 @@
       <div class="column has-text-centered mt-6">
         <form action="/bars" method="post">
           <input class="button nyrundabtn" type="submit" value="Starta ny runda"></input>
-        </form>
-    </div>
-    <div class="column has-text-centered mt-6">
-      
-        <form action="/teams" method="post">
-        <div class="field">
-          {{#each errors}}
-              <p class="has-text-centered">{{this}}</p>
-            {{/each}}
-        <label class="label">Användarnamn</label>
-        <div class="control has-icons-right">
-          <input class="input" type="text" name="teamName" value="{{teamName}}" placeholder="Skriv ditt team namn här">
-        </div>
-        </div>
-          <input class="button nyrundabtn" type="submit" value="Skapa team"></input>
         </form>
     </div>
     </div>

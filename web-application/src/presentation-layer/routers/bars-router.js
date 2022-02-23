@@ -2,21 +2,32 @@ const express = require('express')
 const session = require('express-session')
 const barlist = require('../../models/bar.model')
 
-module.exports = function({barsManager}){
+module.exports = function({barsManager, teamsManager, accountManager}){
 
     const router = express.Router()
 
     router.get("/", (req, res) => {
-        barsManager.getBarRunda(req.session.activeAccount, (error, result) => {
+        const account = req.session.activeAccount
+        console.log("HEHEHAJE", account);
+        barsManager.getBarRunda(account, (error, result) => {
             if (error) {
                 console.log(error);
                 // TODO ?
             } else if (result){
+                var bars = result.list
                 console.log('Found existing barrunda');
-
-                res.render("home.hbs", {bars: result.list, activeAccount: req.session.activeAccount});
+                teamsManager.getTeam(account.id, (error, result) =>{
+                    const team = result
+                    console.log("team:", team);
+                    if(error){
+                        res.render("home.hbs", {bars, activeAccount: account});
+                    }else{
+                        res.render("home.hbs", {bars, team, activeAccount: account});
+                    }
+                });
+                
             } else {
-                res.render("home.hbs", {bars: [], activeAccount: req.session.activeAccount});
+                res.render("home.hbs", {bars: [], activeAccount: account});
                 // There was no data found
             }
         });
@@ -35,7 +46,15 @@ module.exports = function({barsManager}){
                 // TODO ?
             } else {
                 console.log('Succesfully stored new barrunda');
+                console.log("result",result);
                 // TODO ?
+                teamsManager.updateTeamBarrunda(req.session.activeAccount, result, (error,result) => {
+                    if(error){
+                        console.log("failed to update team barrunda");
+                    }else{
+                        console.log("succesfully updated team barrunda");
+                    }
+                })
             }
         });
         res.render("home.hbs", {bars: barRunda.list, activeAccount: req.session.activeAccount})

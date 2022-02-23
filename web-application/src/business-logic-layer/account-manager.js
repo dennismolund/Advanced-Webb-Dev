@@ -56,7 +56,8 @@ module.exports = function({accountRepository}){
                         //Only sending back username and email, excluding Id and password due to security.
                         const activeAccount = {
                             username: results.username,
-                            email: results.email
+                            email: results.email,
+                            id: results.id
                         }
                         callback(null, activeAccount)
                     }else{

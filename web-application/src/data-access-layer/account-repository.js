@@ -10,7 +10,8 @@ module.exports = function({}){
 		callback([], allAccounts)
 	  },
 	  getAccountIdByUsername: function(username, callback){
-		const query = "SELECT id FROM accounts WHERE username = ?"
+		console.log("inside, username:", username);
+		const query = `SELECT id FROM accounts WHERE username = ?`
 		const values = [username]
 
 		db.query(query, values, function(error, results){
@@ -23,8 +24,7 @@ module.exports = function({}){
 			}
 		})
 
-	  }
-	  ,
+	  },
 	  createAccount: function(account, callback){
 	
 		const query = `INSERT INTO accounts (username, email, password) VALUES (?, ?, ?)`

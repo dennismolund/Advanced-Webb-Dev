@@ -4,12 +4,13 @@ module.exports = function({}){
 
     return {
         storeBarRunda: (barRunda, account, callback) => {
-            const query = `INSERT INTO barrunda (data) VALUES (?)`;
-            const values = [JSON.stringify(barRunda)];
+            const query = `INSERT INTO barrunda (owner, data) VALUES (?,?)`;
+            const values = [account.id, JSON.stringify(barRunda)];
 
             db.query(query, values, (error, result) => {
                 if (error) callback(error, null);
                 else {
+                    console.log("Barrunda in stored", result);
                     // Update user
                     const query = 'UPDATE accounts SET currentbarrunda = ? WHERE username = ?';
                     const values = [result.insertId, account.username];
@@ -38,7 +39,7 @@ module.exports = function({}){
                     db.query(qBarRunda, values, (error, result) => {
                         if (error) callback(error, null);
                         else {
-                            console.log(result);
+                            //console.log("bars manager",result);
                             callback(null, result);
                         }
                     })

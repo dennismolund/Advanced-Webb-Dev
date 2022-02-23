@@ -26,10 +26,11 @@ module.exports = function({ barsRepository }){
                     else if (!validRows(result)) callback(null, null);
                     else {
                         try {
+                            //console.log(result[0]);
                             const parsed = parseResult(result[0].data);
                             callback(null, parsed);
                         } catch (e) {
-                            console.log(result[0]);
+                            //console.log(e);
                             callback(new Error('Failed to parse data'), null);
                         }
                     }
