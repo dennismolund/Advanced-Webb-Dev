@@ -5,17 +5,22 @@ module.exports = function({}){
     return{
         
         createTeam: (team, callback)=>{
-            const query = `INSERT INTO teams (teamname, creatorid) VALUES (?, ?)`
-		    const values = [team.teamName, team.creatorId]
+            const query = `INSERT INTO teams (teamname, creatorid) VALUES (?, ?)`;
+            const values = [team.teamName, team.creatorId];
+            const q2 = 'UPDATE accounts SET teamid = ? WHERE id = ?';
             
-            db.query(query, values, function(error, results){
+            db.query(query, values, (error, result) => {
                 if(error){
                     console.log("Error in database: ", error);
-                    callback(['databaseError'], null)
+                    callback('Internal server error', null);
                 }else{
-                    callback(null, results)
+                    const v2 = [result.id, team.creatorId];
+                    db.query(q2, v2, (error, result) => {
+                        if (error) console.log('Error updating accounts table for creator after creating team.', error);
+                    });
+                    callback(null, result);
                 }
-            })
+            });
         },
         //ById lägg till sen.
         delete: (teamid, callback)=>{
