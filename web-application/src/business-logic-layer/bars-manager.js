@@ -3,58 +3,63 @@ const { validParams, validRows, parseResult } = require('./bars-validator');
 
 module.exports = ({ barsRepository }) => {
 
-    return {
-        storeBarRunda: (barRunda, account, callback) => {
-            if (!validParams('storeBarRunda', { barRunda, account })) {
-                const e = new Error('Invalid Params');
-                callback(e, null);
-            } else {
-                barsRepository.storeBarRunda(barRunda, account, callback)
-            }
-        },
+    const storeBarRunda = (barRunda, account, callback) => {
+        if (!validParams('storeBarRunda', { barRunda, account })) {
+            const e = new Error('Invalid Params');
+            callback(e, null);
+        } else {
+            barsRepository.storeBarRunda(barRunda, account, callback)
+        }
+    };
+    
 
-        getBarRunda: (account, callback) => {
-            if (!validParams('getBarRunda', {account})) {
-                const e = new Error('Invalid Params');
-                callback(e, null);
-            } else {
-                barsRepository.getBarRunda(account, (error, result) => {
+    const getBarRunda = (account, callback) => {
+        if (!validParams('getBarRunda', {account})) {
+            const e = new Error('Invalid Params');
+            callback(e, null);
+        } else {
+            barsRepository.getBarRunda(account, (error, result) => {
 
-                    if (error) callback(error, null);
-                    else if (!validRows(result)) callback(null, null);
-                    else {
-                        try {
-                            //console.log(result[0]);
-                            const parsed = parseResult(result[0].data);
-                            callback(null, parsed);
-                        } catch (e) {
-                            //console.log(e);
-                            callback(new Error('Failed to parse data'), null);
-                        }
-                    }
-                });
-            }
-        },
-
-        deleteBarrundaById: (id, user, callback) => {
-            getBarRunda(account, (error, result) => {
                 if (error) callback(error, null);
+                else if (!validRows(result)) callback(null, null);
                 else {
-                    if (result.owner !== id) {
-                        console.log('User is not authroized to delete resource', result);
-                        callback(['Unauthroized'], null);
-                    } else {
-                        barsRepository.deleteBarrundaById(id, (error, result) => {
-                            if (error) callback(error, null);
-                            else {
-                                console.log('successfully deleted barrunda');
-                                callback(null, 'success');
-                            }
-                        });
+                    try {
+                        //console.log(result[0]);
+                        const parsed = parseResult(result[0].data);
+                        callback(null, parsed);
+                    } catch (e) {
+                        //console.log(e);
+                        callback(new Error('Failed to parse data'), null);
                     }
                 }
             });
-
         }
+    };
+
+    const deleteBarrundaById = (id, user, callback) => {
+        getBarRunda(account, (error, result) => {
+            if (error) callback(error, null);
+            else {
+                if (result.owner !== id) {
+                    console.log('User is not authroized to delete resource', result);
+                    callback(['Unauthroized'], null);
+                } else {
+                    barsRepository.deleteBarrundaById(id, (error, result) => {
+                        if (error) callback(error, null);
+                        else {
+                            console.log('successfully deleted barrunda');
+                            callback(null, 'success');
+                        }
+                    });
+                }
+            }
+        });
+
+    }
+
+    return {
+        storeBarRunda,
+        getBarRunda,
+        deleteBarrundaById,
     }
 }
