@@ -20,19 +20,17 @@ module.exports = function({barsManager, teamsManager, accountManager}){
                     const team = result
                     console.log("team:", team);
                     if(error){
-                        res.render("home.hbs", {bars, activeAccount: account});
+                        res.render("barrundasolo.hbs", {bars, activeAccount: account});
                     }else{
-                        res.render("home.hbs", {bars, team, activeAccount: account});
+                        res.render("barrundasolo.hbs", {bars, team, activeAccount: account});
                     }
                 });
                 
             } else {
-                res.render("home.hbs", {bars: [], activeAccount: account});
+                res.render("barrundasolo.hbs", {bars: [], activeAccount: account});
                 // There was no data found
             }
         });
-
-        
     });
 
     router.post('/', (req, res) => {
@@ -57,8 +55,13 @@ module.exports = function({barsManager, teamsManager, accountManager}){
                 })
             }
         });
-        res.render("home.hbs", {bars: barRunda.list, activeAccount: req.session.activeAccount})
+        res.render("barrundasolo.hbs", {bars: barRunda.list, activeAccount: req.session.activeAccount})
     });
+
+    router.post('/delete', (req, res) => {
+        const account = req.session.activeAccount
+        res.render("start.hbs", {activeAccount: account});
+    })
     
     return router
 }

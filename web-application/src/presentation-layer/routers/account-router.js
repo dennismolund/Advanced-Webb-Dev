@@ -13,6 +13,10 @@ module.exports = function({accountManager}){
     router.get("/signup", (request, response) => {
         response.render("signup.hbs");
     })
+
+    router.get("/start", (request, response) => {
+        response.render("start.hbs");
+    })
     
     router.post("/signup", (request, response) => {
         

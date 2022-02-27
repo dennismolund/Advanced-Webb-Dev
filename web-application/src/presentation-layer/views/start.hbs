@@ -20,7 +20,7 @@
                 </div>
               </div>
               <div class="field">
-                <input class="button is-vcentered  is-outlined" type="submit" value="Skapa"></input>
+                <input class="chalkbtn is-vcentered  is-outlined" type="submit" value="Skapa"></input>
               </div>
             </div>
 
@@ -29,20 +29,22 @@
 
               <div class="field">
                 <div class="control has-icons-right">
-                  <input class="input" type="text" name="username" value="{{username}}" placeholder="Lagnamn#1234">
+                  <input class="input chalkinput" type="text" name="username" value="{{username}}" placeholder="Lagnamn#1234">
                 </div>
               </div>
               <div class="field">
-                <input class="button is-vcentered  is-outlined" type="submit" value="Joina team"></input>
+                <input class="chalkbtn is-vcentered  is-outlined" type="submit" value="Joina team"></input>
               </div>
             </div>
 
-            <div>
-              <h3 class="subtitle is-4 mt-5 chalk"> </span> Ge mig en barrunda! </h3>
-              <div class="field">
-                <input class="button is-vcentered  is-outlined" type="submit" value="Skapa barrunda"></input>
+            <form action="/bars" method="POST">
+              <div>
+                <h3 class="subtitle is-4 mt-6 chalk"> </span> Ge mig en barrunda! </h3>
+                <div class="field has-text-centered">
+                  <input class="chalkbtn is-vcentered  is-outlined" type="submit" value="Skapa barrunda"></input>
+                </div>
               </div>
-            </div>
+            </form>
             
           </div>
       </section>

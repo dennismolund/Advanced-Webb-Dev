@@ -67,6 +67,20 @@ body{
 
 }
 
+.chalkinput[type=text] {
+    border: none;
+    border-bottom: 2px solid --chalk;
+}
+
+.chalkbtn {
+    background-color: var(--darkgrey);
+    color: var(--chalk);
+    font-family: "Walter Turncoat", cursive;
+    font-size: 18px;
+    border-radius: 10px;
+    border-color: var(--chalk);
+}
+
 .chalk-line{
     border-bottom: 2px solid var(--chalk);
     display: block;

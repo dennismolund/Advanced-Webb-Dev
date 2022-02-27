@@ -17,17 +17,18 @@
                 {{/each}}
         
             </div> 
+            <div class="columns is-centered mt-6">
+              <form action="/bars" method="post">
+                <input class="chalkbtn" type="submit" value="Ny runda"></input>
+              </form>
+              <form action="/bars/delete" method="post">
+                <input class="chalkbtn ml-4" type="submit" value="Avsluta"></input>
+              </form>
+            </div>
           </div>
       </section>
 
-      <div class="columns is-centered mt-4">
-        <form action="/bars" method="post">
-          <input class="button" type="submit" value="Ny runda"></input>
-        </form>
-        <form action="/bars/delete" method="post">
-          <input class="button ml-4" type="submit" value="Avsluta"></input>
-        </form>
-      </div>
+      
     </div>
     <div class="column"></div>
   </div>

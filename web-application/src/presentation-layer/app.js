@@ -46,9 +46,11 @@ app.use(session({
 app.get('/', async (req, res) => {
     //if account is active, show home page
     if(req.session.activeAccount) {
+      const account = req.session.activeAccount
+      console.log("ACCOUNT:", account);
       await getPlaces();
       //a.logBy('name');
-      res.redirect('/bars');
+      res.render('start.hbs', {activeAccount: account});
       // res.render('home.hbs');
     }
     //if account is not active, show login page
