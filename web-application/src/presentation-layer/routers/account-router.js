@@ -3,7 +3,7 @@ const express = require('express');
 const alreadySignedInCheck = (req, res, next) => {
     if (!req.session.activeAccount) next();
     else {
-        res.redirect('/logout');
+        res.redirect('/bars');
     }
 }
 
