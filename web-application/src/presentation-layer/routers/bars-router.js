@@ -8,7 +8,12 @@ module.exports = function({barsManager, teamsManager, accountManager}){
 
     router.get("/", (req, res) => {
         const account = req.session.activeAccount
-        console.log("HEHEHAJE", account);
+        /*
+            Look for barrunda
+            Look for active team
+            
+        */
+
         barsManager.getBarRunda(account, (error, result) => {
             if (error) {
                 console.log(error);

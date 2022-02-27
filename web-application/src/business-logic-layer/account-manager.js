@@ -2,73 +2,70 @@ const accountValidator = require('./account-validator')
 var bcrypt = require('bcryptjs');
 const saltRounds = 10;
 
-module.exports = function({accountRepository}){
+module.exports = ({accountRepository}) => {
     // Name all the dependencies in the curly brackets above.
     
     return {
-        getAllAccounts: function(callback){
-        accountRepository.getAllAccounts(function(errors, accounts){
-            callback(errors, accounts)
-        })
-        
+        getAllAccounts: (callback) => {
+            accountRepository.getAllAccounts((errors, accounts) => {
+                callback(errors, accounts);
+            });
         },
-        getAccountIdByUsername: function(username, callback){
-            accountRepository.getAccountIdByUsername(username, function(errors, results){
-                if(errors) callback(errors, null)
-                else callback(null, results)
-            })
-        }
-        ,
-        createAccount: function(account, callback){
 
-        // Validate the account.
-        const errors = accountValidator.getErrorsNewAccount(account)
-        
-        if(0 < errors.length){
-            console.log("Error");
-            callback(errors, null)
-            return
-        }
+        getAccountIdByUsername: (username, callback) => {
+            accountRepository.getAccountIdByUsername(username, (errors, results) => {
+                if(errors) callback(errors, null);
+                else callback(null, results);
+            });
+        },
 
-        bcrypt.hash(account.password, saltRounds, function(err, hash) {
-            account.password = hash
+        createAccount: (account, callback) => {
 
-            accountRepository.createAccount(account, callback)  
-        });
-        
-    },
-        loginRequest: function(account, callback){
-        // Validate the login credentials.
-        console.log("account in manager:", account);
-        const errors = accountValidator.getErrorsLogin(account)
-
-        if(0 < errors.length){
-            callback(errors, null)
-            return
-        }
-
-        accountRepository.loginRequest(account, function(errors, results){
-            if(errors) callback(errors, null)
-            else if (!results) callback (["Fel lösenord eller användarnamn"],null)
-            else{
-                bcrypt.compare(account.enteredPassword, results.password, function(err, res){
-                    if(res){
-                        //Only sending back username and email, excluding Id and password due to security.
-                        const activeAccount = {
-                            username: results.username,
-                            email: results.email,
-                            id: results.id
-                        }
-                        callback(null, activeAccount)
-                    }else{
-                        callback(["Fel lösenord eller användarnamn"], null)
-                    }
-                })
+            // Validate the account.
+            const errors = accountValidator.getErrorsNewAccount(account);
+            
+            if(errors.length){
+                console.log("Error");
+                callback(errors, null);
+                return;
             }
-        })
 
+            bcrypt.hash(account.password, saltRounds, (err, hash) => {
+                account.password = hash;
+
+                accountRepository.createAccount(account, callback);
+            });
+        },
+
+        loginRequest: (account, callback) => {
+            // Validate the login credentials.
+            console.log("account in manager:", account);
+            const errors = accountValidator.getErrorsLogin(account);
+
+            if(errors.length){
+                callback(errors, null);
+                return;
+            }
+
+            accountRepository.loginRequest(account, (errors, results) => {
+                if(errors) callback(errors, null);
+                else if (!results) callback (["Fel lösenord eller användarnamn"],null);
+                else{
+                    bcrypt.compare(account.enteredPassword, results.password, (err, res) => {
+                        if(res){
+                            //Only sending back username, id and email, excluding password due to security.
+                            const activeAccount = {
+                                username: results.username,
+                                email: results.email,
+                                id: results.id
+                            };
+                            callback(null, activeAccount);
+                        }else{
+                            callback(["Fel lösenord eller användarnamn"], null);
+                        }
+                    });
+                }
+            });
+        }
     }
-
-
-    }
-  }
+}

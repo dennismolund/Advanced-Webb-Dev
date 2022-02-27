@@ -1,16 +1,22 @@
 const express = require('express');
 
+const alreadySignedInCheck = (req, res, next) => {
+    if (!req.session.activeAccount) next();
+    else {
+        res.redirect('/bars');
+    }
+}
 
-module.exports = function({accountManager}){
+module.exports = ({accountManager}) => {
     // Name all the dependencies in the curly brackets above.
     
     const router = express.Router();
     
-    router.get("/login", (request, response) => {
+    router.get("/login", alreadySignedInCheck, (request, response) => {
         response.render("login.hbs");
     })
     
-    router.get("/signup", (request, response) => {
+    router.get("/signup", alreadySignedInCheck, (request, response) => {
         response.render("signup.hbs");
     })
 
@@ -18,7 +24,7 @@ module.exports = function({accountManager}){
         response.render("start.hbs");
     })
     
-    router.post("/signup", (request, response) => {
+    router.post("/signup", alreadySignedInCheck, (request, response) => {
         
         const account = {
             username: request.body.username,
@@ -36,7 +42,7 @@ module.exports = function({accountManager}){
         });
     })
     
-    router.post("/login", (request, response) => {
+    router.post("/login", alreadySignedInCheck, (request, response) => {
         const account = {
             enteredUsername: request.body.username,
             enteredPassword: request.body.password,
