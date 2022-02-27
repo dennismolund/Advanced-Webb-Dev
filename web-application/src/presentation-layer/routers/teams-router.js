@@ -24,7 +24,8 @@ module.exports = ({teamsManager, accountManager}) => {
                     data: result,
                     activeAccount: req.session.activeAccount,
                 }
-                res.redirect("barrundan.hbs", result);
+                console.log("MODEL:", model);
+                res.render("barrundan.hbs", model);
             }
         });
     });

@@ -20,19 +20,20 @@ module.exports = function({barsManager, teamsManager, accountManager}){
                 // TODO ?
             } else if (result){
                 var bars = result.parsed.list
+                const barid = result.raw.id
                 console.log('Found existing barrunda');
                 teamsManager.getTeam(account.id, (error, result) =>{
                     const team = result
                     console.log("team:", team);
                     if(error){
-                        res.render("barrundasolo.hbs", {bars, activeAccount: account});
+                        res.render("barrundasolo.hbs", {barid, bars, activeAccount: account});
                     }else{
-                        res.render("barrundasolo.hbs", {bars, team, activeAccount: account});
+                        res.render("barrundasolo.hbs", {barid, bars, team, activeAccount: account});
                     }
                 });
                 
             } else {
-                res.render("barrundasolo.hbs", {bars: [], activeAccount: account});
+                res.render("barrundasolo.hbs", {barid, bars: [], activeAccount: account});
                 // There was no data found
             }
         });
@@ -41,40 +42,39 @@ module.exports = function({barsManager, teamsManager, accountManager}){
     router.post('/', (req, res) => {
         console.log('Creating and storing new barrunda');
         const barRunda = barlist.getRandom();
-
+        let barid = null
         barsManager.storeBarRunda(barRunda, req.session.activeAccount, (error, result) => {
             if (error) {
                 console.log('Failed to save barrunda');
                 console.log(error);
+                res.render("start.hbs", {error})
                 // TODO ?
             } else {
+                console.log("res: ",result); 
+                barid = result.insertId
                 console.log('Succesfully stored new barrunda');
                 console.log("result",result);
                 // TODO ?
-                teamsManager.updateTeamBarrunda(req.session.activeAccount, result, (error,result) => {
-                    if(error){
-                        console.log("failed to update team barrunda");
-                    }else{
-                        console.log("succesfully updated team barrunda");
-                    }
-                })
+                res.render("barrundasolo.hbs", {barid,bars: barRunda.list, activeAccount: req.session.activeAccount})
             }
         });
-        res.render("barrundasolo.hbs", {bars: barRunda.list, activeAccount: req.session.activeAccount})
     });
 
-    router.post('/delete', (req, res) => {
-        const account = req.session.activeAccount
-        res.render("start.hbs", {activeAccount: account});
-    })
+    // router.post('/delete', (req, res) => {
+    //     const account = req.session.activeAccount
+    //     res.render("start.hbs", {activeAccount: account});
+    // })
     
-    router.delete('/:id', (req, res, next) => {
+    router.get('/delete/:id', (req, res, next) => {
         const { id } = req.params;
         const user = req.session.activeAccount;
-
+        console.log("INNE");
         barsManager.deleteBarrundaById(id, user, (error, result) => {
             if (error) console.log('Failed to delete barrunda: ', error);
-            else console.log('Succesfully deleted barrunda');
+            else {
+                console.log('Succesfully deleted barrunda');
+                res.render("start.hbs", {activeAccount: user});
+            }
         });
     });
     return router

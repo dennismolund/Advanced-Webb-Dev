@@ -10,13 +10,21 @@
     <div class="column mt-6">
       <section>
           <div class=" blackboard has-text-centered mb-4">
-            <h3 class="subtitle is-3 mt-3 chalk"> </span> Bar Rundan <span class="chalk-line"></span></h3>
+            <h3 class="subtitle is-3 mt-3 chalk"> </span> {{data.teamName}} <span class="chalk-line"></span></h3>
+            {{#if team}}  
+            <div class="chalk">
+                
+                {{#each data.teamMemebers}}
+                    <h4 class="subtitle is-4 mt-3 chalk"> </span> {{this}}</h4>
+                {{/each}}
+            </div> 
+            {{else}} 
             <div class="chalk">
                 {{#each bars}}
                     <h4 class="subtitle is-4 mt-3 chalk"> </span> {{counter @index}}. {{this.name}}</h4>
                 {{/each}}
-        
             </div> 
+            {{/if}}
           </div>
       </section>
 

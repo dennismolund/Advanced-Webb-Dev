@@ -48,6 +48,7 @@ module.exports = function({}){
         },
 
         deleteBarrundaById: (id, callback) => {
+
             // TODO: Remove this id from teams, users with this id as their barrunda.
             const query = `DELETE FROM barrunda WHERE id = ?`;
             const q2 = `UPDATE accounts SET currentbarrunda = NULL WHERE currentbarrunda = ?`;

@@ -13,17 +13,18 @@
 
             <div>
               <h3 class="subtitle is-4 mt-3 chalk"> </span> Skapa ett team </h3>
-
-              <div class="field">
-                <div class="control has-icons-right">
-                  <input class="input" type="text" name="username" value="{{username}}" placeholder="Lagnamn">
+              <form action="/teams" method="post">
+                <div class="field">
+                  <div class="control has-icons-right">
+                    <input class="input" type="text" name="teamName" value="{{teamName}}" placeholder="Lagnamn">
+                  </div>
                 </div>
-              </div>
-              <div class="field">
-                <input class="chalkbtn is-vcentered  is-outlined" type="submit" value="Skapa"></input>
-              </div>
+                <div class="field">
+                  <input class="chalkbtn is-vcentered  is-outlined" type="submit" value="Skapa"></input>
+                </div>
+              </form>
             </div>
-
+ 
             <div>
               <h3 class="subtitle is-4 mt-5 chalk"> </span> Joina ett team </h3>
 

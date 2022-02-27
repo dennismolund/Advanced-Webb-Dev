@@ -27,7 +27,6 @@ module.exports = ({ barsRepository }) => {
                     try {
                         //console.log(result[0]);
                         const parsed = parseResult(result[0].data);
-                        console.log(parsed);
                         const data = {
                             parsed,
                             raw: result[0],
@@ -42,11 +41,11 @@ module.exports = ({ barsRepository }) => {
         }
     };
 
-    const deleteBarrundaById = (id, user, callback) => {
+    const deleteBarrundaById = (id, account, callback) => {
         getBarRunda(account, (error, result) => {
             if (error) callback(error, null);
             else {
-                if (result.raw.owner !== id) {
+                if (result.raw.owner !== account.id) {
                     console.log('User is not authroized to delete resource', result);
                     callback(['Unauthroized'], null);
                 } else {
