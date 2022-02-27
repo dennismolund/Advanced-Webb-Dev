@@ -19,7 +19,7 @@ module.exports = function({barsManager, teamsManager, accountManager}){
                 console.log(error);
                 // TODO ?
             } else if (result){
-                var bars = result.list
+                var bars = result.parsed.list
                 console.log('Found existing barrunda');
                 teamsManager.getTeam(account.id, (error, result) =>{
                     const team = result

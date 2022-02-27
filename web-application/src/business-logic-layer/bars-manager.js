@@ -1,4 +1,5 @@
 
+const { logBy } = require('../models/bar.model');
 const { validParams, validRows, parseResult } = require('./bars-validator');
 
 module.exports = ({ barsRepository }) => {
@@ -26,7 +27,12 @@ module.exports = ({ barsRepository }) => {
                     try {
                         //console.log(result[0]);
                         const parsed = parseResult(result[0].data);
-                        callback(null, parsed);
+                        console.log(parsed);
+                        const data = {
+                            parsed,
+                            raw: result[0],
+                        }
+                        callback(null, data);
                     } catch (e) {
                         //console.log(e);
                         callback(new Error('Failed to parse data'), null);
@@ -40,7 +46,7 @@ module.exports = ({ barsRepository }) => {
         getBarRunda(account, (error, result) => {
             if (error) callback(error, null);
             else {
-                if (result.owner !== id) {
+                if (result.raw.owner !== id) {
                     console.log('User is not authroized to delete resource', result);
                     callback(['Unauthroized'], null);
                 } else {
