@@ -10,16 +10,17 @@ module.exports = function({}){
             const q2 = 'UPDATE accounts SET teamid = ? WHERE id = ?';
             const q3 = 'SELECT * FROM teams WHERE id = ?';
             db.query(query, values, (error, result) => {
-                if(error){
+                if (error) {
                     console.log("Error in database: ", error);
                     callback('Internal server error', null);
-                }else{
+                } else {
                     const v2 = [result.id, team.creatorId];
                     db.query(q2, v2, (error, result) => {
                         if (error) console.log('Error updating accounts table for creator after creating team.', error);
                     });
                     db.query(q3, result.id, (error, result) => {
                         if (error) console.log('Error getting team after creating it');
+
                         console.log('Got team: ', result);
                         callback(null, result)
                     });

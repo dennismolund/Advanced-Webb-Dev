@@ -1,36 +1,47 @@
 const express = require('express')
 const { validTeamName } = require('./teams-validator');
+const barlist = require('../../models/bar.model')
 
-module.exports = function({teamsRepository}){
+
+module.exports = function({ teamsRepository, barsManager }){
 
     return {
         createTeam: function(team, callback){
-            //error handling
             try {
                 validTeamName(team.teamName);
             } catch (error) {
                 callback(error, null);
             }
-            teamsRepository.createTeam(team, function(errors, results){
+            teamsRepository.createTeam(team, (errors, newTeam) => {
                 if(errors){
                     console.log("Errors in teams-manager:", errors);
                     callback(errors, null)
                 }else{
-                    console.log(results);
-                    callback(null, results)
+                    // Create new barrund for team.
+                    const barrunda = barlist.getRandom();
+                    barsManager.storeBarRunda(barrunda, req.activeAccount, (error, result) => {
+                        if (error) callback(error, null);
+                        else {
+                            const data = {
+                                team: newTeam,
+                                barrunda: result,
+                            };
+                            callback(null, data);
+                        }
+                    });
                 }
             })
         },
-        delete: function(teamid, callback){
+        delete: (teamid, callback) => {
             teamsRepository.delete(teamid, (errors, results) => {
                 if(errors){
                     callback(errors, null)
                 }else{
                     callback(null, results)
                 }
-            })
+            });
         },
-        joinTeam: function(teamName, accountId, callback){
+        joinTeam: (teamName, accountId, callback) => {
             teamsRepository.joinTeam(teamName, accountId, (errors, results)=>{
                 if(errors){
                     callback(errors, null)
@@ -39,9 +50,9 @@ module.exports = function({teamsRepository}){
                 }
             })
         },
-        getTeam: function(id, callback){
+        getTeam: (id, callback) => {
             //error handling
-            teamsRepository.getTeam(id, function(errors, results){
+            teamsRepository.getTeam(id, (errors, results) => {
                 if(errors){
                     console.log("Errors in teams-manager:", errors);
                     callback(errors, null)

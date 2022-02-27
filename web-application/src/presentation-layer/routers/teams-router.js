@@ -30,8 +30,8 @@ module.exports = ({teamsManager, accountManager}) => {
         });
     });
 
-    router.get("/", (req,res)=>{
-        accountManager.getAccountIdByUsername(team.creator, function(errors, results){
+    router.get("/", (req,res) => {
+        accountManager.getAccountIdByUsername(team.creator, (errors, results) => {
             if(errors){
                 console.log("errors ", errors);
                 res.render("home.hbs", {errors})
@@ -51,7 +51,7 @@ module.exports = ({teamsManager, accountManager}) => {
         })
     })
 
-    router.post("/delete/:id", (req,res)=>{
+    router.post("/delete/:id", (req,res) => {
         const teamid = req.params.id
         teamsManager.delete(teamid, (error, results)=>{
             if(error){
