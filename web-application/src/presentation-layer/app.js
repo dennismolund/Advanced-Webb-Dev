@@ -32,7 +32,7 @@ hbshelper.handlebars.registerHelper("counter", function (index){
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
     extended: false
-}))
+}));
 
 app.set('trust proxy', 1) // trust first proxy
 app.use(session({
@@ -41,7 +41,7 @@ app.use(session({
   saveUninitialized: true,
   //set true when site is available as HTTPS
   cookie: { secure: false }
-}))
+}));
 
 app.get('/', async (req, res) => {
     //if account is active, show home page

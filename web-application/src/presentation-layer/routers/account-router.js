@@ -7,7 +7,7 @@ const alreadySignedInCheck = (req, res, next) => {
     }
 }
 
-module.exports = function({accountManager}){
+module.exports = ({accountManager}) => {
     // Name all the dependencies in the curly brackets above.
     
     const router = express.Router();

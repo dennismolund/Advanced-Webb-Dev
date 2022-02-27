@@ -53,7 +53,7 @@ module.exports = ({accountRepository}) => {
                 else{
                     bcrypt.compare(account.enteredPassword, results.password, (err, res) => {
                         if(res){
-                            //Only sending back username and email, excluding Id and password due to security.
+                            //Only sending back username, id and email, excluding password due to security.
                             const activeAccount = {
                                 username: results.username,
                                 email: results.email,
