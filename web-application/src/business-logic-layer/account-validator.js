@@ -11,16 +11,16 @@ exports.getErrorsNewAccount = function(account){
 	if(!account.hasOwnProperty("username")){
 		errors.push("Användarnamn saknas")
 	}else if(account.username.length < MIN_USERNAME_LENGTH){
-		errors.push("Användarnamn måste vara minst 6 tecken.")
+		errors.push("Användarnamn måste vara minst 3 tecken.")
 	}else if(MAX_USERNAME_LENGTH < account.username.length){
 		errors.push("Användarnamn är för långt")
 	}
 
     if(!account.hasOwnProperty("password")){
 		errors.push("Lösenord saknas")
-	}else if(account.username.length < MIN_USERNAME_LENGTH){
-		errors.push("Lösenordet måste vara minst 6 tecken.")
-	}else if(MAX_USERNAME_LENGTH < account.username.length){
+	}else if(account.password.length < MIN_PASSWORD_LENGTH){
+		errors.push("Lösenordet måste vara minst 3 tecken.")
+	}else if(MAX_PASSWORD_LENGTH < account.password.length){
 		errors.push("Lösenord är för långt")
 	}else if(account.password != account.confirmationPassword){
 		errors.push("Lösenorden matchar inte")
