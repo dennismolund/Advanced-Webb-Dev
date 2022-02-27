@@ -50,7 +50,9 @@ app.get('/', async (req, res) => {
       console.log("ACCOUNT:", account);
       await getPlaces();
       //a.logBy('name');
-      res.render('start.hbs', {activeAccount: account});
+      if(req.session.activeAccoun.teamid) res.render('barrundan.hbs', {activeAccount: account});
+      else if(req.session.activeAccoun.barrrundaid) res.render('barrundasolo.hbs', {activeAccount: account});
+      else res.render('start.hbs', {activeAccount: account});
       // res.render('home.hbs');
     }
     //if account is not active, show login page
