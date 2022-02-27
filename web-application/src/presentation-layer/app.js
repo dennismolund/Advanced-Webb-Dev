@@ -1,5 +1,5 @@
 const { getPlaces } = require('../service/fetch.data.service.js');
-
+const { isSignedIn } = require('../middlewares/auth.middleware.js');
 const express = require('express');
 const hbs = require('express-handlebars');
 const bodyParser = require('body-parser')
@@ -89,8 +89,8 @@ const theBarsRouter = container.resolve("barsRouter")
 const theTeamsRouter = container.resolve("teamsRouter")
 
 app.use("/anvandare", theAccountRouter)
-app.use("/bars", theBarsRouter)
-app.use("/teams", theTeamsRouter)
+app.use("/bars", isSignedIn, theBarsRouter)
+app.use("/teams", isSignedIn, theTeamsRouter)
 
  
 app.listen(8080, ()=>{
