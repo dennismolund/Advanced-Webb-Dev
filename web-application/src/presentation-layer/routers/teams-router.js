@@ -2,36 +2,29 @@ const { request } = require('express')
 const express = require('express')
 const session = require('express-session')
 
-module.exports = function({teamsManager, accountManager}){
+module.exports = ({teamsManager, accountManager}) => {
 
     const router = express.Router()
 
-    router.post("/", (req, res)=>{
+    router.post("/", (req, res) => {
         const team = {
             teamName: req.body.teamName,
-            creator: req.session.activeAccount.username
-        }
+            creatorId: req.session.activeAccount.id
+        };
 
-        console.log("In router, team:", team);
-
-        accountManager.getAccountIdByUsername(team.creator, function(errors, results){
-            if(errors){
+        teamsManager.createTeam(team, (error, result) => {
+            if(error){
                 console.log("errors ", errors);
-                res.render("home.hbs", {errors})
+                res.render("barrundan.hbs", { error: error });
             }else{
-                team.creatorId = results
-                console.log("In router, after retrieve ID team:", team);
-                teamsManager.createTeam(team, function(errors, results){
-                    if(errors){
-                        console.log("errors ", errors);
-                        res.redirect("/")
-                    }else{
-                        res.redirect("/")
-                    }
-                })
+                const model = {
+                    type: 'team',
+                    data: result,
+                }
+                res.redirect("barrundan.hbs", result);
             }
-        })
-    })
+        });
+    });
 
     router.get("/", (req,res)=>{
         accountManager.getAccountIdByUsername(team.creator, function(errors, results){
