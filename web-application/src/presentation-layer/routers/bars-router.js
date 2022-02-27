@@ -65,5 +65,14 @@ module.exports = function({barsManager, teamsManager, accountManager}){
         res.render("home.hbs", {bars: barRunda.list, activeAccount: req.session.activeAccount})
     });
     
+    router.delete('/:id', (req, res, next) => {
+        const { id } = req.params;
+        const user = req.session.activeAccount;
+
+        barsManager.deleteBarrundaById(id, user, (error, result) => {
+            if (error) console.log('Failed to delete barrunda: ', error);
+            else console.log('Succesfully deleted barrunda');
+        });
+    });
     return router
 }

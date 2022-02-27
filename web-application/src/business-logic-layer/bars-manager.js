@@ -1,7 +1,7 @@
 
 const { validParams, validRows, parseResult } = require('./bars-validator');
 
-module.exports = function({ barsRepository }){
+module.exports = ({ barsRepository }) => {
 
     return {
         storeBarRunda: (barRunda, account, callback) => {
@@ -9,8 +9,6 @@ module.exports = function({ barsRepository }){
                 const e = new Error('Invalid Params');
                 callback(e, null);
             } else {
-
-
                 barsRepository.storeBarRunda(barRunda, account, callback)
             }
         },
@@ -36,6 +34,27 @@ module.exports = function({ barsRepository }){
                     }
                 });
             }
+        },
+
+        deleteBarrundaById: (id, user, callback) => {
+            getBarRunda(account, (error, result) => {
+                if (error) callback(error, null);
+                else {
+                    if (result.owner !== id) {
+                        console.log('User is not authroized to delete resource', result);
+                        callback(['Unauthroized'], null);
+                    } else {
+                        barsRepository.deleteBarrundaById(id, (error, result) => {
+                            if (error) callback(error, null);
+                            else {
+                                console.log('successfully deleted barrunda');
+                                callback(null, 'success');
+                            }
+                        });
+                    }
+                }
+            });
+
         }
     }
 }
