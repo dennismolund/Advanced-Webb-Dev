@@ -45,6 +45,26 @@ module.exports = function({}){
                     })
                 }
             });
+        },
+
+        deleteBarrundaById: (id, callback) => {
+            // TODO: Remove this id from teams, users with this id as their barrunda.
+            const query = `DELETE FROM barrunda WHERE id = ?`;
+            const q2 = `UPDATE accounts SET currentbarrunda = NULL WHERE currentbarrunda = ?`;
+            const q3 = `UPDATE teams SET currentbarrunda = NULL WHERE currentbarrunda = ?`
+            db.query(query, id, (error, result) => {
+                if (error) callback(error, null);
+                else {
+                    console.log('Delete query was successfull: ', result);
+                    db.query(q2, id, (error, result) => {
+                        if (error) console.log('FAILED to remove barrunda id from user table after deleting barrunda ', error);
+                    });
+                    db.query(q3, id, (error, result) => {
+                        if (error) console.log('FAILED to remove barrundaid from teams table after deleting barrunda', error);
+                    });
+                    callback(null, null);
+                }
+            });
         }
     }
 }
