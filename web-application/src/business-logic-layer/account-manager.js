@@ -57,7 +57,9 @@ module.exports = ({accountRepository}) => {
                             const activeAccount = {
                                 username: results.username,
                                 email: results.email,
-                                id: results.id
+                                id: results.id,
+                                barrundaid: results.currentbarrunda,
+                                teamid: results.teamid
                             };
                             callback(null, activeAccount);
                         }else{

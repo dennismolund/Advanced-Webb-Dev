@@ -6,7 +6,7 @@ const validParams = (fName, paramsObj) => {
             console.log('Missing value for param', key, 'when running', fName);
             valid = false;
         } 
-    })
+    });
     return valid;
 }
 
