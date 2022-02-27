@@ -17,9 +17,12 @@ module.exports = ({teamsManager, accountManager}) => {
                 console.log("errors ", errors);
                 res.render("barrundan.hbs", { error: error });
             }else{
+                result.teamMembers = [];
+                result.teamMembers.push(req.session.activeAccount.username);
                 const model = {
-                    type: 'team',
+                    team: true,
                     data: result,
+                    activeAccount: req.session.activeAccount,
                 }
                 res.redirect("barrundan.hbs", result);
             }
