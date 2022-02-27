@@ -1,12 +1,12 @@
 const express = require('express')
 const { validTeamName } = require('./teams-validator');
-const barlist = require('../../models/bar.model')
+const barlist = require('../models/bar.model')
 
 
 module.exports = function({ teamsRepository, barsManager }){
 
     return {
-        createTeam: function(team, callback){
+        createTeam: function(team, account, callback){
             try {
                 validTeamName(team.teamName);
             } catch (error) {
@@ -19,7 +19,7 @@ module.exports = function({ teamsRepository, barsManager }){
                 }else{
                     // Create new barrund for team.
                     const barrunda = barlist.getRandom();
-                    barsManager.storeBarRunda(barrunda, req.activeAccount, (error, result) => {
+                    barsManager.storeBarRunda(barrunda, account, (error, result) => {
                         if (error) callback(error, null);
                         else {
                             const data = {

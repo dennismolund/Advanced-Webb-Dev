@@ -50,7 +50,7 @@ app.get('/', async (req, res) => {
       console.log("ACCOUNT:", account);
       await getPlaces();
       //a.logBy('name');
-      if(req.session.activeAccount.teamid) res.render('barrundan.hbs', {activeAccount: account});
+      if(req.session.activeAccount.teamid) res.redirect('/teams');
       else if(req.session.activeAccount.barrundaid) res.redirect('/bars');
       else res.render('start.hbs', {activeAccount: account});
       // res.render('home.hbs');

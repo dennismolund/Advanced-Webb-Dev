@@ -12,9 +12,9 @@ module.exports = ({teamsManager, accountManager}) => {
             creatorId: req.session.activeAccount.id
         };
 
-        teamsManager.createTeam(team, (error, result) => {
+        teamsManager.createTeam(team, req.session.activeAccount, (error, result) => {
             if(error){
-                console.log("errors ", errors);
+                console.log("errors ", error);
                 res.render("barrundan.hbs", { error: error });
             }else{
                 result.teamMembers = [];
