@@ -11,7 +11,6 @@ module.exports = ({teamsManager, accountManager}) => {
             teamName: req.body.teamName,
             creatorId: req.session.activeAccount.id
         };
-
         teamsManager.createTeam(team, req.session.activeAccount, (error, result) => {
             if(error){
                 console.log("errors ", error);
@@ -31,22 +30,18 @@ module.exports = ({teamsManager, accountManager}) => {
     });
 
     router.get("/", (req,res) => {
-        accountManager.getAccountIdByUsername(team.creator, (errors, results) => {
-            if(errors){
-                console.log("errors ", errors);
-                res.render("home.hbs", {errors})
+        teamsManager.getTeam(req.session.activeAccount.teamid, (error, result) => {
+            if(error){
+                console.log("ERROR TRIGGER IN TEAMS-ROUTER (GetTeam)", error);
+                res.render("barrundan.hbs", error);
             }else{
-                const creatorId = results
-                console.log("In router, after retrieve ID team:", team);
-                teamsManager.getTeam(creatorId, function(errors, results){
-                    if(errors){
-                        console.log("errors ", errors);
-                        res.redirect("/")
-                    }else{
-                        console.log("Get team:", results);
-                        res.redirect("/")
-                    }
-                })
+                const model = {
+                    team: true,
+                    data: result,
+                    activeAccount: req.session.activeAccount,
+                }
+                
+                res.render("barrundan.hbs", model);
             }
         })
     })
@@ -70,3 +65,4 @@ module.exports = ({teamsManager, accountManager}) => {
     })
     return router
 }
+

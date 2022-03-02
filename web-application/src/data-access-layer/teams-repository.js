@@ -51,7 +51,7 @@ module.exports = function({}){
         joinTeam: (teamName, accountId, callback)=>{
             const query = `SELECT * FROM teams WHERE teamname = ?`
 		    const values = [teamName]
-
+            
             db.query(query, values, (error, results)=>{
                 if(error){
                     callback(error, null)
@@ -72,16 +72,26 @@ module.exports = function({}){
                 }
             })
         },
-        getTeam: (creatorId, callback)=>{
-            const query = `SELECT * FROM teams WHERE creatorid = ?`
-		    const values = [creatorId]
-
-            db.query(query, values, (error, results)=>{
+        getTeam: (id, callback)=>{
+            const query = `SELECT * FROM teams WHERE id = ?`
+		    const values = [id]
+            const q2 = `SELECT * FROM barrunda WHERE owner = ?`
+            
+            db.query(query, values, (error, result) => {
                 if(error){
                     console.log("Error in database: ", error);
                     callback(['databaseError'], null)
                 }else{
-                    callback(null, results[0])
+                    const team = result[0]
+                   
+                    db.query(q2, result[0].creatorid, (error, result) => {
+                        if(error){
+                            console.log("error getTeam in repository", error);
+                            callback(['databaseError'], null, null)
+                        }
+                        else callback(null, team, result[0])
+                    })
+                    
                 }
             })
         },

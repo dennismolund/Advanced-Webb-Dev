@@ -52,12 +52,16 @@ module.exports = function({ teamsRepository, barsManager }){
         },
         getTeam: (id, callback) => {
             //error handling
-            teamsRepository.getTeam(id, (errors, results) => {
+            teamsRepository.getTeam(id, (errors, team, barrunda) => {
                 if(errors){
                     console.log("Errors in teams-manager:", errors);
                     callback(errors, null)
                 }else{
-                    callback(null, results)
+                    const data = {
+                        team: team,
+                        barrunda: barrunda,
+                    };
+                    callback(null, data)
                 }
             })
         },
