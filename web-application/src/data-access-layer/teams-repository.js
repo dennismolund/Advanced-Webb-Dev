@@ -58,27 +58,26 @@ module.exports = function({}){
                 }else callback(null, results)
             })
         },
-        joinTeam: (teamName, accountId, callback)=>{
+        joinTeam: (teamName, accountId, callback) => {
             const query = `SELECT * FROM teams WHERE teamname = ?`
+            const q2 = `UPDATE accounts SET teamid = ? WHERE id = ?`;
 		    const values = [teamName]
             
-            db.query(query, values, (error, results)=>{
+            db.query(query, values, (error, result) => {
                 if(error){
+                    console.log("error in database (join team):", error);
                     callback(error, null)
                 }else{
-                    const teamId = results[0].id
-                    const currentbarrunda = results[0].currentbarrunda
-
-                    const query2 = `UPDATE accounts SET teamid = ?, currentbarrunda = ? where WHERE id = ?`
-		            const values2 = [teamId,currentbarrunda, accountId]
-                    db.query(query2, values2, (error, results)=>{
+                    console.log(result);
+                    const v2 = [result[0].id,accountId]
+                    db.query(q2, v2, (error, result) => {
                         if(error){
-                            callback(results, null)
-                        }else {
-                            callback(null, results)
+                            console.log("error in database (join team):", error);
+                            callback(error, null)
+                        }else{
+                            callback(null, result)
                         }
                     })
-                    
                 }
             })
         },

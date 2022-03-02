@@ -24,19 +24,19 @@
                 </div>
               </form>
             </div>
- 
+            <form action="/teams/join" method="POST">
             <div>
               <h3 class="subtitle is-4 mt-5 chalk"> </span> Joina ett team </h3>
-
               <div class="field">
                 <div class="control has-icons-right">
-                  <input class="input chalkinput" type="text" name="username" value="{{username}}" placeholder="Lagnamn#1234">
+                  <input class="input chalkinput" type="text" name="teamName" value="{{teamName}}" placeholder="Lagnamn#1234">
                 </div>
               </div>
               <div class="field">
                 <input class="chalkbtn is-vcentered  is-outlined" type="submit" value="Joina team"></input>
               </div>
             </div>
+            </form>
 
             <form action="/bars" method="POST">
               <div>

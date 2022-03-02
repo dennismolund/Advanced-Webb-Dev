@@ -68,8 +68,14 @@ module.exports = ({teamsManager, accountManager}) => {
     router.post("/join", (req,res)=>{
         const teamName = req.body.teamName
         const accountId = req.session.activeAccount.id
-        teamsManager.joinTeam(teamName, accountId, (error, results)=>{
-
+        teamsManager.joinTeam(teamName, accountId, (error, result)=>{
+            if(error){
+                console.log("error:" , error);
+                res.redirect("/", error)
+            }else {
+                console.log("result:" , result);
+                res.redirect("/teams")
+            }
         })
     })
     return router
