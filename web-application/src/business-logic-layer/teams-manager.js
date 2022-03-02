@@ -32,14 +32,26 @@ module.exports = function({ teamsRepository, barsManager }){
                 }
             })
         },
-        delete: (teamid, callback) => {
-            teamsRepository.delete(teamid, (errors, results) => {
-                if(errors){
-                    callback(errors, null)
-                }else{
-                    callback(null, results)
-                }
-            });
+        delete: (team, callback) => {
+
+            if(team.teamowner == team.userid){
+                teamsRepository.deleteTeamById(team.teamid, (error, result) => {
+                    if(error){
+                        callback(error, null)
+                    }else{
+                        callback(null, result)
+                    }
+                });
+            }else{
+                teamsRepository.leaveTeam(team.userid, (error, result) => {
+                    if(error){
+                        callback(error, null)
+                    }else{
+                        callback(null, result)
+                    }
+                })
+            }
+            
         },
         joinTeam: (teamName, accountId, callback) => {
             teamsRepository.joinTeam(teamName, accountId, (errors, results)=>{

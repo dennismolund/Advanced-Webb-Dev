@@ -29,24 +29,34 @@ module.exports = function({}){
             });
         },
         //ById lägg till sen.
-        delete: (teamid, callback)=>{
+        deleteTeamById: (teamid, callback)=>{
             const query = `DELETE FROM teams WHERE id = ?`
 		    const values = [teamid]
-            db.query(query, values, (error, results)=>{
+            db.query(query, values, (error, result) => {
                 if(error){
+                    console.log("ERROR WHEN DELETING TEAM", error);
                     callback(error, null)
                 }else{
-                    const query2 = `DELETE FROM accounts WHERE teamid = ?`
-		            const values2 = [teamid]
+                    const query2 = `UPDATE accounts SET teamid = ?, currentbarrunda = ? WHERE teamid = ?`
+		            const values2 = [null, null, teamid]
                     db.query(query2, values2, (error, results)=>{
                         if(error){
+                            console.log("ERROR WHEN UPDATING ACCOUNT", error);
                             callback(results, null)
                         }else callback(null, results)
                     })
-                    
                 }
             })
             
+        },
+        leaveTeam: (accountId, callback) => {
+            const query = `UPDATE accounts SET teamid = ?, currentbarrunda = ? WHERE id = ?`
+            const values = [null, null, accountId]
+            db.query(query, values, (error, results)=>{
+                if(error){
+                    callback(results, null)
+                }else callback(null, results)
+            })
         },
         joinTeam: (teamName, accountId, callback)=>{
             const query = `SELECT * FROM teams WHERE teamname = ?`

@@ -22,7 +22,9 @@ module.exports = ({teamsManager, accountManager}) => {
                     team: true,
                     data: result,
                     activeAccount: req.session.activeAccount,
+                    owner: null
                 }
+                if(model.data.team.creatorid == model.activeAccount.id) model.owner = true
                 console.log("MODEL:", model);
                 res.render("barrundan.hbs", model);
             }
@@ -39,19 +41,26 @@ module.exports = ({teamsManager, accountManager}) => {
                     team: true,
                     data: result,
                     activeAccount: req.session.activeAccount,
+                    owner: null
                 }
-                
+                if(model.data.team.creatorid == model.activeAccount.id) model.owner = true
+                console.log(model);
                 res.render("barrundan.hbs", model);
             }
         })
     })
 
     router.post("/delete/:id", (req,res) => {
-        const teamid = req.params.id
-        teamsManager.delete(teamid, (error, results)=>{
+        const team = {
+            teamid: req.params.id,
+            userid: req.session.activeAccount.id,
+            teamowner: req.body.teamcreatorid
+        }
+        console.log("TEAM IN ROUTER WHEN DELETE:", team);
+        teamsManager.delete(team, (error, results) => {
             if(error){
                 res.redirect("/", error)
-            }else res.redirect("/")
+            }else res.render("start.hbs", {activeAccount: req.session.activeAccount})
         })
 
     })

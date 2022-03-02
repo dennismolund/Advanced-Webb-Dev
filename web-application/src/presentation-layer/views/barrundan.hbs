@@ -10,6 +10,15 @@
     <div class="column mt-6">
       <section>
           <div class=" blackboard has-text-centered mb-4">
+            <div class="columns is-centered mt-4">
+              <form action="/bars" method="post">
+            <input class="chalkbtn" type="submit" value="Visa Runda"></input>
+            </form>
+            <form action="/bars/delete" method="post">
+            <input class="chalkbtn ml-4" type="submit" value="Visa Team"></input>
+            </form>
+            </div>
+            
             <h3 class="subtitle is-3 mt-3 chalk"> </span> {{data.team.teamname}} <span class="chalk-line"></span></h3>
             {{#if team}}  
             <div class="chalk">
@@ -29,14 +38,18 @@
       </section>
 
       <div class="columns is-centered mt-4">
-        <form action="/bars" method="post">
-          <input class="chalkbtn" type="submit" value="Visa Runda"></input>
-        </form>
-        <form action="/bars/delete" method="post">
-          <input class="chalkbtn ml-4" type="submit" value="Visa Team"></input>
-        </form>
+        
         <form action="/bars/delete" method="post">
           <input class="chalkbtn ml-4" type="submit" value="Ny runda"></input>
+        </form>
+        <form action="/teams/delete/{{data.team.id}}" method="post">
+          <input type="hidden" id="teamcreatorid" name="teamcreatorid" value={{data.team.creatorid}}>
+          {{#if owner}}
+            <input class="chalkbtn ml-4" type="submit" value="Delete team"></input>
+          {{else}}
+            <input class="chalkbtn ml-4" type="submit" value="Leave team"></input>
+          {{/if}}
+          
         </form>
       </div>
     </div>
