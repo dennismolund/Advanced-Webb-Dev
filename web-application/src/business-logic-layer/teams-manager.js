@@ -1,6 +1,7 @@
 const express = require('express')
 const { validTeamName } = require('./teams-validator');
 const barlist = require('../models/bar.model')
+const { validParams, validRows, parseResult } = require('./bars-validator');
 
 
 module.exports = function({ teamsRepository, barsManager }){
@@ -69,12 +70,29 @@ module.exports = function({ teamsRepository, barsManager }){
                     console.log("Errors in teams-manager:", errors);
                     callback(errors, null)
                 }else{
-                    const data = {
-                        team: team,
-                        barrunda: barrunda,
-                        teamMembers: teamMembers
-                    };
-                    callback(null, data)
+                    
+                    try {
+                        
+                        const parsed = parseResult(barrunda.data);
+                        
+                        const bars = {
+                            parsed,
+                            raw: barrunda,
+                        }
+                        const data = {
+                            team: team,
+                            barrunda: bars,
+                            teamMembers: teamMembers
+                        };
+                        
+                        callback(null, data)
+                    } catch (e) {
+                        console.log("error",e);
+                        callback(new Error('Failed to parse data'), null);
+                    }
+                    
+
+                    
                 }
             })
         },

@@ -28,11 +28,13 @@ module.exports = function({barsManager, teamsManager, accountManager}){
                     if(error){
                         res.render("barrundasolo.hbs", {barid, bars, activeAccount: account});
                     }else{
+                        
                         res.render("barrundasolo.hbs", {barid, bars, team, activeAccount: account});
                     }
                 });
                 
             } else {
+                
                 res.render("barrundasolo.hbs", {barid, bars: [], activeAccount: account});
                 // There was no data found
             }
@@ -55,6 +57,7 @@ module.exports = function({barsManager, teamsManager, accountManager}){
                 console.log('Succesfully stored new barrunda');
                 console.log("result",result);
                 // TODO ?
+                
                 res.render("barrundasolo.hbs", {barid,bars: barRunda.list, activeAccount: req.session.activeAccount})
             }
         });

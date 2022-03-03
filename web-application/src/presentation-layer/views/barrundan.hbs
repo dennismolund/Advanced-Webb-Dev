@@ -11,12 +11,17 @@
       <section>
           <div class=" blackboard has-text-centered mb-4">
             <div class="columns is-centered mt-4">
-              <form action="/bars" method="post">
-            <input class="chalkbtn" type="submit" value="Visa Runda"></input>
-            </form>
-            <form action="/bars/delete" method="post">
-            <input class="chalkbtn ml-4" type="submit" value="Visa Team"></input>
-            </form>
+              {{#if team}}  
+                <form action="/teams" method="get">
+                  <input type="hidden" id="showteam" name="showteam" value="false">
+                  <input class="chalkbtn" type="submit" value="Visa Runda"></input>
+                </form>
+              {{else}}
+                <form action="/teams" method="get">
+                  <input type="hidden" id="showteam" name="showteam" value="true">
+                  <input class="chalkbtn ml-4" type="submit" value="Visa Team"></input>
+                </form>
+              {{/if}}
             </div>
             
             <h3 class="subtitle is-3 mt-3 chalk"> </span> {{data.team.teamname}} <span class="chalk-line"></span></h3>
@@ -29,7 +34,7 @@
             </div> 
             {{else}} 
             <div class="chalk">
-                {{#each bars}}
+                {{#each data.barrunda.parsed.list}}
                     <h4 class="subtitle is-4 mt-3 chalk"> </span> {{counter @index}}. {{this.name}}</h4>
                 {{/each}}
             </div> 

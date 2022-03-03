@@ -68,13 +68,14 @@ module.exports = function({}){
                     callback(error, null)
                 }else{
                     console.log(result);
+                    const teamid = result[0].id
                     const v2 = [result[0].id,accountId]
                     db.query(q2, v2, (error, result) => {
                         if(error){
                             console.log("error in database (join team):", error);
                             callback(error, null)
                         }else{
-                            callback(null, result)
+                            callback(null, teamid)
                         }
                     })
                 }
@@ -92,7 +93,7 @@ module.exports = function({}){
                     callback(['databaseError'], null, null, null)
                 }else{
                     const team = result[0]
-                   
+                    console.log("TEAM:", team);
                     db.query(q2, result[0].creatorid, (error, result) => {
                         if(error){
                             console.log("error getTeam in repository", error);

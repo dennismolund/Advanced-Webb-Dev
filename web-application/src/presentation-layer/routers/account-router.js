@@ -53,7 +53,7 @@ module.exports = ({accountManager}) => {
                 response.render("login.hbs", {errors});
             }else{
                 request.session.activeAccount = results;
-                console.log("active: ", request.session.activeAccount);
+                
                 response.redirect("/");
             }
         });
