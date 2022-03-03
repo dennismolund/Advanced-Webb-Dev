@@ -28,7 +28,6 @@ module.exports = function({}){
                 }
             });
         },
-        //ById lägg till sen.
         deleteTeamById: (teamid, callback)=>{
             const query = `DELETE FROM teams WHERE id = ?`
 		    const values = [teamid]
@@ -85,20 +84,38 @@ module.exports = function({}){
             const query = `SELECT * FROM teams WHERE id = ?`
 		    const values = [id]
             const q2 = `SELECT * FROM barrunda WHERE owner = ?`
+            const q3 = `SELECT username FROM accounts WHERE teamid = ?`
             
             db.query(query, values, (error, result) => {
                 if(error){
                     console.log("Error in database: ", error);
-                    callback(['databaseError'], null)
+                    callback(['databaseError'], null, null, null)
                 }else{
                     const team = result[0]
                    
                     db.query(q2, result[0].creatorid, (error, result) => {
                         if(error){
                             console.log("error getTeam in repository", error);
-                            callback(['databaseError'], null, null)
+                            callback(['databaseError'], null, null, null)
                         }
-                        else callback(null, team, result[0])
+                        else {
+                            const barrunda = result[0]
+                            db.query(q3, values, (error, result) => {
+                                if (error) {
+                                    console.log("ERROR WHEN GETTING TEAMMEMBERS", error);
+                                    callback(null, team, barrunda, null)
+                                }else{
+                                    const teamMembers = []
+                                    result.forEach(element => {
+                                        teamMembers.push(element.username)
+                                    });
+                                    
+                                    callback(null, team, barrunda, teamMembers)
+                                }   
+                            })
+
+                            
+                        }
                     })
                     
                 }

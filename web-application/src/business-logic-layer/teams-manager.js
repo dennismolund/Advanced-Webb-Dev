@@ -64,7 +64,7 @@ module.exports = function({ teamsRepository, barsManager }){
         },
         getTeam: (id, callback) => {
             //error handling
-            teamsRepository.getTeam(id, (errors, team, barrunda) => {
+            teamsRepository.getTeam(id, (errors, team, barrunda, teamMembers) => {
                 if(errors){
                     console.log("Errors in teams-manager:", errors);
                     callback(errors, null)
@@ -72,6 +72,7 @@ module.exports = function({ teamsRepository, barsManager }){
                     const data = {
                         team: team,
                         barrunda: barrunda,
+                        teamMembers: teamMembers
                     };
                     callback(null, data)
                 }
