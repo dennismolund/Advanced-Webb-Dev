@@ -21,10 +21,8 @@ module.exports = function({barsManager, teamsManager, accountManager}){
             } else if (result){
                 var bars = result.parsed.list
                 const barid = result.raw.id
-                console.log('Found existing barrunda');
                 teamsManager.getTeam(account.id, (error, result) =>{
                     const team = result
-                    console.log("team:", team);
                     if(error){
                         res.render("barrundasolo.hbs", {barid, bars, activeAccount: account});
                     }else{
@@ -52,12 +50,8 @@ module.exports = function({barsManager, teamsManager, accountManager}){
                 res.render("start.hbs", {error})
                 // TODO ?
             } else {
-                console.log("res: ",result); 
                 barid = result.insertId
-                console.log('Succesfully stored new barrunda');
-                console.log("result",result);
-                // TODO ?
-                
+                console.log('WE SHOULD SET SESSION BARRUNDA HERE', barid);
                 res.render("barrundasolo.hbs", {barid,bars: barRunda.list, activeAccount: req.session.activeAccount})
             }
         });
@@ -71,7 +65,6 @@ module.exports = function({barsManager, teamsManager, accountManager}){
     router.get('/delete/:id', (req, res, next) => {
         const { id } = req.params;
         const user = req.session.activeAccount;
-        console.log("INNE");
         barsManager.deleteBarrundaById(id, user, (error, result) => {
             if (error) console.log('Failed to delete barrunda: ', error);
             else {

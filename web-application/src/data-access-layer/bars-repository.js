@@ -10,7 +10,6 @@ module.exports = function({}){
             db.query(query, values, (error, result) => {
                 if (error) callback(error, null);
                 else {
-                    console.log("Barrunda in stored", result);
                     // Update user
                     const query = 'UPDATE accounts SET currentbarrunda = ? WHERE username = ?';
                     const values = [result.insertId, account.username];
@@ -39,12 +38,17 @@ module.exports = function({}){
                     db.query(qBarRunda, values, (error, result) => {
                         if (error) callback(error, null);
                         else {
-                            //console.log("bars manager",result);
                             callback(null, result);
                         }
                     })
                 }
             });
+        },
+
+        getBarrundaById: (id, callback) => {
+            db.query('SELECT * FROM barrunda WHERE id = ?', id, (error, result) => {
+                callback(error, result);
+            })
         },
 
         deleteBarrundaById: (id, callback) => {
@@ -57,13 +61,13 @@ module.exports = function({}){
                 if (error) callback(error, null);
                 else {
                     console.log('Delete query was successfull: ', result);
-                    db.query(q2, id, (error, result) => {
+                    db.query(q2, id, (error, result,) => {
                         if (error) console.log('FAILED to remove barrunda id from user table after deleting barrunda ', error);
+                        db.query(q3, id, (error, result) => {
+                            if (error) console.log('FAILED to remove barrundaid from teams table after deleting barrunda', error);
+                            callback(null, null);
+                        });
                     });
-                    db.query(q3, id, (error, result) => {
-                        if (error) console.log('FAILED to remove barrundaid from teams table after deleting barrunda', error);
-                    });
-                    callback(null, null);
                 }
             });
         }

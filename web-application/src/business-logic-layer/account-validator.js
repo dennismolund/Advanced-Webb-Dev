@@ -34,7 +34,6 @@ exports.getErrorsNewAccount = function(account){
 
 exports.getErrorsLogin = function(account){
     const errors = []
-    console.log(account);
     if(!account.enteredUsername) errors.push("Användarnamn saknas")
     if(!account.enteredPassword) errors.push("Lösenord saknas")
 

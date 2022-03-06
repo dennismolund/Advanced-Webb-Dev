@@ -2,6 +2,7 @@ const express = require('express')
 const { validTeamName } = require('./teams-validator');
 const barlist = require('../models/bar.model')
 const { validParams, validRows, parseResult } = require('./bars-validator');
+const barsRepository = require('../data-access-layer/bars-repository');
 
 
 module.exports = function({ teamsRepository, barsManager }){
@@ -65,7 +66,8 @@ module.exports = function({ teamsRepository, barsManager }){
         },
         getTeam: (id, callback) => {
             //error handling
-            teamsRepository.getTeam(id, (errors, team, barrunda, teamMembers) => {
+            if (!id) callback('No team', null);
+            else teamsRepository.getTeam(id, (errors, team, barrunda, teamMembers) => {
                 if(errors){
                     console.log("Errors in teams-manager:", errors);
                     callback(errors, null)
@@ -96,15 +98,29 @@ module.exports = function({ teamsRepository, barsManager }){
                 }
             })
         },
-        updateTeamBarrunda: (activeAccount, currentbarrunda, callback) => {
-            teamsRepository.updateTeamBarrunda(activeAccount, currentbarrunda, (errors, results) => {
-                if(errors){
-                    console.log("Errors in teams-manager:", errors);
-                    callback(errors, null)
-                }else{
-                    callback(null, results)
-                }
-            })
-        }
+        updateTeamBarrunda: (teamid, account, barrundaid, callback) => {
+            // Featch barrunda and check if account.id is owner id
+            barsManager.deleteBarrundaById(barrundaid, account, (error, result) => {
+                if (error) callback(error, null);
+                else {
+                    const barrunda = barlist.getRandom();
+                    barsManager.storeBarRunda(barrunda, account, (error, result) => {
+                        if (error) callback(error, null);
+                        else {
+                            // Update members
+                            console.log('Stored new barrunda: result');
+                            console.log(result);
+                            const data = {
+                                id: result.insertId
+                            };
+                            teamsRepository.updateRundaForMembers(teamid, result.insertId, (error, result) => {
+                                if (error) callback(error, null);
+                                else callback(null, data);
+                            });
+                        }
+                    });
+                };
+            });
+        },
     }
 }

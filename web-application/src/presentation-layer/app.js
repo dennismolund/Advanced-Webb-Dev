@@ -47,7 +47,6 @@ app.get('/', async (req, res) => {
     //if account is active, show home page
     if(req.session.activeAccount) {
       const account = req.session.activeAccount
-      console.log("ACCOUNT:", account);
       await getPlaces();
       //a.logBy('name');
       if(req.session.activeAccount.teamid) res.redirect('/teams');

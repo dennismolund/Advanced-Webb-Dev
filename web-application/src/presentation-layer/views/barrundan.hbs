@@ -44,7 +44,7 @@
 
       <div class="columns is-centered mt-4">
         
-        <form action="/bars/delete" method="post">
+        <form action="/teams/{{data.team.id}}/update" method="post">
           <input class="chalkbtn ml-4" type="submit" value="Ny runda"></input>
         </form>
         <form action="/teams/delete/{{data.team.id}}" method="post">

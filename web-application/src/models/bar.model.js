@@ -34,7 +34,7 @@ class BarList {
 
     getRandom(_amount) {
         const max = _amount || 5;
-        let pickFrom = this.list;
+        let pickFrom = Array.from(this.list);
         let res = [];
         // If we try to make bigger list than we have, we return what we have in scrambled order.
         if (max > this.list.length) return BarList.scramble(this.list);
@@ -46,6 +46,7 @@ class BarList {
             const remove_ix = pickFrom.indexOf(item);
             pickFrom.splice(remove_ix, 1);
         }
+        const a = res.map((item) => item.name);
         return new BarList().aggregate(res);
     }
 }

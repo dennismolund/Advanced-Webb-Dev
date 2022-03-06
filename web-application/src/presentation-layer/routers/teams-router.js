@@ -1,8 +1,10 @@
 const { request } = require('express')
 const express = require('express')
 const session = require('express-session')
+const barsManager = require('../../business-logic-layer/bars-manager')
+const barsRepository = require('../../data-access-layer/bars-repository')
 
-module.exports = ({teamsManager}) => {
+module.exports = ({teamsManager, barsManager}) => {
 
     const router = express.Router()
 
@@ -24,8 +26,10 @@ module.exports = ({teamsManager}) => {
                     activeAccount: req.session.activeAccount,
                     owner: null
                 }
+                console.log(result);
                 if(model.data.team.creatorid == model.activeAccount.id) model.owner = true
-                
+                req.session.activeAccount.teamid = result.team.id;
+                req.session.activeAccount.barrundaid = result.barrunda.insertId;
                 res.render("barrundan.hbs", model);
             }
         });
@@ -33,6 +37,7 @@ module.exports = ({teamsManager}) => {
 
     router.get("/", (req,res) => {
         console.log("req.query.showteam:", req.query);
+        console.log(req.session.activeAccount);
         const showteam = req.query.showteam === "true" ? true : false
         console.log("showteam:", showteam);
         teamsManager.getTeam(req.session.activeAccount.teamid, (error, result) => {
@@ -74,14 +79,38 @@ module.exports = ({teamsManager}) => {
         teamsManager.joinTeam(teamName, accountId, (error, result)=>{
             if(error){
                 console.log("error:" , error);
-                res.redirect("/", error)
+                res.redirect("/");
             }else {
                 console.log("result:" , result);
                 req.session.activeAccount.teamid = result
                 res.redirect("/teams")
             }
-        })
-    })
+        });
+    });
+
+    router.post("/:id/update", (req, res) => {
+        const { id: teamid } = req.params;
+        const { activeAccount: account } = req.session;
+        const { barrundaid } = account;
+        console.log('DELETING RUNDA WITH id: ', barrundaid);
+        teamsManager.updateTeamBarrunda(teamid, account, barrundaid, (error, result) => {
+            if (error) {
+                console.log('Error in update team barrunda router', error);
+                res.redirect('/teams')
+            } else {
+                req.session.activeAccount.barrundaid = result.id;
+                console.log('FINALLY: ', req.session.activeAccount);
+                // barsManager.getBarrundaById(result.id, (error, result) => {
+                //     if (error) console.log('ERROR: ', error);
+                //      else {
+                //          console.log(result);
+                //      }
+                // })
+                res.redirect('/teams');
+            }
+        });
+
+    });
     return router
 }
 

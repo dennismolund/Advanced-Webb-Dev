@@ -36,7 +36,6 @@ module.exports = function({}){
 				if (error.code === "ER_DUP_ENTRY") callback(["Username is already taken"], null);
 				else callback(['Internal server error'], null);
 			}else{
-				console.log("results.insertId:",results.insertId);
 				callback(null, results.insertId);
 			}
 		})

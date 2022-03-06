@@ -39,7 +39,6 @@ module.exports = ({accountRepository}) => {
 
         loginRequest: (account, callback) => {
             // Validate the login credentials.
-            console.log("account in manager:", account);
             const errors = accountValidator.getErrorsLogin(account);
 
             if(errors.length){

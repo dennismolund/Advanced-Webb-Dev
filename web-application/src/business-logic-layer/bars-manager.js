@@ -22,10 +22,8 @@ module.exports = ({ barsRepository }) => {
             barsRepository.getBarRunda(account, (error, result) => {
 
                 if (error) callback(error, null);
-                else if (!validRows(result)) callback(null, null);
                 else {
                     try {
-                        //console.log(result[0]);
                         const parsed = parseResult(result[0].data);
                         const data = {
                             parsed,
@@ -40,6 +38,12 @@ module.exports = ({ barsRepository }) => {
             });
         }
     };
+
+    const getBarrundaById = (id, callback) => {
+        barsRepository.getBarrundaById(id, (error, result) => {
+            callback(error, result);
+        });
+    }
 
     const deleteBarrundaById = (id, account, callback) => {
         getBarRunda(account, (error, result) => {
@@ -66,5 +70,6 @@ module.exports = ({ barsRepository }) => {
         storeBarRunda,
         getBarRunda,
         deleteBarrundaById,
+        getBarrundaById,
     }
 }

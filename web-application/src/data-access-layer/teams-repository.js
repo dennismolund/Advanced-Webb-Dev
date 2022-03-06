@@ -22,7 +22,6 @@ module.exports = function({}){
                         
                         if (error) console.log('Error getting team after creating it', error);
 
-                        console.log('Got team: ', result);
                         callback(null, result[0])
                     });
                 }
@@ -67,7 +66,6 @@ module.exports = function({}){
                     console.log("error in database (join team):", error);
                     callback(error, null)
                 }else{
-                    console.log(result);
                     const teamid = result[0].id
                     const v2 = [result[0].id,accountId]
                     db.query(q2, v2, (error, result) => {
@@ -93,14 +91,15 @@ module.exports = function({}){
                     callback(['databaseError'], null, null, null)
                 }else{
                     const team = result[0]
-                    console.log("TEAM:", team);
-                    db.query(q2, result[0].creatorid, (error, result) => {
+                    if (!team) callback('No team found', null, null, null);
+                    else db.query(q2, result[0].creatorid, (error, result) => {
                         if(error){
                             console.log("error getTeam in repository", error);
                             callback(['databaseError'], null, null, null)
                         }
                         else {
-                            const barrunda = result[0]
+                            console.log('Found barrundor?: ', result.length);
+                            const barrunda = result.pop();
                             db.query(q3, values, (error, result) => {
                                 if (error) {
                                     console.log("ERROR WHEN GETTING TEAMMEMBERS", error);
@@ -122,9 +121,17 @@ module.exports = function({}){
                 }
             })
         },
-        updateTeamBarrunda: (activeAccount, currentbarrunda, callback) => {
-            const query = `UPDATE teams SET currentbarrunda = ? WHERE id = ?`
-		    const values = [currentbarrunda]
+        updateRundaForMembers: (teamid, barrundaid, callback) => {
+            console.log('settings barrunda id: ', barrundaid);
+            const query = 'UPDATE accounts SET currentbarrunda = ? WHERE teamid = ?';
+            const values = [barrundaid, teamid];
+            db.query(query, values, (error, _) => {
+                if (error) {
+                    console.log(error);
+                    callback('Error updating barrunda for team members', null);
+                }
+                else callback(null, null);
+            });
         }
     }
 }
