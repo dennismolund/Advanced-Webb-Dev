@@ -58,10 +58,12 @@ module.exports = ({}) => {
                     }
                 }).catch(errHandler).then( async (barrundaFound) => {
                     const barrunda = barrundaFound.pop()
-                    console.log("barrundaFound:", barrunda);
+                    console.log("barrundaFound:", barrunda.get({
+                        plain: true
+                      }))
                     await Account.findAll({
                         where: {
-                        teamid: id
+                            teamid: id
                         }
                     }).catch(errHandler).then( (membersFound) => {
                         const teamMembers = []

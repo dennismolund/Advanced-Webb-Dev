@@ -1,76 +1,81 @@
-const {Sequelize} = require('sequelize');
+const { Sequelize } = require('sequelize');
+const Team = require('../models/Team')
+const Account = require('../models/Account')
+const Barrunda = require('../models/Barrunda');
 
 
-module.exports = function({}){
+const errHandler = (err) =>{
+    console.error("Error: ", err);
+    
+}
+
+module.exports = ({}) => { 
 
     return {
-        storeBarRunda: (barRunda, account, callback) => {
-            const query = `INSERT INTO barrunda (owner, data) VALUES (?,?)`;
-            const values = [account.id, JSON.stringify(barRunda)];
+        storeBarRunda: async (barRunda, account, callback) => {
+            await Barrunda.create({
+                owner: account.id,
+                data: JSON.stringify(barRunda)
+            }).catch(errHandler).then( async (newBarrunda) => {
+                console.log("NEW newBarrunda:", newBarrunda);
 
-            sequelize.query(query, values, (error, result) => {
-                if (error) callback(error, null);
-                else {
-                    // Update user
-                    const query = 'UPDATE accounts SET currentbarrunda = ? WHERE username = ?';
-                    const values = [result.insertId, account.username];
-                    sequelize.query(query, values, (e, r) => {
-                        if (e) console.log('failed to update current barrunda for user: ', account.username);
-                    })
-                    callback(null, result);
-                }
-            });
-        },
+                await Account.update({ currentbarrunda: newBarrunda.dataValues.id }, {
+                    where: {
+                      id: account.id
+                    }
+                  }).catch(errHandler).then( () => {
 
-        getBarRunda: (account, callback) => {
-            const qBid = `SELECT currentbarrunda FROM accounts WHERE username = ?`
-            const qBarRunda = `SELECT * FROM barrunda WHERE id = ?`;
+                    callback(null, newBarrunda.dataValues)
 
-            sequelize.query(qBid, [account.username], (error, result) => {
-                if (error) callback(error, null);
-
-                else if (!result[0].currentbarrunda) {
-                    callback(null, []);
-                }
-
-                else {
-                    const values = [result[0].currentbarrunda];
-
-                    sequelize.query(qBarRunda, values, (error, result) => {
-                        if (error) callback(error, null);
-                        else {
-                            callback(null, result);
-                        }
-                    })
-                }
-            });
-        },
-
-        getBarrundaById: (id, callback) => {
-            sequelize.query('SELECT * FROM barrunda WHERE id = ?', id, (error, result) => {
-                callback(error, result);
+                  })
+                
             })
         },
-
-        deleteBarrundaById: (id, callback) => {
-
-            // TODO: Remove this id from teams, users with this id as their barrunda.
-            const query = `DELETE FROM barrunda WHERE id = ?`;
-            const q2 = `UPDATE accounts SET currentbarrunda = NULL WHERE currentbarrunda = ?`;
-            const q3 = `UPDATE teams SET currentbarrunda = NULL WHERE currentbarrunda = ?`
-            sequelize.query(query, id, (error, result) => {
-                if (error) callback(error, null);
-                else {
-                    console.log('Delete query was successfull: ', result);
-                    sequelize.query(q2, id, (error, result,) => {
-                        if (error) console.log('FAILED to remove barrunda id from user table after deleting barrunda ', error);
-                        sequelize.query(q3, id, (error, result) => {
-                            if (error) console.log('FAILED to remove barrundaid from teams table after deleting barrunda', error);
-                            callback(null, null);
-                        });
-                    });
+        getBarRunda: async (account, callback) => { 
+            await Account.findAll({
+                attributes: ['currentbarrunda'],
+                where: {
+                username: account.username
                 }
-            });
-        }
+            }).catch(errHandler).then( async (result) => {
+                console.log("barrunda ID from account table", result[0].dataValues.currentbarrunda);
+
+                await Barrunda.findAll({
+                    where: {
+                    id: result[0].dataValues.currentbarrunda
+                    }
+                }).catch(errHandler).then( (barrundaFound) => {
+                    console.log("barrundaFound: ", barrundaFound[0].dataValues);
+                    //bars-manager kan inte hantera denna data
+                    callback(null, barrundaFound[0].dataValues)
+            })
+        })
+    },
+    deleteBarrundaById: async (id, callback) => {
+        await Barrunda.destroy({
+            where: {
+              id: id
+            }
+          }).catch(errHandler).then( async () => {
+            await Account.update({ currentbarrunda: null }, {
+                where: {
+                    currentbarrunda: id
+                }
+              }).catch(errHandler).then( async () => {
+
+                await Team.update({ currentbarrunda: null }, {
+                    where: {
+                        currentbarrunda: id
+                    }
+                  }).catch(errHandler).then( () => {
+    
+                    callback(null, null)
+    
+                  })
+
+              })
+          })
+    }
+
     }
 }
