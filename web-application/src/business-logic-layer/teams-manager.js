@@ -74,7 +74,7 @@ module.exports = function({ teamsRepository, barsManager }){
                 }else{
                     
                     try {
-                        
+                        console.log("Inside manager:", barrunda.data);
                         const parsed = parseResult(barrunda.data);
                         
                         const bars = {

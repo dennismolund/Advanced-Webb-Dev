@@ -7,6 +7,9 @@ const fp = require('path');
 const session = require('express-session')
 const awilix = require('awilix')
 
+//Sequilze DB connection
+require('../data-access-layer/connection-sq');
+
 const app = express();
 
 const engine = hbs.engine || hbs;
@@ -58,7 +61,6 @@ app.get('/', async (req, res) => {
     else res.redirect('anvandare/login')
 });
 
-
 // Import the ones we want to use (real or mockup), real in this case.
 const accountRouter = require('./routers/account-router')
 const accountManager = require('../business-logic-layer/account-manager')
@@ -66,12 +68,13 @@ const accountRepository = require('../data-access-layer/account-repository')
 
 const barsRouter = require('./routers/bars-router')
 const barsManager = require('../business-logic-layer/bars-manager')
-//const barsRepository = require('../data-access-layer/bars-repository')
-const barsRepository = require('../data-access-layer/bars-repository-sq')
+const barsRepository = require('../data-access-layer/bars-repository')
+//const barsRepository = require('../data-access-layer/bars-repository-sq')
 
 const teamsRouter = require('./routers/teams-router')
 const teamsManager = require('../business-logic-layer/teams-manager')
-const teamsRepository = require('../data-access-layer/teams-repository')
+// const teamsRepository = require('../data-access-layer/teams-repository')
+const teamsRepository = require('../data-access-layer/teams-repository-sq')
 
 // Create a container and add the dependencies we want to use.
 const container = awilix.createContainer()
