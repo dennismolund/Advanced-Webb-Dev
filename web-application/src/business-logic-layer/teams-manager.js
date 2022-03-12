@@ -41,7 +41,7 @@ module.exports = function({ teamsRepository, barsManager }){
                     if(error){
                         callback(error, null)
                     }else{
-                        callback(null, result)
+                        callback(null, null)
                     }
                 });
             }else{
@@ -49,7 +49,7 @@ module.exports = function({ teamsRepository, barsManager }){
                     if(error){
                         callback(error, null)
                     }else{
-                        callback(null, result)
+                        callback(null, null)
                     }
                 })
             }
@@ -119,8 +119,7 @@ module.exports = function({ teamsRepository, barsManager }){
                         if (error) callback(error, null);
                         else {
                             // Update members
-                            console.log('Stored new barrunda: result');
-                            console.log(result);
+                            console.log('Stored new barrunda');
                             const data = {
                                 id: result.insertId
                             };

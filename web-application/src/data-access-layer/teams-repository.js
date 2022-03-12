@@ -40,8 +40,8 @@ module.exports = function({}){
                     db.query(query2, values2, (error, results)=>{
                         if(error){
                             console.log("ERROR WHEN UPDATING ACCOUNT", error);
-                            callback(results, null)
-                        }else callback(null, results)
+                            callback('Error deleting team', null)
+                        }else callback(null, null)
                     })
                 }
             })
@@ -52,8 +52,8 @@ module.exports = function({}){
             const values = [null, null, accountId]
             db.query(query, values, (error, results)=>{
                 if(error){
-                    callback(results, null)
-                }else callback(null, results)
+                    callback(error, null)
+                }else callback(null, null)
             })
         },
         joinTeam: (teamName, accountId, callback) => {
@@ -65,7 +65,8 @@ module.exports = function({}){
                 if(error){
                     console.log("error in database (join team):", error);
                     callback(error, null)
-                }else{
+                } else {
+                    if (!result.length) callback('No team found', null);
                     const teamid = result[0].id
                     const v2 = [result[0].id,accountId]
                     db.query(q2, v2, (error, result) => {

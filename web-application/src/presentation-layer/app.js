@@ -64,32 +64,32 @@ app.get('/', async (req, res) => {
 // Import the ones we want to use (real or mockup), real in this case.
 const accountRouter = require('./routers/account-router')
 const accountManager = require('../business-logic-layer/account-manager')
-// const accountRepository = require('../data-access-layer/account-repository')
-const accountRepository = require('../data-access-layer/account-repository-sq')
+const accountRepository = require('../data-access-layer/account-repository')
+const accountRepositorySq = require('../data-access-layer/account-repository-sq')
 
 const barsRouter = require('./routers/bars-router')
 const barsManager = require('../business-logic-layer/bars-manager')
-//const barsRepository = require('../data-access-layer/bars-repository')
-const barsRepository = require('../data-access-layer/bars-repository-sq')
+const barsRepository = require('../data-access-layer/bars-repository')
+const barsRepositorySq = require('../data-access-layer/bars-repository-sq')
 
 const teamsRouter = require('./routers/teams-router')
 const teamsManager = require('../business-logic-layer/teams-manager')
-//const teamsRepository = require('../data-access-layer/teams-repository')
-const teamsRepository = require('../data-access-layer/teams-repository-sq')
+const teamsRepository = require('../data-access-layer/teams-repository')
+const teamsRepositorySq = require('../data-access-layer/teams-repository-sq')
 
 // Create a container and add the dependencies we want to use.
 const container = awilix.createContainer()
 container.register("accountRouter", awilix.asFunction(accountRouter))
 container.register("accountManager", awilix.asFunction(accountManager))
-container.register("accountRepository", awilix.asFunction(accountRepository))
+container.register("accountRepository", awilix.asFunction(accountRepositorySq))
 
 container.register("barsRouter", awilix.asFunction(barsRouter))
 container.register("barsManager", awilix.asFunction(barsManager))
-container.register("barsRepository", awilix.asFunction(barsRepository))
+container.register("barsRepository", awilix.asFunction(barsRepositorySq))
 
 container.register("teamsRouter", awilix.asFunction(teamsRouter))
 container.register("teamsManager", awilix.asFunction(teamsManager))
-container.register("teamsRepository", awilix.asFunction(teamsRepository))
+container.register("teamsRepository", awilix.asFunction(teamsRepositorySq))
 
 // Retrieve the router, which resolves all other dependencies.
 const theAccountRouter = container.resolve("accountRouter")

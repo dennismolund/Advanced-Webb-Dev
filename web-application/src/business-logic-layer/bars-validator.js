@@ -11,7 +11,6 @@ const validParams = (fName, paramsObj) => {
 }
 
 const validRows = (result) => {
-    console.log(result.length > 0);
     return result.length > 0 && result[0] && result[0].data;
 }
 

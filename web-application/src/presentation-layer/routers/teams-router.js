@@ -26,7 +26,6 @@ module.exports = ({teamsManager, barsManager}) => {
                     activeAccount: req.session.activeAccount,
                     owner: null
                 }
-                console.log(result);
                 if(model.data.team.creatorid == model.activeAccount.id) model.owner = true
                 req.session.activeAccount.teamid = result.team.id;
                 req.session.activeAccount.barrundaid = result.barrunda.insertId;
@@ -36,10 +35,7 @@ module.exports = ({teamsManager, barsManager}) => {
     });
 
     router.get("/", (req,res) => {
-        console.log("req.query.showteam:", req.query);
-        console.log(req.session.activeAccount);
         const showteam = req.query.showteam === "true" ? true : false
-        console.log("showteam:", showteam);
         teamsManager.getTeam(req.session.activeAccount.teamid, (error, result) => {
             if(error){
                 console.log("ERROR TRIGGER IN TEAMS-ROUTER (GetTeam)", error);
@@ -53,6 +49,7 @@ module.exports = ({teamsManager, barsManager}) => {
                 }
 
                 if(model.data.team.creatorid == model.activeAccount.id) model.owner = true
+                console.log('TEAMS ROUTER returnng model: ', model);
                 res.render("barrundan.hbs", model);
             }
         })
@@ -67,7 +64,7 @@ module.exports = ({teamsManager, barsManager}) => {
         console.log("TEAM IN ROUTER WHEN DELETE:", team);
         teamsManager.delete(team, (error, results) => {
             if(error){
-                res.redirect("/", error)
+                res.redirect("/");
             }else res.render("start.hbs", {activeAccount: req.session.activeAccount})
         })
 
@@ -81,7 +78,6 @@ module.exports = ({teamsManager, barsManager}) => {
                 console.log("error:" , error);
                 res.redirect("/");
             }else {
-                console.log("result:" , result);
                 req.session.activeAccount.teamid = result
                 res.redirect("/teams")
             }
@@ -99,7 +95,6 @@ module.exports = ({teamsManager, barsManager}) => {
                 res.redirect('/teams')
             } else {
                 req.session.activeAccount.barrundaid = result.id;
-                console.log('FINALLY: ', req.session.activeAccount);
                 // barsManager.getBarrundaById(result.id, (error, result) => {
                 //     if (error) console.log('ERROR: ', error);
                 //      else {

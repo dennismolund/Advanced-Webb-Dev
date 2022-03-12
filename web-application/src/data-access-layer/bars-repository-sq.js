@@ -17,7 +17,6 @@ module.exports = ({}) => {
                 owner: account.id,
                 data: JSON.stringify(barRunda)
             }).catch(errHandler).then( async (newBarrunda) => {
-                console.log("NEW newBarrunda:", newBarrunda);
 
                 await Account.update({ currentbarrunda: newBarrunda.dataValues.id }, {
                     where: {
@@ -45,7 +44,6 @@ module.exports = ({}) => {
                     id: result[0].dataValues.currentbarrunda
                     }
                 }).catch(errHandler).then( (barrundaFound) => {
-                    console.log("barrundaFound: ", barrundaFound[0].dataValues);
                     //bars-manager kan inte hantera denna data
                     callback(null, barrundaFound[0].dataValues)
             })
