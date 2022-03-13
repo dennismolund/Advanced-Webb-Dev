@@ -26,7 +26,7 @@ module.exports = ({}) => {
                     { where: { id: team.creatorId } }
                 );
                 await transaction.commit();
-                callback(null, newTeam);
+                callback(null, newTeam.dataValues);
             } catch (e) {
                 console.log('Error creating new team: ', e);
                 await transaction.rollback();
