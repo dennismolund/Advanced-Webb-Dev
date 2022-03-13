@@ -74,7 +74,6 @@ module.exports = function({ teamsRepository, barsManager }){
                 }else{
                     
                     try {
-
                         const parsed = parseResult(barrunda.data);
                         
                         const bars = {

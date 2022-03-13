@@ -29,16 +29,17 @@ module.exports = function({}){
                 if (error) callback(error, null);
 
                 else if (!result[0].currentbarrunda) {
-                    callback(null, []);
+                    callback(null, null);
                 }
 
                 else {
                     const values = [result[0].currentbarrunda];
 
                     db.query(qBarRunda, values, (error, result) => {
-                        if (error) callback(error, null);
+                        if (error) callback('Database error', null);
                         else {
-                            callback(null, result);
+                            if (!result.lenght) callback(null, null);
+                            else callback(null, result[0]);
                         }
                     })
                 }

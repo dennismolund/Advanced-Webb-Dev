@@ -23,15 +23,16 @@ module.exports = ({ barsRepository }) => {
 
                 if (error) callback(error, null);
                 else {
+                    if (!result) callback(new Error('Found no barrunda for account'), null);
                     try {
-                        const parsed = parseResult(result[0].data);
+                        const parsed = parseResult(result.data);
                         const data = {
                             parsed,
-                            raw: result[0],
+                            raw: result,
                         }
                         callback(null, data);
                     } catch (e) {
-                        //console.log(e);
+                        console.log(e);
                         callback(new Error('Failed to parse data'), null);
                     }
                 }

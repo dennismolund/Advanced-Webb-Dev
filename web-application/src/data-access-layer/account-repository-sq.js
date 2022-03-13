@@ -34,7 +34,7 @@ module.exports = ({}) => {
         },
         getAccountIdByUsername: async (username, callback) => {
             try {
-                const users = await Account.findAll({ where: { username: username }});
+                const users = await Account.findAll({ where: { username }});
                 if (users.length) callback(null, users[0].dataValues.id);
                 else callback(null, null);
             } catch (e) {

@@ -26,7 +26,9 @@ module.exports = ({}) => {
                     { where: { id: team.creatorId } }
                 );
                 await transaction.commit();
-                callback(null, newTeam.dataValues);
+                const result = newTeam.dataValues;
+                result.insertId = result.id;
+                callback(null, result);
             } catch (e) {
                 console.log('Error creating new team: ', e);
                 await transaction.rollback();
@@ -39,14 +41,17 @@ module.exports = ({}) => {
             try {
                 // [team] => Array destruction => [team] === Team.findAll()[0]
                 const [team] = await Team.findAll({ where: { id }});
-                if (!team) callback('No team found', null, null, null);
-                const barrunda = await Barrunda.findAll({ where: { owner: team.dataValues.creatorid } });
+                if (!team) {
+                    callback('No team found', null, null, null);
+                    return;
+                } 
+                const [barrunda] = await Barrunda.findAll({ where: { owner: team.dataValues.creatorid } });
                 const teamMembers = await Account.findAll({ where: { teamid: id } });
 
                 const usernameList = teamMembers.map((member) => member.dataValues.username);
 
                 await transaction.commit();
-                callback(null, team.dataValues, barrunda, usernameList);
+                callback(null, team.dataValues, barrunda.dataValues, usernameList);
             } catch (e) {
                 console.log('Error getting team: ', e);
                 await transaction.rollback();

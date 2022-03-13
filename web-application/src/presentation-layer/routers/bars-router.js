@@ -7,32 +7,18 @@ module.exports = function({barsManager, teamsManager, accountManager}){
     const router = express.Router()
 
     router.get("/", (req, res) => {
-        const account = req.session.activeAccount
-        /*
-            Look for barrunda
-            Look for active team
-            
-        */
-
+        const account = req.session.activeAccount;
         barsManager.getBarRunda(account, (error, result) => {
             if (error) {
+                console.log('***** IF');
                 console.log(error);
                 // TODO ?
             } else if (result){
                 var bars = result.parsed.list
                 const barid = result.raw.id
-                teamsManager.getTeam(account.id, (error, result) =>{
-                    const team = result
-                    if(error){
-                        res.render("barrundasolo.hbs", {barid, bars, activeAccount: account});
-                    }else{
-                        
-                        res.render("barrundasolo.hbs", {barid, bars, team, activeAccount: account});
-                    }
-                });
-                
+                res.render("barrundasolo.hbs", {barid, bars, activeAccount: account});
             } else {
-                
+                console.log('**** ESLE');
                 res.render("barrundasolo.hbs", {barid, bars: [], activeAccount: account});
                 // There was no data found
             }
@@ -47,7 +33,7 @@ module.exports = function({barsManager, teamsManager, accountManager}){
             if (error) {
                 console.log('Failed to save barrunda');
                 console.log(error);
-                res.render("start.hbs", {error})
+                res.render("start.hbs", { error })
                 // TODO ?
             } else {
                 barid = result.insertId

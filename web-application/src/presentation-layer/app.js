@@ -46,6 +46,12 @@ app.use(session({
   cookie: { secure: false }
 }));
 
+// app.use((req, res, next) => {
+//   console.log('*** ROUTING ***');
+//   console.log(req.url);
+//   next();
+// });
+
 app.get('/', async (req, res) => {
     //if account is active, show home page
     if(req.session.activeAccount) {
