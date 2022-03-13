@@ -37,7 +37,7 @@ module.exports = function({barsManager, teamsManager, accountManager}){
                 // TODO ?
             } else {
                 barid = result.insertId
-                console.log('WE SHOULD SET SESSION BARRUNDA HERE', barid);
+                req.session.activeAccount.barrundaid = barid;
                 res.render("barrundasolo.hbs", {barid,bars: barRunda.list, activeAccount: req.session.activeAccount})
             }
         });

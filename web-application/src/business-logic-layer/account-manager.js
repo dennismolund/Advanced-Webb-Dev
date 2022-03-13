@@ -49,7 +49,7 @@ module.exports = ({accountRepository}) => {
             accountRepository.loginRequest(account, (errors, results) => {
                 if(errors) callback(errors, null);
                 else if (!results) callback (["Fel lösenord eller användarnamn"],null);
-                else{
+                else {
                     bcrypt.compare(account.enteredPassword, results.password, (err, res) => {
                         if(res){
                             //Only sending back username, id and email, excluding password due to security.
