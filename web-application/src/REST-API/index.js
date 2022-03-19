@@ -1,16 +1,17 @@
 const express = require('express');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const awilix = require('awilix');
 const { verifyAccessToken } = require('./middleware/authenticateToken');
 
-
 const app = express()
 
+app.use(cors());
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
     extended: false
-}))
+}));
 
 app.use(verifyAccessToken);
 
@@ -24,7 +25,7 @@ const barsManager = require('../business-logic-layer/bars-manager');
 const barsRepository = require('../data-access-layer/bars-repository');
 const barsRepositorySq = require('../data-access-layer/bars-repository-sq');
 
-const teamsRouter = require('./routers/teams-router-api');
+// const teamsRouter = require('./routers/teams-router-api');
 const teamsManager = require('../business-logic-layer/teams-manager');
 const teamsRepository = require('../data-access-layer/teams-repository');
 const teamsRepositorySq = require('../data-access-layer/teams-repository-sq');
@@ -44,7 +45,5 @@ const theAccountRouter = container.resolve("accountRouter");
 
 app.use("/api/anvandare", theAccountRouter);
 
-app.listen(8080, ()=>{
-    console.log("API running on: 8080");
-});
+module.exports = app;
 

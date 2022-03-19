@@ -9,6 +9,11 @@ module.exports = function({accountManager}){
 
     const router = express.Router()
 
+    router.get('/test', (req, res) => {
+        console.log('We go here ?');
+        res.status(200).json('hello');
+    });
+
 
     router.post("/login", function(request, response) {
     

@@ -106,7 +106,4 @@ app.use("/anvandare", theAccountRouter)
 app.use("/bars", isSignedIn, theBarsRouter)
 app.use("/teams", isSignedIn, theTeamsRouter)
 
- 
-app.listen(8080, ()=>{
-  console.log("Server Running on: 3000:8080");
-})
+module.exports = app;
