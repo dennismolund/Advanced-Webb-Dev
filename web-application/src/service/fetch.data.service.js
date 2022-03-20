@@ -13,6 +13,7 @@ const getPlaces = async () => {
     try {
         const url = NEARBY_SEARCH_URL.concat(path, '&key', API_KEY);
         const response = await axios.get(url);
+        console.log('Get bars response: ', response);
         res = BarList.aggregate(response.data.results);
     } catch (e) {
         console.log('Got error');

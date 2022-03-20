@@ -42,7 +42,9 @@ container.register('barsRepository', awilix.asFunction(barsRepositorySq));
 
 // Retrieve the router, which resolves all other dependencies.
 const theAccountRouter = container.resolve("accountRouter");
+const theBarsRouter = container.resolve('barsRouter');
 
+app.use('/api/bars', theBarsRouter);
 app.use("/api/anvandare", theAccountRouter);
 
 module.exports = app;

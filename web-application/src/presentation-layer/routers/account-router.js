@@ -32,9 +32,11 @@ module.exports = ({accountManager}) => {
             password: request.body.password,
             confirmationPassword: request.body.confirmationPassword
         };
-        accountManager.createAccount(account, (errors, results) => {
-            if(errors){
-                console.log("errors:" , errors);
+        accountManager.createAccount(account, (error, results) => {
+            if(error){
+                console.log("error:" , error);
+                const errors = [];
+                errors.push(error);
                 response.render("signup.hbs", {errors});
             }else{
                 response.render("login.hbs");
@@ -47,9 +49,11 @@ module.exports = ({accountManager}) => {
             enteredUsername: request.body.username,
             enteredPassword: request.body.password,
         };
-        accountManager.loginRequest(account, (errors, results) => {
-            if(errors){
-                console.log("errors ", errors);
+        accountManager.loginRequest(account, (error, results) => {
+            if(error){
+                console.log("errors ", error);
+                const errors = [];
+                errors.push(error);
                 response.render("login.hbs", {errors});
             }else{
                 request.session.activeAccount = results;

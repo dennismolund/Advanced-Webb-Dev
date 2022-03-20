@@ -2,6 +2,7 @@ const { Sequelize } = require('sequelize');
 const Team = require('../models/Team')
 const Account = require('../models/Account')
 const Barrunda = require('../models/Barrunda');
+const ERROR_ENUM = require('../models/error.enum');
 
 module.exports = ({}) => { 
 
@@ -17,8 +18,8 @@ module.exports = ({}) => {
                 callback(null, newAccount.dataValues.id);
             } catch (e) {
                 console.log(e);
-                if (e.original?.code === "ER_DUP_ENTRY") callback(["Username is already taken"], null);
-                else callback(['Internal server error'], null);
+                if (e.original?.code === "ER_DUP_ENTRY") callback(ERROR_ENUM.USERNAME_TAKEN, null);
+                else callback(ERROR_ENUM.SERVER_ERROR, null);
             }
         },
         loginRequest: async (account, callback) => { 
@@ -28,7 +29,7 @@ module.exports = ({}) => {
 				else callback(null, null);
             } catch (e) {
                 console.log(e);
-                callback(['Internal Server Error'], null);
+                callback(ERROR_ENUM.SERVER_ERROR, null);
             }
 
         },
@@ -39,7 +40,7 @@ module.exports = ({}) => {
                 else callback(null, null);
             } catch (e) {
                 console.log(e);
-                callback(['Internal Server Error'], null);
+                callback(ERROR_ENUM.SERVER_ERROR, null);
             }
         }
     }

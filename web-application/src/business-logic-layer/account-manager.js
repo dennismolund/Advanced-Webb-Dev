@@ -1,4 +1,5 @@
 const accountValidator = require('./account-validator')
+const ERROR_ENUM = require('../models/error.enum');
 var bcrypt = require('bcryptjs');
 const saltRounds = 10;
 
@@ -6,15 +7,9 @@ module.exports = ({accountRepository}) => {
     // Name all the dependencies in the curly brackets above.
     
     return {
-        getAllAccounts: (callback) => {
-            accountRepository.getAllAccounts((errors, accounts) => {
-                callback(errors, accounts);
-            });
-        },
-
         getAccountIdByUsername: (username, callback) => {
-            accountRepository.getAccountIdByUsername(username, (errors, results) => {
-                if(errors) callback(errors, null);
+            accountRepository.getAccountIdByUsername(username, (error, results) => {
+                if(error) callback(error, null);
                 else callback(null, results);
             });
         },
@@ -25,8 +20,7 @@ module.exports = ({accountRepository}) => {
             const errors = accountValidator.getErrorsNewAccount(account);
             
             if(errors.length){
-                console.log("Error");
-                callback(errors, null);
+                callback(errors[0], null);
                 return;
             }
 
@@ -42,13 +36,13 @@ module.exports = ({accountRepository}) => {
             const errors = accountValidator.getErrorsLogin(account);
 
             if(errors.length){
-                callback(errors, null);
+                callback(errors[0], null);
                 return;
             }
 
-            accountRepository.loginRequest(account, (errors, results) => {
-                if(errors) callback(errors, null);
-                else if (!results) callback (["Fel lösenord eller användarnamn"],null);
+            accountRepository.loginRequest(account, (error, results) => {
+                if(error) callback(error, null);
+                else if (!results) callback (ERROR_ENUM.BAD_CREDENTIALS, null);
                 else {
                     bcrypt.compare(account.enteredPassword, results.password, (err, res) => {
                         if(res){
@@ -62,7 +56,7 @@ module.exports = ({accountRepository}) => {
                             };
                             callback(null, activeAccount);
                         }else{
-                            callback(["Fel lösenord eller användarnamn"], null);
+                            callback(ERROR_ENUM.BAD_CREDENTIALS, null);
                         }
                     });
                 }
