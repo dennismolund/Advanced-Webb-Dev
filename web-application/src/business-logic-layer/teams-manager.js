@@ -3,7 +3,7 @@ const { validTeamName } = require('./teams-validator');
 const barlist = require('../models/bar.model')
 const { validParams, validRows, parseResult } = require('./bars-validator');
 const barsRepository = require('../data-access-layer/bars-repository');
-
+const { getPlaces } = require('../service/fetch.data.service');
 
 module.exports = function({ teamsRepository, barsManager }){
 
@@ -14,14 +14,15 @@ module.exports = function({ teamsRepository, barsManager }){
             } catch (error) {
                 callback(error, null);
             }
-            teamsRepository.createTeam(team, (errors, newTeam) => {
+            teamsRepository.createTeam(team, async (errors, newTeam) => {
                 if(errors){
                     console.log("Errors in teams-manager:", errors);
                     callback(errors, null)
                 }else{
                     // Create new barrund for team.
+                    await getPlaces();
                     const barrunda = barlist.getRandom();
-                    barsManager.storeBarRunda(barrunda, account, (error, result) => {
+                    barsManager.storeBarRunda(barrunda, account.id, (error, result) => {
                         if (error) callback(error, null);
                         else {
                             const data = {
@@ -110,11 +111,12 @@ module.exports = function({ teamsRepository, barsManager }){
         },
         updateTeamBarrunda: (teamid, account, barrundaid, callback) => {
             // Featch barrunda and check if account.id is owner id
-            barsManager.deleteBarrundaById(barrundaid, account, (error, result) => {
+            barsManager.deleteBarrundaById(barrundaid, account, async (error, result) => {
                 if (error) callback(error, null);
                 else {
+                    await getPlaces();
                     const barrunda = barlist.getRandom();
-                    barsManager.storeBarRunda(barrunda, account, (error, result) => {
+                    barsManager.storeBarRunda(barrunda, account.id, (error, result) => {
                         if (error) callback(error, null);
                         else {
                             // Update members

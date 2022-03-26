@@ -1,10 +1,12 @@
 const express = require('express')
 var bcrypt = require('bcryptjs');
 const ERROR_ENUM = require('../../models/error.enum');
-const saltRounds = 10;
+const { authenticateToken } = require('../middleware/authenticateToken');
+const { jwt_secret, supportedClients } = require('../../const');
 const jwt = require("jsonwebtoken");
+const saltRounds = 10;
 
-const SECRET = "I Am Batman";
+const SECRET = jwt_secret;
 
 module.exports = function({accountManager}){
 
@@ -16,28 +18,12 @@ module.exports = function({accountManager}){
 
     router.post("/login", function(request, response) {
     
-        const grant_type = request.body.grant_type
+        const { grant_type, username: enteredUsername, password: enteredPassword, client_id } = request.query;
+
         const loginAccount = {
-            enteredUsername: request.body.username,
-            enteredPassword: request.body.password,
-        }
-
-        if(grant_type !== 'access_token' && grant_type !== 'password'){
-            response.status(400).send({
-                error: "unsupported_grant_type"
-            });
-            return;
-        }
-
-        // If request was sent with valid auth header, we just return the account.
-        if (request.isLoggedIn) {
-            const token = request.headers['authorization'].split(' ')[1];
-            const decoded = jwt.decode(token)
-            response.status(200).json({
-                account: decoded,
-            });
-            return;
-        }
+            enteredUsername,
+            enteredPassword,
+        };
 
         if (grant_type != "password") {
             response.status(400).send({
@@ -45,7 +31,23 @@ module.exports = function({accountManager}){
             });
             return;
         }
+
+        if (!enteredUsername || !enteredPassword || !client_id) {
+            console.log(enteredUsername, enteredPassword, client_id);
+            response.status(400).send({
+                error: "invalid_request",
+            });
+            return;
+        }
         
+        if (!supportedClients.includes(client_id)) {
+            console.log(supportedClients);
+            console.log(client_id);
+            response.status(400).send({
+                error: "invalid_client"
+            });
+            return;
+        }
         
         accountManager.loginRequest(loginAccount, function(error, account){
             if(error){
@@ -53,17 +55,20 @@ module.exports = function({accountManager}){
                 if (error === ERROR_ENUM.SERVER_ERROR) {
                     response.status(500).json({ error: ERROR_ENUM.SERVER_ERROR });
                 } else {
-                    response.status(401).json({ error: error });
+                    response.status(400).json({ error: "invalid_grant", error_description: error });
                 }
             } else {
                 const payload = {
-                    preferred_username: account.username,
-                    account,
+                    sub: account.id,
+                    username: account.username,
+                    iss: "api.barrundan.se",
+                    iat: Date.now(),
+                    exp: Date.now() + 1000 * 60 * 60,
                 }
-                const accessToken = jwt.sign(payload, SECRET);
+                const idToken = jwt.sign(payload, SECRET);
 
                 response.status(200).send({
-                    accessToken: accessToken,
+                    idToken: idToken,
                     token_type: "Bearer",
                     account,
                 });

@@ -15,7 +15,7 @@ const app = express();
 const engine = hbs.engine || hbs;
 
 //connects the public folder
-app.use(express.static(fp.join(__dirname,'/public/')))
+app.use(express.static(fp.join(__dirname,'/public/')));
 
 app.engine('hbs', engine({
   extname: 'hbs',
@@ -56,7 +56,6 @@ app.get('/', async (req, res) => {
     //if account is active, show home page
     if(req.session.activeAccount) {
       const account = req.session.activeAccount
-      await getPlaces();
       //a.logBy('name');
       if(req.session.activeAccount.teamid) res.redirect('/teams');
       else if(req.session.activeAccount.barrundaid) res.redirect('/bars');

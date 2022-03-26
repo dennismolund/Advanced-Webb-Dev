@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 
-app.use(verifyAccessToken);
+// app.use(verifyAccessToken);
 
 // Import the ones we want to use (real or mockup), real in this case.
 const accountRouter = require ('./routers/account-router-api');
@@ -44,7 +44,7 @@ container.register('barsRepository', awilix.asFunction(barsRepositorySq));
 const theAccountRouter = container.resolve("accountRouter");
 const theBarsRouter = container.resolve('barsRouter');
 
-app.use('/api/bars', theBarsRouter);
+app.use('/api/bars', verifyAccessToken, theBarsRouter);
 app.use("/api/anvandare", theAccountRouter);
 
 module.exports = app;

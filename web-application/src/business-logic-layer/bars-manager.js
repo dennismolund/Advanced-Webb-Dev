@@ -4,12 +4,12 @@ const { validParams, validRows, parseResult } = require('./bars-validator');
 
 module.exports = ({ barsRepository }) => {
 
-    const storeBarRunda = (barRunda, account, callback) => {
-        if (!validParams('storeBarRunda', { barRunda, account })) {
+    const storeBarRunda = (barRunda, userId, callback) => {
+        if (!validParams('storeBarRunda', barRunda)) {
             const e = new Error('Invalid Params');
             callback(e, null);
         } else {
-            barsRepository.storeBarRunda(barRunda, account, callback)
+            barsRepository.storeBarRunda(barRunda, userId, callback)
         }
     };
     
@@ -23,7 +23,7 @@ module.exports = ({ barsRepository }) => {
 
                 if (error) callback(error, null);
                 else {
-                    if (!result) callback(new Error('Found no barrunda for account'), null);
+                    if (!result) callback('Found no barrunda for account', null);
                     try {
                         const parsed = parseResult(result.data);
                         const data = {
@@ -33,7 +33,7 @@ module.exports = ({ barsRepository }) => {
                         callback(null, data);
                     } catch (e) {
                         console.log(e);
-                        callback(new Error('Failed to parse data'), null);
+                        callback('Failed to parse data', null);
                     }
                 }
             });
@@ -42,7 +42,23 @@ module.exports = ({ barsRepository }) => {
 
     const getBarrundaById = (id, callback) => {
         barsRepository.getBarrundaById(id, (error, result) => {
-            callback(error, result);
+            if (error) {
+                callback(error, null);
+            } else if (!result) {
+                callback(null, null);
+            } else {
+                try {
+                    const parsed = parseResult(result.data);
+                    const data = {
+                        parsed,
+                        raw: result,
+                    }
+                    callback(null, data);
+                } catch (e) {
+                    console.log(e);
+                    callback(new Error('Failed to parse data'), null);
+                }
+            }
         });
     }
 

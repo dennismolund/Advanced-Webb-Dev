@@ -2,26 +2,21 @@ const Sequelize = require('./connection-sq');
 const Team = require('../models/Team')
 const Account = require('../models/Account')
 const Barrunda = require('../models/Barrunda');
-
-
-const errHandler = (err) =>{
-    console.error("Error: ", err);
-    
-}
+const ERROR_ENUM = require('../models/error.enum');
 
 module.exports = ({}) => { 
 
     return {
-        storeBarRunda: async (barRunda, account, callback) => {
+        storeBarRunda: async (barRunda, userId, callback) => {
             const transaction = await Sequelize.transaction();
             try {
                 const newBarrunda = await Barrunda.create({
-                    owner: account.id,
+                    owner: userId,
                     data: JSON.stringify(barRunda)
                 });
                 const update = await Account.update(
                     { currentbarrunda: newBarrunda.dataValues.id },
-                    { where: { id: account.id } }
+                    { where: { id: userId } }
                 );
                 await transaction.commit();
                 
@@ -32,10 +27,10 @@ module.exports = ({}) => {
             } catch (e) {
                 await transaction.rollback();
                 console.log('Error creating barrunda: ', e);
-                callback(new Error('Database error'), null);
+                callback(new Error(ERROR_ENUM.SERVER_ERROR), null);
             }
         },
-        getBarRunda: async (account, callback) => { 
+        getBarRunda: async (account, callback) => {
             const transaction = await Sequelize.transaction();
             try {
                 const [accountRes] = await Account.findAll(
@@ -54,9 +49,18 @@ module.exports = ({}) => {
             } catch (e) {
                 await transaction.rollback();
                 console.log('Error getting barrunda for account: ', e);
-                callback('Database error', null);
+                callback(ERROR_ENUM.SERVER_ERROR, null);
             }
-    },
+        },
+        getBarrundaById: async (id, callback) => {
+            try {
+                const [barsRes] = await Barrunda.findAll({ where: { id } });
+                callback(null, barsRes.dataValues);
+            } catch (e) {
+                callback(ERROR_ENUM.SERVER_ERROR, null);
+            }
+        },
+
         deleteBarrundaById: async (id, callback) => {
             const transaction = await Sequelize.transaction();
             try {
@@ -75,7 +79,7 @@ module.exports = ({}) => {
             } catch (e) {
                 console.log('Error deleting barrunda: ', e);
                 await transaction.rollback();
-                callback('Database error', null);
+                callback(ERROR_ENUM.SERVER_ERROR, null);
             }
         }
     }

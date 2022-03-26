@@ -1,20 +1,20 @@
 const db = require('./db')
-
+const ERROR_ENUM = require('../models/error.enum');
 module.exports = function({}){
 
     return {
-        storeBarRunda: (barRunda, account, callback) => {
+        storeBarRunda: (barRunda, userId, callback) => {
             const query = `INSERT INTO barrunda (owner, data) VALUES (?,?)`;
-            const values = [account.id, JSON.stringify(barRunda)];
+            const values = [userId, JSON.stringify(barRunda)];
 
             db.query(query, values, (error, result) => {
                 if (error) callback(error, null);
                 else {
                     // Update user
-                    const query = 'UPDATE accounts SET currentbarrunda = ? WHERE username = ?';
-                    const values = [result.insertId, account.username];
+                    const query = 'UPDATE accounts SET currentbarrunda = ? WHERE id = ?';
+                    const values = [result.insertId, userId];
                     db.query(query, values, (e, r) => {
-                        if (e) console.log('failed to update current barrunda for user: ', account.username);
+                        if (e) console.log('Failed to update user after creating barrunda');
                     })
                     callback(null, result);
                 }
@@ -36,7 +36,7 @@ module.exports = function({}){
                     const values = [result[0].currentbarrunda];
 
                     db.query(qBarRunda, values, (error, result) => {
-                        if (error) callback('Database error', null);
+                        if (error) callback(ERROR_ENUM.SERVER_ERROR, null);
                         else {
                             if (!result.lenght) callback(null, null);
                             else callback(null, result[0]);
