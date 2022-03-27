@@ -5,7 +5,7 @@
   "main": "src/presentation-layer/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon src/app.js -L"
+    "start": "nodemon src/main.js -L"
   },
   "repository": {
     "type": "git",
@@ -20,14 +20,21 @@
   "homepage": "https://github.com/dennismolund/Advanced-Webb-Dev#readme",
   "dependencies": {
     "awilix": "^6.0.0",
+    "axios": "^0.25.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.1",
+    "cors": "^2.8.5",
     "express": "^4.17.2",
     "express-handlebars": "^5.2.0",
     "express-session": "^1.17.2",
     "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1",
+    "mysql2": "^2.3.3",
     "nodemon": "^2.0.15",
-    "sequelize": "^6.13.0"
+    "sequelize": "^6.17.0",
+    "uuidv4": "^6.2.12"
+  },
+  "devDependencies": {
+    "eslint": "^8.7.0"
   }
 }

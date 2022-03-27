@@ -4,7 +4,11 @@
     --green: #0D6853;
     --darkgrey: #352922;
     --woodenbrown: #B56239;
+    --woodenbrownLight: #CE7F54;
+    --woodenbrownDark: #B15933;
     --chalk: #FEF0D6;
+    --darkDarkgrey: #1D1212;
+    --darkLightgrey: #42352C;
   }
 
 body{
@@ -36,11 +40,14 @@ body{
     color: white;
 }
 
+
+
 .blackboard {
-    background-color: var(--darkgrey);
-    border-width: 30px;
+    background: 
+    linear-gradient(var(--darkLightgrey), var(--darkDarkgrey)) padding-box,
+    linear-gradient(var(--woodenbrownLight), var(--woodenbrownDark)) border-box;
+    border: 7px solid transparent;
     border-radius: 5px;
-    border: var(--woodenbrown) solid 7px;
     display: block;
     width: 60%;
     height: 80%;
@@ -50,6 +57,34 @@ body{
     overflow-y: auto;
 }
 
+.nyrundabtn {
+    background-color: var(--darkgrey);
+    color: var(--chalk);
+    
+    font-family: "Walter Turncoat", cursive;
+    font-size: 25px;
+    border-radius: 30px;
+
+}
+
+.chalkinput[type=text] {
+    border: none;
+    border-bottom: 2px solid --chalk;
+}
+
+.chalkbtn {
+    background-color: var(--darkgrey);
+    color: var(--chalk);
+    font-family: "Walter Turncoat", cursive;
+    font-size: 18px;
+    border-radius: 10px;
+    border-color: var(--chalk);
+}
+
+.chalk-line{
+    border-bottom: 2px solid var(--chalk);
+    display: block;
+}
 .chalk {
     color: var(--chalk);
     font-family: "Walter Turncoat", cursive;
@@ -58,4 +93,8 @@ body{
 .line-through {
     text-decoration: line-through;
     text-decoration-thickness: 2px;
+}
+
+.darkGrey{
+    background-color: var(--darkgrey);
 }

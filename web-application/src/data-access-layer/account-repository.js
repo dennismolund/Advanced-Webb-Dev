@@ -1,42 +1,70 @@
-const db = require('./db')
+const db = require('./db');
+const ERROR_ENUM = require('../models/error.enum');
 
 module.exports = function({}){
 	// Name all the dependencies in the curly brackets above (none in this case). 
 	
-	const allAccounts = []
+	const allAccounts = [];
 	
 	return {
-	  getAllAccounts: function(callback){
-		callback([], allAccounts)
+	  getAccountIdByUsername: (username, callback) => {
+		const query = `SELECT id FROM accounts WHERE username = ?`;
+		const values = [username];
+
+		db.query(query, values, (error, results) => {
+			if(error){
+				console.log("Error in database: ", error);
+				callback(ERROR_ENUM.SERVER_ERROR, null);
+			}else{
+				if (results && resluts.length) callback(ERROR_ENUM.USER_NOT_FOUND, null);
+				else callback(null, results[0].id);
+			}
+		});
 	  },
-	  createAccount: function(account, callback){
+	  getAccountById: (id, callback) => {
+		  const query = 'SELECT * FROM accounts WHERE id = ?';
+		  const values = [id];
+		  db.query(query, values, (error, results) => {
+			if (error) {
+				console.log('Error getting acocunt from db: ', error);
+				callback(ERROR_ENUM.SERVER_ERROR, null);
+				return;
+			}
+			callback(null, results[0]);
+		  });
+	  },
+
+	  createAccount: (account, callback) => {
 	
-		const query = `INSERT INTO accounts (username, email, password) VALUES (?, ?, ?)`
-		const values = [account.username, account.email, account.password]
+		const query = `INSERT INTO accounts (username, email, password) VALUES (?, ?, ?)`;
+		const values = [account.username, account.email, account.password];
 		
-		db.query(query, values, function(error, results){
+		db.query(query, values, (error, results) => {
 			if(error){
 				// TODO: Look for usernameUnique violation.
-				console.log("Error in database: ", error);
-				callback(['databaseError'], null)
+				console.log("Error in database: ", error.code);
+				if (error.code === "ER_DUP_ENTRY") {
+					if (error.sqlMessage.includes('email')) callback(ERROR_ENUM.EMAIL_TAKEN, null);
+					else callback(ERROR_ENUM.USERNAME_TAKEN, null);
+				}
+				else callback(ERROR_ENUM.SERVER_ERROR, null);
 			}else{
-				callback(null, results.insertId)
+				callback(null, results.insertId);
 			}
 		})
-	},
-	loginRequest: function(account, callback){
-    
-		const query = "SELECT * FROM accounts WHERE username = ?"
-		const values = [account.enteredUsername]
-	
-		db.query(query, values, function(error, accountFromDb){
-			if(error)callback("Database error.", null)
-			else if(accountFromDb)callback(null, accountFromDb[0])
-			else callback("No account with that username", null)
-		})
-	}
+		},
+		loginRequest: (account, callback) => {
+		
+			const query = "SELECT * FROM accounts WHERE username = ?";
+			const values = [account.enteredUsername];
+		
+			db.query(query, values, (error, accountFromDb) => {
+				if(error) callback(ERROR_ENUM.SERVER_ERROR, null);
 
-	  
+				else if(accountFromDb) callback(null, accountFromDb[0]);
+
+				else callback(ERROR_ENUM.USER_NOT_FOUND, null);
+			});
+		}
 	}
-	
   }

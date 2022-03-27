@@ -1,24 +1,38 @@
+{{> header}}
 <section class="hero is-fullheight bg-img-login"> 
-<form action="login" method="POST">
-  <div class="columns is-vcentered mt-6">
-    <div class="column"></div>
-    <div class="column">
 
-      <section class=" blackboard">
-          <div class="has-text-centered mb-4">
-        
-            <h3 class="subtitle is-3 mt-3 chalk"> </span> Bar Rundan</h3>
+  <div class="columns">
+
+    
+    <div class="column"></div>
+
+
+    <div class="column mt-6">
+      <section>
+          <div class=" blackboard has-text-centered mb-4">
+            <h3 class="subtitle is-3 mt-3 chalk"> </span> Bar Rundan <span class="chalk-line"></span></h3>
             <div class="chalk">
-                <h4 class="subtitle is-4 mt-3 chalk line-through"> </span> Bar nbr 1</h4>
-                <h4 class="subtitle is-4 mt-3 chalk"> </span> Bar nbr 1</h4>
-                <h4 class="subtitle is-4 mt-3 chalk"> </span> ?</h4>
-                <h4 class="subtitle is-4 mt-3 chalk"> </span> ?</h4>
-                <h4 class="subtitle is-4 mt-3 chalk"> </span> ?</h4>
-            </div>
+                {{#each bars}}
+                    <h4 class="subtitle is-4 mt-3 chalk"> </span> {{counter @index}}. {{this.name}}</h4>
+                {{/each}}
+        
+            </div> 
           </div>
       </section>
+
+      <div class="columns is-centered mt-4">
+        <form action="/bars" method="post">
+          <input class="button" type="submit" value="Visa Runda"></input>
+        </form>
+        <form action="/bars/delete" method="post">
+          <input class="button ml-4" type="submit" value="Visa Team"></input>
+        </form>
+        <form action="/bars/delete" method="post">
+          <input class="button ml-4" type="submit" value="Ny runda"></input>
+        </form>
+      </div>
     </div>
     <div class="column"></div>
   </div>
-</form>
+
 </section>

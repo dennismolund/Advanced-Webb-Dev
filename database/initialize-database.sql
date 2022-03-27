@@ -1,21 +1,23 @@
 CREATE TABLE accounts (
-    Id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     username VARCHAR(50) NOT NULL UNIQUE, 
     email VARCHAR(50) NOT NULL UNIQUE, 
     password VARCHAR(100) NOT NULL,
-    currentRunda INT);
+    currentbarrunda INT,
+    teamid INT
+);
     
+CREATE TABLE barrunda (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    owner INT NOT NULL,
+    data JSON NOT NULL,
+    FOREIGN KEY (owner) REFERENCES accounts(id)
+);
 
-/*CREATE TABLE barrunda (
-    Id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    userID INT NOT NULL,
-    FOREIGN KEY (userID) REFERENCES accounts(Id)
-    );
-CREATE TABLE Bars (
-    Id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    name VARCHAR(50) NOT NULL,
-    address VARCHAR(80) NOT NULL,
-    barrundaId INT NOT NULL,
-    number INT NOT NULL,
-    FOREIGN KEY (barrundaId) REFERENCES barrunda(Id)
-);*/
+CREATE TABLE teams (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    teamname VARCHAR(50) NOT NULL UNIQUE,
+    creatorid INT NOT NULL,
+    currentbarrunda INT,
+    FOREIGN KEY (creatorid) REFERENCES accounts(id)
+);

@@ -1,0 +1,36 @@
+{{> header}}
+<section class="hero is-fullheight bg-img-login"> 
+
+  <div class="columns">
+
+    
+    <div class="column"></div>
+
+
+    <div class="column mt-6">
+      <section>
+          <div class=" blackboard has-text-centered mb-4">
+            <h3 class="subtitle is-3 mt-3 chalk"> </span> Bar Rundan <span class="chalk-line"></span></h3>
+            <div class="chalk">
+                {{#each bars}}
+                    <h4 class="subtitle is-4 mt-3 chalk"> </span> {{counter @index}}. {{this.name}}</h4>
+                {{/each}}
+        
+            </div> 
+            <div class="columns is-centered mt-6">
+              <form action="/bars" method="post">
+                <input class="chalkbtn" type="submit" value="Ny runda"></input>
+              </form>
+              <form action="/bars/delete/{{barid}}" method="get">
+                <input class="chalkbtn ml-4" type="submit" value="Avsluta"></input>
+              </form>
+            </div>
+          </div>
+      </section>
+
+      
+    </div>
+    <div class="column"></div>
+  </div>
+
+</section>

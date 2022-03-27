@@ -5,6 +5,7 @@ services:
     ports:
       - "3000:8080"
       - "9229:9229"
+      - "3002:3002"
     volumes:
       - "./web-application/src:/web-application/src"
     depends_on:
@@ -16,3 +17,12 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=jade123
       - MYSQL_DATABASE=webAppDatabase
+  spa:
+    build: "./spa"
+    ports: 
+      - 3001:3001
+    volumes: 
+      - "./spa/src:/spa/src"
+    depends_on:
+      - database
+      - web-application

@@ -1,6 +1,7 @@
-FROM node:13.5.0
+FROM node:14.15.4
 
 EXPOSE 8080
+EXPOSE 3002
 
 WORKDIR /web-application
 
@@ -8,6 +9,6 @@ COPY package*.json ./
 
 RUN npm install
 
-COPY src/presentation-layer/app.js ./
+COPY src/main.js ./
 
 CMD ["npm","run","start"]
