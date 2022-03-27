@@ -3,7 +3,7 @@ const ERROR_ENUM = require('../models/error.enum');
 var bcrypt = require('bcryptjs');
 const saltRounds = 10;
 
-module.exports = ({accountRepository}) => {
+module.exports = ({ accountRepository }) => {
     // Name all the dependencies in the curly brackets above.
     
     return {
@@ -12,6 +12,23 @@ module.exports = ({accountRepository}) => {
                 if(error) callback(error, null);
                 else callback(null, results);
             });
+        },
+        hasTeamCheck: (req, res, next) => {
+            const { id } = req.account;
+            console.log(id);
+            accountRepository.getAccountById(id, (err, data) => {
+                if (err || !data) return res.statsu(500).send({ error: SERVER_ERROR });
+                if (data.teamid) {
+                    res.status(403).send({
+                        error: 'has_team_error',
+                        error_description: "Gå till http://localhost:3000 och lämna ditt team för ta bort / skapa barrunda.",
+                    });
+                    return;
+                }
+                console.log('Has team check running next()');
+                next();
+            });
+            console.log('End of has team check');
         },
 
         createAccount: (account, callback) => {

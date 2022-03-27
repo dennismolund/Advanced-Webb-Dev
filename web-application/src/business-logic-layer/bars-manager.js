@@ -1,6 +1,7 @@
 
 const { logBy } = require('../models/bar.model');
 const { validParams, validRows, parseResult } = require('./bars-validator');
+const ERROR_ENUM = require('../models/error.enum');
 
 module.exports = ({ barsRepository }) => {
 
@@ -23,7 +24,10 @@ module.exports = ({ barsRepository }) => {
 
                 if (error) callback(error, null);
                 else {
-                    if (!result) callback('Found no barrunda for account', null);
+                    if (!result) {
+                        callback('Found no barrunda for account', null);
+                        return;
+                    }
                     try {
                         const parsed = parseResult(result.data);
                         const data = {
@@ -68,7 +72,7 @@ module.exports = ({ barsRepository }) => {
             else {
                 if (result.raw.owner !== account.id) {
                     console.log('User is not authroized to delete resource', result);
-                    callback(['Unauthroized'], null);
+                    callback(ERROR_ENUM.UNAUTHORIZED, null);
                 } else {
                     barsRepository.deleteBarrundaById(id, (error, result) => {
                         if (error) callback(error, null);

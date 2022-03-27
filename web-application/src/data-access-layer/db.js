@@ -1,4 +1,4 @@
-const mysql = require('mysql')
+const mysql = require('mysql');
 
 const connection = mysql.createConnection({
 	host     : 'database',
@@ -7,4 +7,4 @@ const connection = mysql.createConnection({
 	database : 'webAppDatabase'
 })
 
-module.exports = connection
+module.exports = connection;

@@ -31,8 +31,10 @@ module.exports = ({}) => {
             }
         },
         getBarRunda: async (account, callback) => {
+            console.log('Get barrunda: account ', account);
             const transaction = await Sequelize.transaction();
             try {
+                console.log(account.username);
                 const [accountRes] = await Account.findAll(
                     { where: { username: account.username } }
                 );

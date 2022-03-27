@@ -6,90 +6,106 @@
   </head>
   <body>
     <div class="main__window">
+      <div class="top-bar">
+        <div class="spacer"></div>
+          <div class="button_2" onclick="document.dispatchEvent(new Event('navigateLogin'))">Logga ut</div>
+      </div>
         <!-- **** LOGIN SCREEN **** -->
         <div class="view login__view shadows" id="login">
-          <div class="title__container">
-            <h6 class="view__title">Logga in till Barrundan</h6>
-          </div>
-          <div class="line"></div>
-          <div class="error__container">
-          </div>
-          <div class="input__container">
-            <form>
-              <div>
-                <label for="username_in">Användarnamn</label><br>
-                <input type="text" id="username_in" class="input__field">
-              </div>
-              <div>
-                <label for="password_in">Lösenord</label><br>
-                <input type="password" id="password_in" class="input__field">
-              </div>
-            </form>
-          </div>
-          <div class="button__container">
-            <div class="button" onclick="document.dispatchEvent(new Event('loginClick'))">Logga in</div>
-          </div>
-          <div class="link__container">
-            <a onclick="document.dispatchEvent(new Event('navigateSignup'))">Har du inget konto?</a>
+          <div class="loader" id="loader_login"></div>
+          <div class="content">
+            <div class="title__container">
+              <h6 class="view__title">Logga in till Barrundan</h6>
+            </div>
+            <div class="line"></div>
+            <div class="error__container">
+            </div>
+            <div class="input__container">
+              <form>
+                <div>
+                  <label for="username_in">Användarnamn</label><br>
+                  <input type="text" id="username_in" class="input__field">
+                </div>
+                <div>
+                  <label for="password_in">Lösenord</label><br>
+                  <input type="password" id="password_in" class="input__field">
+                </div>
+              </form>
+            </div>
+            <div class="button__container">
+              <div class="button" onclick="document.dispatchEvent(new Event('loginClick'))">Logga in</div>
+            </div>
+            <div class="link__container">
+              <a onclick="document.dispatchEvent(new Event('navigateSignup'))">Har du inget konto?</a>
+            </div>
           </div>
         </div>
         <!-- **** SIGN UP VIEW **** -->
         <div class="view sign-up__view shadows" id="signup">
-          <div class="title__container">
-            <h6 class="view__title"> Registrera dig på Barrundan</h6>
-          </div>
-          <div class="line"></div>
-          <div class="error__container"></div>
-          <div class="input__container">
-            <form>
-              <div>
-                <label for="new_username">Användarnamn</label><br>
-                <input type="text" id="new_username" class="input__field">
-              </div>
-              <div>
-                <label for="new_email">E-post Address</label><br>
-                <input type="text" id="new_email" class="input__field">
-              </div>
-              <div>
-                <label for="new_password_1">Lösenord</label><br>
-                <input type="password" id="new_password_1" class="input__field">
-              </div>
-              <div>
-                <label for="new_password_2">Bekräfta Lösenord</label><br>
-                <input type="password" id="new_password_2" class="input__field">
-              </div>
-            </form>
-          </div>
-          <div class="button__container">
-            <div class="button" onclick="document.dispatchEvent(new Event('signupClick'))">Registrera dig</div>
-          </div>
-          <div class="link__container">
-            <a onclick="document.dispatchEvent(new Event('navigateLogin'))">Har du redan ett konto?</a>
+          <div class="loader" id="loader_signup"></div>
+          <div class="content">
+            <div class="title__container">
+              <h6 class="view__title"> Registrera dig på Barrundan</h6>
+            </div>
+            <div class="line"></div>
+            <div class="error__container"></div>
+            <div class="input__container">
+              <form>
+                <div>
+                  <label for="new_username">Användarnamn</label><br>
+                  <input type="text" id="new_username" class="input__field">
+                </div>
+                <div>
+                  <label for="new_email">E-post Address</label><br>
+                  <input type="text" id="new_email" class="input__field">
+                </div>
+                <div>
+                  <label for="new_password_1">Lösenord</label><br>
+                  <input type="password" id="new_password_1" class="input__field">
+                </div>
+                <div>
+                  <label for="new_password_2">Bekräfta Lösenord</label><br>
+                  <input type="password" id="new_password_2" class="input__field">
+                </div>
+              </form>
+            </div>
+            <div class="button__container">
+              <div class="button" onclick="document.dispatchEvent(new Event('signupClick'))">Registrera dig</div>
+            </div>
+            <div class="link__container">
+              <a onclick="document.dispatchEvent(new Event('navigateLogin'))">Har du redan ett konto?</a>
+            </div>
           </div>
         </div>
         <!-- **** HOME VIEW **** -->
         <div class="view home__view shadows" id="home">
-          <div class="error__container"></div>
-          <div class="home__view--with--list" id="bar_list">
-            <div class="bar__list--item" id="list-item-1"></div>
-            <div class="bar__list--item" id="list-item-2"></div>
-            <div class="bar__list--item" id="list-item-3"></div>
-            <div class="bar__list--item" id="list-item-4"></div>
-            <div class="bar__list--item" id="list-item-5"></div>
-            <div class="button__container">
-              <div class="button" onclick="document.dispatchEvent(new Event('newBarrundaClick'))">Ny runda</div>
-              <div class="button" onclick="document.dispatchEvent(new Event('removeBarrundaClick'))">Avsluta</div>
+          <div class="loader" id="loader_home"></div>
+          <div class="content">
+            <div class="error__container"></div>
+            <div class="home__view--with--list" id="bar_list">
+              <div class="bar__list--item" id="list-item-1"></div>
+              <div class="bar__list--item" id="list-item-2"></div>
+              <div class="bar__list--item" id="list-item-3"></div>
+              <div class="bar__list--item" id="list-item-4"></div>
+              <div class="bar__list--item" id="list-item-5"></div>
+              <div class="button__container">
+                <div class="button" onclick="document.dispatchEvent(new Event('newBarrundaClick'))">Ny runda</div>
+                <div class="button" onclick="document.dispatchEvent(new Event('removeBarrundaClick'))">Avsluta</div>
+              </div>
             </div>
-          </div>
-          <div class="home__view--without--list" id="bar_create">
-            <div class="title__container">
-              <h6 class="view__title">Ge mig en BARRUNDA!</h6>
+            <div class="home__view--without--list" id="bar_create">
+              <div class="title__container">
+                <h6 class="view__title">Ge mig en BARRUNDA!</h6>
+              </div>
+              <div class="button" onclick="document.dispatchEvent(new Event('createBarrundaClick'))"> SKAPA BARRUNDA </div>
             </div>
-            <div class="button" onclick="document.dispatchEvent(new Event('createBarrundaClick'))"> SKAPA BARRUNDA </div>
           </div>
         </div>
         <!-- **** LOADING VIEW ***** -->
-        <div class="view loader" id="loader"></div>
+        <!-- <div class="view loader__view" id="loader">
+          <div class="loader" id="loader_loader"></div>
+          <div class="content"></div>
+        </div> -->
     </div>
   </body>
 </html>

@@ -6,7 +6,7 @@ class User {
         this.username = null;
         this.teamid = null;
         this.id = null;
-        this.token = localStorage.accessToken || null;
+        this.token = null;
         this.signedIn = false;
         this.barList = [];
     }
@@ -18,8 +18,18 @@ class User {
         this.id = id;
         this.teamid = teamid;
         this.username = username;
-        localStorage.setItem('accessToken', this.token);
+        // localStorage.setItem('accessToken', this.token);
         this.signedIn = true;
+    }
+
+    logout() {
+        this.barrundaid = null;
+        this.username = null;
+        this.teamid = null;
+        this.id = null;
+        this.token = null;
+        this.signedIn = false;
+        this.barList = [];
     }
 
     async loadData() {

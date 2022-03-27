@@ -3,6 +3,8 @@ import User from './user.state.js';
 export default class View {
     constructor(view) {
         this.element = view;
+        this.content = view.querySelector('.content');
+        this.loader = view.querySelector('.loader');
         this.name = view.id;
         this.errElm = this.element.querySelector('.error__container');
     }
@@ -42,6 +44,16 @@ export default class View {
             const text = `${i + 1}. ${User.barList[i].name}`
             listItems[i].innerHTML = text;
         }
+    }
+
+    showLoader() {
+        this.content.setAttribute('style', 'display: none');
+        this.loader.setAttribute('style', 'display: flex');
+    }
+
+    hideLoader() {
+        this.content.setAttribute('style', 'display: block');
+        this.loader.setAttribute('style', 'display: none');
     }
 
     clearInputs() {

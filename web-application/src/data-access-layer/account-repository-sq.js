@@ -7,7 +7,7 @@ const ERROR_ENUM = require('../models/error.enum');
 module.exports = ({}) => { 
 
     //TODO: HANDLE ERRORS
-    return{ 
+    return { 
         createAccount: async (account, callback) => {
             try {
                 const newAccount = await Account.create({
@@ -18,7 +18,10 @@ module.exports = ({}) => {
                 callback(null, newAccount.dataValues.id);
             } catch (e) {
                 console.log(e);
-                if (e.original?.code === "ER_DUP_ENTRY") callback(ERROR_ENUM.USERNAME_TAKEN, null);
+                if (e.original?.code === "ER_DUP_ENTRY") {
+                    if (e.original?.sqlMessage.includes('email')) callback(ERROR_ENUM.EMAIL_TAKEN, null);
+                    else callback(ERROR_ENUM.USERNAME_TAKEN, null);
+                }
                 else callback(ERROR_ENUM.SERVER_ERROR, null);
             }
         },
@@ -33,6 +36,16 @@ module.exports = ({}) => {
             }
 
         },
+        getAccountById: async (id, callback) => {
+            try {
+                const users = await Account.findAll({ where: { id }});
+                if (users.length) callback(null, users[0].dataValues);
+                else callback(null, null);
+            } catch (e) {
+                console.log(e);
+                callback(ERROR_ENUM.SERVER_ERROR, null);
+            }
+        },
         getAccountIdByUsername: async (username, callback) => {
             try {
                 const users = await Account.findAll({ where: { username }});
@@ -42,6 +55,6 @@ module.exports = ({}) => {
                 console.log(e);
                 callback(ERROR_ENUM.SERVER_ERROR, null);
             }
-        }
+        },
     }
 }

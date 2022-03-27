@@ -1,8 +1,10 @@
+import ViewController from "./view.controller.js";
+
 export default class AjaxClient {
 
     static async post(url, body, _headers) {
-
         try {
+            ViewController.showLoader();
             const headers = {
                 'Authorization': `Bearer ${localStorage.accessToken}`,
                 'Content-Type': 'application/json'
@@ -23,15 +25,18 @@ export default class AjaxClient {
                 response,
                 data,
             }
+            ViewController.hideLoader();
             return res;
         } catch (error) {
             console.log('Post error: ', error);
+            ViewController.hideLoader();
             return;
         }
     }
 
     static async get(url) {
         try {
+            ViewController.showLoader();
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -49,9 +54,11 @@ export default class AjaxClient {
                 response,
                 data,
             }
+            ViewController.hideLoader();
             return res;            
         } catch (e) {
             console.log('Get error: ', e);
+            ViewController.hideLoader();
             return;
         }
     }

@@ -7,6 +7,7 @@ h6 {
 .main__window {
     height: 100vh;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
@@ -33,6 +34,28 @@ h6 {
   box-shadow: 5px 5px 5px #d3d2d2;  
 }
 
+.top-bar {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  background-color: #3a2d26;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.button_2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  margin: 1rem;
+  border-radius: 1rem;
+  border: 1px solid #fef0d6;
+  cursor: pointer;
+  color: #fef0d6;
+  font-family: "Walter Turncoat", cursive;
+}
 .title__container {
     margin-top: 1rem;
     padding: 1rem;
@@ -44,6 +67,7 @@ h6 {
 
 .input__container {
     width: 100%;
+    padding-left: 1rem;
 }
 
 div .input {
@@ -62,6 +86,13 @@ div .input {
     border-radius: 1rem;
     border: 1px solid #fef0d6;
     cursor: pointer;
+}
+
+.button:hover {
+  background-color: #5f4d43;
+}
+.button.button_2:hover {
+  background-color: #5f4d43;
 }
 
 .button__container {
@@ -92,6 +123,8 @@ a:hover {
 .error__container {
     padding: 1rem;
     display: none;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: red;
 }
 
 .loader,
@@ -101,6 +134,7 @@ a:hover {
   height: 10em;
 }
 .loader {
+  display: none;
   margin: 60px auto;
   font-size: 10px;
   position: relative;

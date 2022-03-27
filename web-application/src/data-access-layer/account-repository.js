@@ -16,11 +16,24 @@ module.exports = function({}){
 				console.log("Error in database: ", error);
 				callback(ERROR_ENUM.SERVER_ERROR, null);
 			}else{
-				if (resluts.length) callback(ERROR_ENUM.USER_NOT_FOUND, null);
+				if (results && resluts.length) callback(ERROR_ENUM.USER_NOT_FOUND, null);
 				else callback(null, results[0].id);
 			}
 		});
 	  },
+	  getAccountById: (id, callback) => {
+		  const query = 'SELECT * FROM accounts WHERE id = ?';
+		  const values = [id];
+		  db.query(query, values, (error, results) => {
+			if (error) {
+				console.log('Error getting acocunt from db: ', error);
+				callback(ERROR_ENUM.SERVER_ERROR, null);
+				return;
+			}
+			callback(null, results[0]);
+		  });
+	  },
+
 	  createAccount: (account, callback) => {
 	
 		const query = `INSERT INTO accounts (username, email, password) VALUES (?, ?, ?)`;
@@ -30,7 +43,10 @@ module.exports = function({}){
 			if(error){
 				// TODO: Look for usernameUnique violation.
 				console.log("Error in database: ", error.code);
-				if (error.code === "ER_DUP_ENTRY") callback(ERROR_ENUM.USERNAME_TAKEN, null);
+				if (error.code === "ER_DUP_ENTRY") {
+					if (error.sqlMessage.includes('email')) callback(ERROR_ENUM.EMAIL_TAKEN, null);
+					else callback(ERROR_ENUM.USERNAME_TAKEN, null);
+				}
 				else callback(ERROR_ENUM.SERVER_ERROR, null);
 			}else{
 				callback(null, results.insertId);

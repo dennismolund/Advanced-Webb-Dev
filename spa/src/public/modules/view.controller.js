@@ -12,11 +12,19 @@ class ViewController {
         const a = Array.from(htmlViews);
         console.log(htmlViews);
         this.views = a.map((item) => new View(item));
-    }   
+    }
+
+    setTopBar() {
+        const topBar = document.querySelector('.top-bar');
+        if (User.isSignedIn()) {
+            topBar.setAttribute('style', 'display: flex');
+        } else {
+            topBar.setAttribute('style', 'display: none');
+        }
+    }
 
     changeView(viewName, _wasPopState) {
-        console.log('Change view: ', viewName);
-        console.log(this.activeView);
+        this.setTopBar();
         let goTo = viewName;
         if (this.activeView) this.activeView.hideError();
         if (viewName === this.activeView?.name) return;
@@ -29,6 +37,7 @@ class ViewController {
         if (goTo === window.location.pathname) return;
     
         this.views.forEach((view) => {
+            console.log(view.name);
             if (view.name === goTo) view.show();
             else view.hide();
         });
@@ -53,6 +62,14 @@ class ViewController {
             homeView.showComponent('bar_create');
         }
         this.changeView('home');
+    }
+
+    showLoader() {
+        this.activeView.showLoader();
+    }
+
+    hideLoader() {
+        this.activeView.hideLoader();
     }
 
     showError(msg) {

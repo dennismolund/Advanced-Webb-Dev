@@ -7,7 +7,7 @@ const client_id = "YmFycnVuZGFfc3BhX2NsaWVudF9pZF9oZWpjb24=";
 document.addEventListener('DOMContentLoaded', async () => {
     setListeners();
     ViewController.setViewList();
-    ViewController.changeView('loader');
+    // ViewController.changeView('loader');
     await setPage();
 });
 
@@ -42,13 +42,14 @@ const setListeners = () => {
 
     document.addEventListener('navigateLogin', (evt) => {
         evt.preventDefault();
+        if(User.isSignedIn()) User.logout();
         ViewController.changeView('login');
     });
 
     document.addEventListener('navigateSignup', (evt) => {
         evt.preventDefault();
-        if(User.isSignedIn()) ViewController.changeView('home');
-        else ViewController.changeView('signup')
+        if(User.isSignedIn()) User.logout();
+        ViewController.changeView('signup')
     });
 
     document.addEventListener('keyup', (evt) => {
@@ -81,6 +82,8 @@ const setListeners = () => {
 }
 
 const signup = async () => {
+    ViewController.hideError();
+
     if (User.isSignedIn()) {
         ViewController.changeView('home');
         return;
@@ -119,7 +122,8 @@ const checkResponse = (pack) => {
     else if (pack.response.status !== 200) {
         console.log(pack.response);
         if (pack.data) {
-            ViewController.showError(pack.data.error_description);
+            if (pack.data.error_description) ViewController.showError(pack.data.error_description);
+            else ViewController.showError(pack.data.error);
         } else {
             ViewController.showError('There was an error');
         }
@@ -129,6 +133,7 @@ const checkResponse = (pack) => {
 }
 
 const login = async () => {
+    ViewController.hideError();
     ViewController.changeView('loader');
     const username = document.querySelector('#username_in').value;
     const password = document.querySelector('#password_in').value;
@@ -155,6 +160,7 @@ const login = async () => {
 }
 
 const createBarrunda = async () => {
+    ViewController.hideError();
     const response = await AjaxClient.get('http://localhost:3002/api/bars/new');
 
     const requestError = checkResponse(response);
@@ -165,6 +171,7 @@ const createBarrunda = async () => {
 }
 
 const removeBarrunda = async () => {
+    ViewController.hideError();
     const id = User.barrundaid;
     const response = await AjaxClient.get(`http://localhost:3002/api/bars/delete/${id}`);
 

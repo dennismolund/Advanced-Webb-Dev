@@ -111,7 +111,7 @@ module.exports = function({ teamsRepository, barsManager }){
         },
         updateTeamBarrunda: (teamid, account, barrundaid, callback) => {
             // Featch barrunda and check if account.id is owner id
-            barsManager.deleteBarrundaById(barrundaid, account, async (error, result) => {
+            barsManager.deleteBarrundaById(barrundaid, account.id, async (error, result) => {
                 if (error) callback(error, null);
                 else {
                     await getPlaces();
