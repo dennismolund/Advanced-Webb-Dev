@@ -1,14 +1,14 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../data-access-layer/connection-sq');
 
-module.exports = sequelize.define('barrunda', {
+module.exports = sequelize.define('pubcrawl', {
     id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         allowNull: false,
         primaryKey: true
     },
-    owner: {
+    owner_id: {
         type: Sequelize.INTEGER,
         allowNull: false
     },

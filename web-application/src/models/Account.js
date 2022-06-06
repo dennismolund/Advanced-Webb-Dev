@@ -22,10 +22,10 @@ module.exports = sequelize.define('account', {
         type: Sequelize.STRING(100),
         allowNull: false
     },
-    currentbarrunda: {
+    pubcrawl_id: {
         type: Sequelize.INTEGER,
     },
-    teamid: {
+    team_id: {
         type: Sequelize.INTEGER
     }
 },

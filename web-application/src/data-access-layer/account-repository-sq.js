@@ -1,7 +1,7 @@
 const { Sequelize } = require('sequelize');
 const Team = require('../models/Team')
 const Account = require('../models/Account')
-const Barrunda = require('../models/Barrunda');
+const Barrunda = require('../models/Pubcrawl');
 const ERROR_ENUM = require('../models/error.enum');
 
 module.exports = ({}) => { 

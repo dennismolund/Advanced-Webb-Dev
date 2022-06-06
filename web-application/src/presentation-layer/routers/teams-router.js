@@ -27,7 +27,7 @@ module.exports = ({teamsManager, barsManager}) => {
                     owner: null
                 }
                 if(model.data.team.creatorid == model.activeAccount.id) model.owner = true
-                req.session.activeAccount.teamid = result.team.id;
+                req.session.activeAccount.team_id = result.team.id;
                 req.session.activeAccount.barrundaid = result.barrunda.insertId;
                 res.render("barrundan.hbs", model);
             }
@@ -36,7 +36,7 @@ module.exports = ({teamsManager, barsManager}) => {
 
     router.get("/", (req,res) => {
         const showteam = req.query.showteam === "true" ? true : false
-        teamsManager.getTeam(req.session.activeAccount.teamid, (error, result) => {
+        teamsManager.getTeam(req.session.activeAccount.team_id, (error, result) => {
             if(error){
                 console.log("ERROR TRIGGER IN TEAMS-ROUTER (GetTeam)", error);
                 res.render("barrundan.hbs", error);
@@ -57,7 +57,7 @@ module.exports = ({teamsManager, barsManager}) => {
 
     router.post("/delete/:id", (req,res) => {
         const team = {
-            teamid: req.params.id,
+            team_id: req.params.id,
             userid: req.session.activeAccount.id,
             teamowner: req.body.teamcreatorid
         }
@@ -78,18 +78,18 @@ module.exports = ({teamsManager, barsManager}) => {
                 console.log("error:" , error);
                 res.redirect("/");
             }else {
-                req.session.activeAccount.teamid = result
+                req.session.activeAccount.team_id = result
                 res.redirect("/teams")
             }
         });
     });
 
     router.post("/:id/update", (req, res) => {
-        const { id: teamid } = req.params;
+        const { id: team_id } = req.params;
         const { activeAccount: account } = req.session;
         const { barrundaid } = account;
         console.log('DELETING RUNDA WITH id: ', barrundaid);
-        teamsManager.updateTeamBarrunda(teamid, account, barrundaid, (error, result) => {
+        teamsManager.updateTeamBarrunda(team_id, account, barrundaid, (error, result) => {
             if (error) {
                 console.log('Error in update team barrunda router', error);
                 res.redirect('/teams')

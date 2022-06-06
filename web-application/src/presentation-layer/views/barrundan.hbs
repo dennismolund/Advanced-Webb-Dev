@@ -48,7 +48,7 @@
           <input class="chalkbtn ml-4" type="submit" value="Ny runda"></input>
         </form>
         <form action="/teams/delete/{{data.team.id}}" method="post">
-          <input type="hidden" id="teamcreatorid" name="teamcreatorid" value={{data.team.creatorid}}>
+          <input type="hidden" id="teamcreatorid" name="teamcreatorid" value={{data.team.creator_id}}>
           {{#if owner}}
             <input class="chalkbtn ml-4" type="submit" value="Delete team"></input>
           {{else}}

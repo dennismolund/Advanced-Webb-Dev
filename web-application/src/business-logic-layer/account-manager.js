@@ -18,7 +18,7 @@ module.exports = ({ accountRepository }) => {
             console.log(id);
             accountRepository.getAccountById(id, (err, data) => {
                 if (err || !data) return res.statsu(500).send({ error: SERVER_ERROR });
-                if (data.teamid) {
+                if (data.team_id) {
                     res.status(403).send({
                         error: 'has_team_error',
                         error_description: "Gå till http://localhost:3000 och lämna ditt team för ta bort / skapa barrunda.",
@@ -68,8 +68,8 @@ module.exports = ({ accountRepository }) => {
                                 username: results.username,
                                 email: results.email,
                                 id: results.id,
-                                barrundaid: results.currentbarrunda,
-                                teamid: results.teamid
+                                barrundaid: results.pubcrawl_id,
+                                team_id: results.team_id
                             };
                             callback(null, activeAccount);
                         }else{

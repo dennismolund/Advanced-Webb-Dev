@@ -1,7 +1,7 @@
 const Sequelize = require('./connection-sq');
 const Team = require('../models/Team')
 const Account = require('../models/Account')
-const Barrunda = require('../models/Barrunda');
+const Barrunda = require('../models/Pubcrawl');
 const ERROR_ENUM = require('../models/error.enum');
 
 module.exports = ({}) => { 
@@ -11,11 +11,11 @@ module.exports = ({}) => {
             const transaction = await Sequelize.transaction();
             try {
                 const newBarrunda = await Barrunda.create({
-                    owner: userId,
+                    owner_id: userId,
                     data: JSON.stringify(barRunda)
                 });
                 const update = await Account.update(
-                    { currentbarrunda: newBarrunda.dataValues.id },
+                    { pubcrawl_id: newBarrunda.dataValues.id },
                     { where: { id: userId } }
                 );
                 await transaction.commit();
@@ -26,12 +26,12 @@ module.exports = ({}) => {
                 callback(null, result);
             } catch (e) {
                 await transaction.rollback();
-                console.log('Error creating barrunda: ', e);
+                console.log('Error creating pub crawl: ', e);
                 callback(new Error(ERROR_ENUM.SERVER_ERROR), null);
             }
         },
         getBarRunda: async (account, callback) => {
-            console.log('Get barrunda: account ', account);
+            console.log('Get pub crawl: account ', account);
             const transaction = await Sequelize.transaction();
             try {
                 console.log(account.username);
@@ -43,14 +43,14 @@ module.exports = ({}) => {
                     return;
                 } 
 
-                const [barRes] = await Barrunda.findAll({ where: { id: accountRes.dataValues.currentbarrunda } });
+                const [barRes] = await Barrunda.findAll({ where: { id: accountRes.dataValues.pubcrawl_id } });
                 if (!barRes) callback(null, null);
 
                 await transaction.commit();
                 callback(null, barRes.dataValues);
             } catch (e) {
                 await transaction.rollback();
-                console.log('Error getting barrunda for account: ', e);
+                console.log('Error getting pub crawl for account: ', e);
                 callback(ERROR_ENUM.SERVER_ERROR, null);
             }
         },
@@ -68,18 +68,18 @@ module.exports = ({}) => {
             try {
                 const deleteRes = await Barrunda.destroy({ where: { id } });
                 const accountUpdate = await Account.update(
-                    { currentbarrunda: null },
-                    { where: { currentbarrunda: id } }
+                    { pubcrawl_id: null },
+                    { where: { pubcrawl_id: id } }
                 );
                 const teamUpdate = await Team.update(
-                    { currentbarrunda: null },
-                    { where: { currentbarrunda: id } }
+                    { pubcrawl_id: null },
+                    { where: { pubcrawl_id: id } }
                 );
                 await transaction.commit();
                 callback(null, null);
 
             } catch (e) {
-                console.log('Error deleting barrunda: ', e);
+                console.log('Error deleting pub crawl: ', e);
                 await transaction.rollback();
                 callback(ERROR_ENUM.SERVER_ERROR, null);
             }

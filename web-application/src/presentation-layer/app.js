@@ -57,7 +57,7 @@ app.get('/', async (req, res) => {
     if(req.session.activeAccount) {
       const account = req.session.activeAccount
       //a.logBy('name');
-      if(req.session.activeAccount.teamid) res.redirect('/teams');
+      if(req.session.activeAccount.team_id) res.redirect('/teams');
       else if(req.session.activeAccount.barrundaid) res.redirect('/bars');
       else res.render('start.hbs', {activeAccount: account});
       // res.render('home.hbs');

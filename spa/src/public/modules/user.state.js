@@ -4,7 +4,7 @@ class User {
     constructor() {
         this.barrundaid = null;
         this.username = null;
-        this.teamid = null;
+        this.team_id = null;
         this.id = null;
         this.token = null;
         this.signedIn = false;
@@ -12,11 +12,11 @@ class User {
     }
 
     init(pack) {
-        const { barrundaid, id, teamid, username } = pack.account;
+        const { barrundaid, id, team_id, username } = pack.account;
         this.token = pack.idToken ? pack.idToken : this.token;
         this.barrundaid = barrundaid;
         this.id = id;
-        this.teamid = teamid;
+        this.team_id = team_id;
         this.username = username;
         // localStorage.setItem('accessToken', this.token);
         this.signedIn = true;
@@ -25,7 +25,7 @@ class User {
     logout() {
         this.barrundaid = null;
         this.username = null;
-        this.teamid = null;
+        this.team_id = null;
         this.id = null;
         this.token = null;
         this.signedIn = false;

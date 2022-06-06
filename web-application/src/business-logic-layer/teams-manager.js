@@ -38,7 +38,7 @@ module.exports = function({ teamsRepository, barsManager }){
         delete: (team, callback) => {
 
             if(team.teamowner == team.userid){
-                teamsRepository.deleteTeamById(team.teamid, (error, result) => {
+                teamsRepository.deleteTeamById(team.team_id, (error, result) => {
                     if(error){
                         callback(error, null)
                     }else{
@@ -109,7 +109,7 @@ module.exports = function({ teamsRepository, barsManager }){
                 }
             })
         },
-        updateTeamBarrunda: (teamid, account, barrundaid, callback) => {
+        updateTeamBarrunda: (team_id, account, barrundaid, callback) => {
             // Featch barrunda and check if account.id is owner id
             barsManager.deleteBarrundaById(barrundaid, account.id, async (error, result) => {
                 if (error) callback(error, null);
@@ -124,7 +124,7 @@ module.exports = function({ teamsRepository, barsManager }){
                             const data = {
                                 id: result.insertId
                             };
-                            teamsRepository.updateRundaForMembers(teamid, result.insertId, (error, result) => {
+                            teamsRepository.updateRundaForMembers(team_id, result.insertId, (error, result) => {
                                 if (error) callback(error, null);
                                 else callback(null, data);
                             });

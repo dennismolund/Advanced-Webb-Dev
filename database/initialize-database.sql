@@ -3,24 +3,24 @@ CREATE TABLE account (
     username VARCHAR(50) NOT NULL UNIQUE, 
     email VARCHAR(50) NOT NULL UNIQUE, 
     password TEXT NOT NULL,
-    currentbarrunda INT,
-    teamid INT
+    pubcrawl_id INT,
+    team_id INT
 );
-
-CREATE TABLE barrunda (
+-- data:JSON stores all bar objects within the pubcrawl.
+CREATE TABLE pubcrawl (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    owner INT NOT NULL,
+    owner_id INT NOT NULL,
     data JSON NOT NULL,
-    FOREIGN KEY (owner) REFERENCES account(id) ON DELETE CASCADE
+    FOREIGN KEY (owner_id) REFERENCES account(id) ON DELETE CASCADE
 );
 
 CREATE TABLE team (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     teamname VARCHAR(50) NOT NULL UNIQUE,
-    creatorid INT NOT NULL,
-    currentbarrunda INT,
-    FOREIGN KEY (creatorid) REFERENCES account(id) ON DELETE CASCADE
+    creator_id INT NOT NULL,
+    pubcrawl_id INT,
+    FOREIGN KEY (creator_id) REFERENCES account(id) ON DELETE CASCADE
 );
 
-ALTER TABLE account ADD CONSTRAINT FOREIGN KEY (currentbarrunda) REFERENCES barrunda(id) ON DELETE CASCADE;
-ALTER TABLE account ADD CONSTRAINT FOREIGN KEY (teamid) REFERENCES team(id) ON DELETE CASCADE;
+ALTER TABLE account ADD CONSTRAINT FOREIGN KEY (pubcrawl_id) REFERENCES pubcrawl(id) ON DELETE CASCADE;
+ALTER TABLE account ADD CONSTRAINT FOREIGN KEY (team_id) REFERENCES team(id) ON DELETE CASCADE;

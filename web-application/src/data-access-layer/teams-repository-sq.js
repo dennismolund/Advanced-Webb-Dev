@@ -1,7 +1,7 @@
 const Sequelize = require('./connection-sq');
 const Team = require('../models/Team')
 const Account = require('../models/Account')
-const Barrunda = require('../models/Barrunda');
+const Pubcrawl = require('../models/Pubcrawl');
 
 
 const errHandler = (err) =>{
@@ -19,10 +19,10 @@ module.exports = ({}) => {
             try {
                 const newTeam = await Team.create({
                     teamname: team.teamName,
-                    creatorid: team.creatorId
+                    creator_id: team.creatorId
                 });
-                const updateTeamids = await Account.update(
-                    { teamid: newTeam?.dataValues.id },
+                const updateteam_ids = await Account.update(
+                    { team_id: newTeam?.dataValues.id },
                     { where: { id: team.creatorId } }
                 );
                 await transaction.commit();
@@ -45,27 +45,27 @@ module.exports = ({}) => {
                     callback('No team found', null, null, null);
                     return;
                 } 
-                const [barrunda] = await Barrunda.findAll({ where: { owner: team.dataValues.creatorid } });
-                const teamMembers = await Account.findAll({ where: { teamid: id } });
+                const [pubcrawl] = await Pubcrawl.findAll({ where: { owner_id: team.dataValues.creator_id } });
+                const teamMembers = await Account.findAll({ where: { team_id: id } });
 
                 const usernameList = teamMembers.map((member) => member.dataValues.username);
 
                 await transaction.commit();
-                callback(null, team.dataValues, barrunda.dataValues, usernameList);
+                callback(null, team.dataValues, pubcrawl.dataValues, usernameList);
             } catch (e) {
                 console.log('Error getting team: ', e);
                 await transaction.rollback();
                 callback(['databaseError']);
             }
         },
-        deleteTeamById: async (teamid, callback) => {
+        deleteTeamById: async (team_id, callback) => {
             const transaction = await Sequelize.transaction();
             try {
-                const deleteRes = await Team.destroy({ where: { id: teamid } });
-                // { teamid: teamid } === { teamid } 
+                const deleteRes = await Team.destroy({ where: { id: team_id } });
+                // { team_id: team_id } === { team_id } 
                 const updateRes = await Account.update(
-                    { teamid: null, currentbarrunda: null },
-                    { where: { teamid } }
+                    { team_id: null, pubcrawl_id: null },
+                    { where: { team_id } }
                 );
                 await transaction.commit();
                 callback(null, null)
@@ -78,7 +78,7 @@ module.exports = ({}) => {
         leaveTeam: async (accountId, callback) => {
             try {
                 const update = await Account.update(
-                    { teamid: null, currentbarrunda: null },
+                    { team_id: null, pubcrawl_id: null },
                     { where: { id: accountId } }
                 );
                 callback(null, null);
@@ -93,7 +93,7 @@ module.exports = ({}) => {
                 const [team] = await Team.findAll({ where: { teamname: teamName } });
                 if (!team) callback('No team found', null); 
                 const update = await Account.update(
-                    { teamid: team.dataValues.id },
+                    { team_id: team.dataValues.id },
                     { where: { id: accountId }}
                 );
                 await transaction.commit();

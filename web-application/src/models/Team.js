@@ -13,11 +13,11 @@ module.exports = sequelize.define("team", {
         allowNull: false,
         unique: true
     },
-    creatorid: {
+    creator_id: {
         type: Sequelize.INTEGER,
         allowNull: false
     },
-    currentbarrunda: {
+    pubcrawl_id: {
         type: Sequelize.INTEGER
     }
 },

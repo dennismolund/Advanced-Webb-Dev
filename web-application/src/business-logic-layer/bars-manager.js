@@ -70,7 +70,7 @@ module.exports = ({ barsRepository }) => {
         getBarRunda(account, (error, result) => {
             if (error) callback(error, null);
             else {
-                if (result.raw.owner !== account.id) {
+                if (result.raw.owner_id !== account.id) {
                     console.log('User is not authroized to delete resource', result);
                     callback(ERROR_ENUM.UNAUTHORIZED, null);
                 } else {
