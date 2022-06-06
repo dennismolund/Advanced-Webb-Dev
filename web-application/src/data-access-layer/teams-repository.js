@@ -5,10 +5,10 @@ module.exports = function({}){
     return{
         
         createTeam: (team, callback)=>{
-            const query = `INSERT INTO teams (teamname, creatorid) VALUES (?, ?)`;
+            const query = `INSERT INTO team (teamname, creatorid) VALUES (?, ?)`;
             const values = [team.teamName, team.creatorId];
-            const q2 = `UPDATE accounts SET teamid = ? WHERE id = ?`;
-            const q3 = `SELECT * FROM teams WHERE id = ?`;
+            const q2 = `UPDATE account SET teamid = ? WHERE id = ?`;
+            const q3 = `SELECT * FROM team WHERE id = ?`;
             db.query(query, values, (error, result) => {
                 if (error) {
                     console.log("Error in database: ", error);
@@ -16,7 +16,7 @@ module.exports = function({}){
                 } else {
                     const v2 = [result.insertId, team.creatorId];
                     db.query(q2, v2, (error, result) => {
-                        if (error) console.log('Error updating accounts table for creator after creating team.', error);
+                        if (error) console.log('Error updating account table for creator after creating team.', error);
                     });
                     db.query(q3, result.insertId, (error, result) => {
                         
@@ -28,27 +28,27 @@ module.exports = function({}){
             });
         },
         deleteTeamById: (teamid, callback)=>{
-            const query = `DELETE FROM teams WHERE id = ?`
-		    const values = [teamid]
+            const query = `UPDATE account SET teamid = ?, currentbarrunda = ? WHERE teamid = ?`
+		    const values = [null, null, teamid]
             db.query(query, values, (error, result) => {
                 if(error){
-                    console.log("ERROR WHEN DELETING TEAM", error);
+                    console.log("ERROR WHEN UPDATING ACCOUNT", error);
                     callback(error, null)
                 }else{
-                    const query2 = `UPDATE accounts SET teamid = ?, currentbarrunda = ? WHERE teamid = ?`
-		            const values2 = [null, null, teamid]
+                    const query2 = `DELETE FROM team WHERE id = ?`
+		            const values2 = [teamid]
                     db.query(query2, values2, (error, results)=>{
                         if(error){
-                            console.log("ERROR WHEN UPDATING ACCOUNT", error);
+                            console.log("ERROR WHEN DELETING TEAM", error);
                             callback('Error deleting team', null)
-                        }else callback(null, null)
+                        } else callback(null, null)
                     })
                 }
             })
             
         },
         leaveTeam: (accountId, callback) => {
-            const query = `UPDATE accounts SET teamid = ?, currentbarrunda = ? WHERE id = ?`
+            const query = `UPDATE account SET teamid = ?, currentbarrunda = ? WHERE id = ?`
             const values = [null, null, accountId]
             db.query(query, values, (error, results)=>{
                 if(error){
@@ -57,8 +57,8 @@ module.exports = function({}){
             })
         },
         joinTeam: (teamName, accountId, callback) => {
-            const query = `SELECT * FROM teams WHERE teamname = ?`
-            const q2 = `UPDATE accounts SET teamid = ? WHERE id = ?`;
+            const query = `SELECT * FROM team WHERE teamname = ?`
+            const q2 = `UPDATE account SET teamid = ? WHERE id = ?`;
 		    const values = [teamName]
             
             db.query(query, values, (error, result) => {
@@ -81,10 +81,10 @@ module.exports = function({}){
             })
         },
         getTeam: (id, callback)=>{
-            const query = `SELECT * FROM teams WHERE id = ?`
+            const query = `SELECT * FROM team WHERE id = ?`
 		    const values = [id]
             const q2 = `SELECT * FROM barrunda WHERE owner = ?`
-            const q3 = `SELECT username FROM accounts WHERE teamid = ?`
+            const q3 = `SELECT username FROM account WHERE teamid = ?`
             
             db.query(query, values, (error, result) => {
                 if(error){
@@ -124,7 +124,7 @@ module.exports = function({}){
         },
         updateRundaForMembers: (teamid, barrundaid, callback) => {
             console.log('settings barrunda id: ', barrundaid);
-            const query = 'UPDATE accounts SET currentbarrunda = ? WHERE teamid = ?';
+            const query = 'UPDATE account SET currentbarrunda = ? WHERE teamid = ?';
             const values = [barrundaid, teamid];
             db.query(query, values, (error, _) => {
                 if (error) {

@@ -22,5 +22,7 @@ module.exports = sequelize.define("team", {
     }
 },
 {
-    timestamps: false
+    timestamps: false,
+    freezeTableName: true,
+    tableName: 'team'
 })

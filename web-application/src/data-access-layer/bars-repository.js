@@ -11,7 +11,7 @@ module.exports = function({}){
                 if (error) callback(error, null);
                 else {
                     // Update user
-                    const query = 'UPDATE accounts SET currentbarrunda = ? WHERE id = ?';
+                    const query = 'UPDATE account SET currentbarrunda = ? WHERE id = ?';
                     const values = [result.insertId, userId];
                     db.query(query, values, (e, r) => {
                         if (e) console.log('Failed to update user after creating barrunda');
@@ -22,7 +22,7 @@ module.exports = function({}){
         },
 
         getBarRunda: (account, callback) => {
-            const qBid = `SELECT currentbarrunda FROM accounts WHERE username = ?`
+            const qBid = `SELECT currentbarrunda FROM account WHERE username = ?`
             const qBarRunda = `SELECT * FROM barrunda WHERE id = ?`;
 
             db.query(qBid, [account.username], (error, result) => {
@@ -54,10 +54,9 @@ module.exports = function({}){
 
         deleteBarrundaById: (id, callback) => {
 
-            // TODO: Remove this id from teams, users with this id as their barrunda.
             const query = `DELETE FROM barrunda WHERE id = ?`;
-            const q2 = `UPDATE accounts SET currentbarrunda = NULL WHERE currentbarrunda = ?`;
-            const q3 = `UPDATE teams SET currentbarrunda = NULL WHERE currentbarrunda = ?`
+            const q2 = `UPDATE account SET currentbarrunda = NULL WHERE currentbarrunda = ?`;
+            const q3 = `UPDATE team SET currentbarrunda = NULL WHERE currentbarrunda = ?`
             db.query(query, id, (error, result) => {
                 if (error) callback(error, null);
                 else {
@@ -65,7 +64,7 @@ module.exports = function({}){
                     db.query(q2, id, (error, result,) => {
                         if (error) console.log('FAILED to remove barrunda id from user table after deleting barrunda ', error);
                         db.query(q3, id, (error, result) => {
-                            if (error) console.log('FAILED to remove barrundaid from teams table after deleting barrunda', error);
+                            if (error) console.log('FAILED to remove barrundaid from  table after deleting barrunda', error);
                             callback(null, null);
                         });
                     });

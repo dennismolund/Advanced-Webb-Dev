@@ -30,5 +30,7 @@ module.exports = sequelize.define('account', {
     }
 },
 {
-    timestamps: false
+    timestamps: false,
+    freezeTableName: true,
+    tableName: 'account'
 })

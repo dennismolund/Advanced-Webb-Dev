@@ -8,7 +8,7 @@ module.exports = function({}){
 	
 	return {
 	  getAccountIdByUsername: (username, callback) => {
-		const query = `SELECT id FROM accounts WHERE username = ?`;
+		const query = `SELECT id FROM account WHERE username = ?`;
 		const values = [username];
 
 		db.query(query, values, (error, results) => {
@@ -22,7 +22,7 @@ module.exports = function({}){
 		});
 	  },
 	  getAccountById: (id, callback) => {
-		  const query = 'SELECT * FROM accounts WHERE id = ?';
+		  const query = 'SELECT * FROM account WHERE id = ?';
 		  const values = [id];
 		  db.query(query, values, (error, results) => {
 			if (error) {
@@ -36,7 +36,7 @@ module.exports = function({}){
 
 	  createAccount: (account, callback) => {
 	
-		const query = `INSERT INTO accounts (username, email, password) VALUES (?, ?, ?)`;
+		const query = `INSERT INTO account (username, email, password) VALUES (?, ?, ?)`;
 		const values = [account.username, account.email, account.password];
 		
 		db.query(query, values, (error, results) => {
@@ -55,7 +55,7 @@ module.exports = function({}){
 		},
 		loginRequest: (account, callback) => {
 		
-			const query = "SELECT * FROM accounts WHERE username = ?";
+			const query = "SELECT * FROM account WHERE username = ?";
 			const values = [account.enteredUsername];
 		
 			db.query(query, values, (error, accountFromDb) => {
