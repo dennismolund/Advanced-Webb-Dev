@@ -7,9 +7,21 @@ const fp = require('path');
 const session = require('express-session')
 const awilix = require('awilix')
 
+let RedisStore = require("connect-redis")(session)
+ 
+const { createClient } = require("redis")
+const { REDIS_PASSWORD, REDIS_HOST, REDIS_PORT } = process.env
+let redisClient = createClient({ 
+  url: `redis://:${REDIS_PASSWORD}@${REDIS_HOST}:${REDIS_PORT}`
+})
+redisClient.connect().catch(console.error)
+
+
 //Sequilze DB connection
 require('../data-access-layer/connection-sq');
-
+console.log(process.env.REDIS_HOST);
+console.log(process.env.REDIS_USERNAME);
+console.log(process.env.REDIS_PASSWORD);
 const app = express();
 
 const engine = hbs.engine || hbs;
@@ -39,12 +51,13 @@ app.use(bodyParser.urlencoded({
 
 app.set('trust proxy', 1) // trust first proxy
 app.use(session({
+  store: new RedisStore({ client: redisClient }),
   secret: 'Qp34n!wh3G',
   resave: false,
   saveUninitialized: true,
   //set true when site is available as HTTPS
   cookie: { secure: false }
-}));
+}))
 
 // app.use((req, res, next) => {
 //   console.log('*** ROUTING ***');
@@ -80,7 +93,8 @@ const barsRepositorySq = require('../data-access-layer/bars-repository-sq')
 const teamsRouter = require('./routers/teams-router')
 const teamsManager = require('../business-logic-layer/teams-manager')
 const teamsRepository = require('../data-access-layer/teams-repository')
-const teamsRepositorySq = require('../data-access-layer/teams-repository-sq')
+const teamsRepositorySq = require('../data-access-layer/teams-repository-sq');
+const { Socket } = require('dgram');
 
 // Create a container and add the dependencies we want to use.
 const container = awilix.createContainer()
