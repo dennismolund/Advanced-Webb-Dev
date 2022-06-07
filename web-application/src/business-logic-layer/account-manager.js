@@ -1,5 +1,5 @@
 const accountValidator = require('./account-validator')
-const ERROR_ENUM = require('./models/error.enum');
+const ERROR_ENUM = require('./models/error_enum');
 var bcrypt = require('bcrypt');
 const saltRounds = 10;
 

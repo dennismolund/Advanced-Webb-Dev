@@ -1,8 +1,8 @@
 const { Sequelize } = require('sequelize');
-const Team = require('../business-logic-layer/models/Team')
-const Account = require('../business-logic-layer/models/Account')
+const Team = require('../business-logic-layer/models/Team');
+const Account = require('../business-logic-layer/models/Account');
 const Barrunda = require('../business-logic-layer/models/Pubcrawl');
-const ERROR_ENUM = require('../business-logic-layer/models/error.enum');
+const ERROR_ENUM = require('../business-logic-layer/models/error_enum');
 
 module.exports = ({}) => { 
 

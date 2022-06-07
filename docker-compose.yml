@@ -1,15 +1,5 @@
-version: '3'
+version: "3.8"
 services:
-  "web-application":
-    build: "./web-application"
-    ports:
-      - "3000:8080"
-      - "9229:9229"
-      - "3002:3002"
-    volumes:
-      - "./web-application/src:/web-application/src"
-    depends_on:
-      - database
   database:
     build: ./database
     ports:
@@ -17,12 +7,47 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=jade123
       - MYSQL_DATABASE=webAppDatabase
+
+  cache:
+    image: redis:7.0.0
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    volumes:
+      - cache:/data
+
+  "web-application":
+    build: "./web-application"
+    ports:
+      - "3000:8080"
+      - "9229:9229"
+      - "3002:3002"
+    depends_on:
+      - database
+      - cache
+    environment:
+      REDIS_HOST: cache
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    links:
+      - database
+      - cache
+    volumes:
+      - "./web-application/src:/web-application/src"
+
   spa:
     build: "./spa"
-    ports: 
+    ports:
       - 3001:3001
-    volumes: 
+    volumes:
       - "./spa/src:/spa/src"
     depends_on:
       - database
       - web-application
+
+volumes:
+  database:
+    driver: local
+  cache:
+    driver: local
