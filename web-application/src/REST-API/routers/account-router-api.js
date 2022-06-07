@@ -1,5 +1,5 @@
 const express = require('express')
-var bcrypt = require('bcryptjs');
+var bcrypt = require('bcrypt');
 const ERROR_ENUM = require('../../models/error.enum');
 const { authenticateToken } = require('../middleware/authenticateToken');
 const { jwt_secret, supportedClients } = require('../../const');

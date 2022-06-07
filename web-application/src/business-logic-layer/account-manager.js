@@ -1,6 +1,6 @@
 const accountValidator = require('./account-validator')
 const ERROR_ENUM = require('../models/error.enum');
-var bcrypt = require('bcryptjs');
+var bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 module.exports = ({ accountRepository }) => {
