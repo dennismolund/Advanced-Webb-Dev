@@ -1,8 +1,8 @@
 const express = require('express');
 const { decode } = require('jsonwebtoken');
-const { getPlaces } = require('../../service/fetch.data.service');
-const barlist = require('../../models/bar.model')
-const ERROR_ENUM = require('../../models/error.enum');
+const { getPlaces } = require('../../data-access-layer/service/fetch.data.service');
+const barlist = require('../../business-logic-layer/models/bar.model')
+const ERROR_ENUM = require('../../business-logic-layer/models/error.enum');
 
 module.exports = ({ barsManager, accountManager }) => {
     const router = express.Router();

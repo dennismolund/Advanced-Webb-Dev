@@ -1,7 +1,7 @@
 const Sequelize = require('./connection-sq');
-const Team = require('../models/Team')
-const Account = require('../models/Account')
-const Pubcrawl = require('../models/Pubcrawl');
+const Team = require('../business-logic-layer/models/Team')
+const Account = require('../business-logic-layer/models/Account')
+const Pubcrawl = require('../business-logic-layer/models/Pubcrawl');
 
 
 const errHandler = (err) =>{

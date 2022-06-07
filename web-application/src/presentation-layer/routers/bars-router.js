@@ -1,7 +1,7 @@
 const express = require('express')
 const session = require('express-session')
-const barlist = require('../../models/bar.model')
-const { getPlaces } = require('../../service/fetch.data.service');
+const barlist = require('../../business-logic-layer/models/bar.model')
+const { getPlaces } = require('../../data-access-layer/service/fetch.data.service');
 
 module.exports = function({barsManager, teamsManager, accountManager}){
 

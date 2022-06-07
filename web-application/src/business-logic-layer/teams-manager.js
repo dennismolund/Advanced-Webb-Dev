@@ -1,9 +1,9 @@
 const express = require('express')
 const { validTeamName } = require('./teams-validator');
-const barlist = require('../models/bar.model')
+const barlist = require('../business-logic-layer/models/bar.model')
 const { validParams, validRows, parseResult } = require('./bars-validator');
 const barsRepository = require('../data-access-layer/bars-repository');
-const { getPlaces } = require('../service/fetch.data.service');
+const { getPlaces } = require('../data-access-layer/service/fetch.data.service');
 
 module.exports = function({ teamsRepository, barsManager }){
 

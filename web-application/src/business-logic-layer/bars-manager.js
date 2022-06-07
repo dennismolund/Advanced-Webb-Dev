@@ -1,7 +1,7 @@
 
-const { logBy } = require('../models/bar.model');
+const { logBy } = require('./models/bar.model');
 const { validParams, validRows, parseResult } = require('./bars-validator');
-const ERROR_ENUM = require('../models/error.enum');
+const ERROR_ENUM = require('./models/error.enum');
 
 module.exports = ({ barsRepository }) => {
 
