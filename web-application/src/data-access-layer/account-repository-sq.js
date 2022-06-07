@@ -19,7 +19,9 @@ module.exports = ({}) => {
             } catch (e) {
                 console.log(e);
                 if (e.original?.code === "ER_DUP_ENTRY") {
-                    if (e.original?.sqlMessage.includes('email')) callback(ERROR_ENUM.EMAIL_TAKEN, null);
+                    if (e.original?.sqlMessage.includes('email')) {
+                        callback(ERROR_ENUM.EMAIL_TAKEN, null);
+                    }
                     else callback(ERROR_ENUM.USERNAME_TAKEN, null);
                 }
                 else callback(ERROR_ENUM.SERVER_ERROR, null);
@@ -27,7 +29,11 @@ module.exports = ({}) => {
         },
         loginRequest: async (account, callback) => { 
             try {
-                const users = await Account.findAll({ where: { username: account.enteredUsername }});
+                const users = await Account.findAll({ 
+                    where: { 
+                        username: account.enteredUsername 
+                    }
+                });
                 if (users.length) callback(null, users[0].dataValues);
 				else callback(null, null);
             } catch (e) {
@@ -48,7 +54,11 @@ module.exports = ({}) => {
         },
         getAccountIdByUsername: async (username, callback) => {
             try {
-                const users = await Account.findAll({ where: { username }});
+                const users = await Account.findAll({ 
+                    where: { 
+                        username 
+                    }
+                });
                 if (users.length) callback(null, users[0].dataValues.id);
                 else callback(null, null);
             } catch (e) {
