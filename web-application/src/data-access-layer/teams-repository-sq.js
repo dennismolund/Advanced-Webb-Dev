@@ -104,6 +104,5 @@ module.exports = ({}) => {
                 callback(e, null);
             }
         }
-        //TODO: updateRundaForMemebers
     }
 }

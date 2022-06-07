@@ -6,7 +6,7 @@ const ERROR_ENUM = require('../business-logic-layer/models/error_enum');
 
 module.exports = ({}) => { 
 
-    //TODO: HANDLE ERRORS
+
     return { 
         createAccount: async (account, callback) => {
             try {

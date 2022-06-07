@@ -41,7 +41,6 @@ module.exports = function({}){
 		
 		db.query(query, values, (error, results) => {
 			if(error){
-				// TODO: Look for usernameUnique violation.
 				console.log("Error in database: ", error.code);
 				if (error.code === "ER_DUP_ENTRY") {
 					if (error.sqlMessage.includes('email')) callback(ERROR_ENUM.EMAIL_TAKEN, null);

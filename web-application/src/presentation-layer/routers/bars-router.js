@@ -34,7 +34,6 @@ module.exports = function({barsManager, teamsManager, accountManager}){
                 console.log('Failed to save barrunda');
                 console.log(error);
                 res.render("start.hbs", { error })
-                // TODO ?
             } else {
                 barid = result.insertId
                 req.session.activeAccount.barrundaid = barid;
