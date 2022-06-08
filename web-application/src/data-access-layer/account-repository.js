@@ -8,13 +8,13 @@ module.exports = function({}){
 	  getAccountById: (id, callback) => {
 		  const query = 'SELECT * FROM account WHERE id = ?';
 		  const values = [id];
-		  db.query(query, values, (error, results) => {
+		  db.query(query, values, (error, account) => {
 			if (error) {
 				console.log('Error getting acocunt from db: ', error);
 				callback(ERROR_ENUM.SERVER_ERROR, null);
 				return;
 			}
-			callback(null, results[0]);
+			callback(null, account[0]);
 		  });
 	  },
 

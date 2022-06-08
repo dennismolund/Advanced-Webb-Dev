@@ -45,7 +45,7 @@ class Bars {
     }
 
     getRandom(amount) {
-        const max = _amount || 5;
+        const max = amount || 5;
         let pickFrom = Array.from(this.list);
         let res = [];
         // If we try to make bigger list than we have, we return what we have in scrambled order.

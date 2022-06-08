@@ -43,9 +43,9 @@ module.exports = ({}) => {
                     return;
                 } 
 
-                const [barRes] = await Barrunda.findAll({ where: { id: accountRes.dataValues.pubcrawl_id } });
+                const barRes = await Barrunda.findOne({ where: { id: accountRes.dataValues.pubcrawl_id } });
                 if (!barRes) callback(null, null);
-
+                console.log("barRes", barRes);
                 await transaction.commit();
                 callback(null, barRes.dataValues);
             } catch (e) {
@@ -67,14 +67,6 @@ module.exports = ({}) => {
             const transaction = await Sequelize.transaction();
             try {
                 const deleteRes = await Barrunda.destroy({ where: { id } });
-                const accountUpdate = await Account.update(
-                    { pubcrawl_id: null },
-                    { where: { pubcrawl_id: id } }
-                );
-                const teamUpdate = await Team.update(
-                    { pubcrawl_id: null },
-                    { where: { pubcrawl_id: id } }
-                );
                 await transaction.commit();
                 callback(null, null);
 

@@ -51,20 +51,9 @@ module.exports = function({}){
         deleteBarrundaById: (id, callback) => {
 
             const query = `DELETE FROM pubcrawl WHERE id = ?`;
-            const q2 = `UPDATE account SET pubcrawl_id = NULL WHERE pubcrawl_id = ?`;
-            const q3 = `UPDATE team SET pubcrawl_id = NULL WHERE pubcrawl_id = ?`
             db.query(query, id, (error, result) => {
                 if (error) callback(error, null);
-                else {
-                    console.log('Delete query was successfull: ', result);
-                    db.query(q2, id, (error, result,) => {
-                        if (error) console.log('FAILED to remove pubcrawl id from user table after deleting pubcrawl ', error);
-                        db.query(q3, id, (error, result) => {
-                            if (error) console.log('FAILED to remove pubcrawlid from  table after deleting pubcrawl', error);
-                            callback(null, null);
-                        });
-                    });
-                }
+                else callback(null, null);
             });
         }
     }
