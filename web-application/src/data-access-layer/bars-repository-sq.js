@@ -7,7 +7,7 @@ const ERROR_ENUM = require('../business-logic-layer/models/error_enum');
 module.exports = ({}) => { 
 
     return {
-        storeBarRunda: async (barRunda, userId, callback) => {
+        storePubcrawl: async (barRunda, userId, callback) => {
             const transaction = await Sequelize.transaction();
             try {
                 const newBarrunda = await Barrunda.create({
@@ -30,7 +30,7 @@ module.exports = ({}) => {
                 callback(new Error(ERROR_ENUM.SERVER_ERROR), null);
             }
         },
-        getBarRunda: async (account, callback) => {
+        getPubcrawl: async (account, callback) => {
             console.log('Get pub crawl: account ', account);
             const transaction = await Sequelize.transaction();
             try {
@@ -54,7 +54,7 @@ module.exports = ({}) => {
                 callback(ERROR_ENUM.SERVER_ERROR, null);
             }
         },
-        getBarrundaById: async (id, callback) => {
+        getPubcrawlById: async (id, callback) => {
             try {
                 const [barsRes] = await Barrunda.findAll({ where: { id } });
                 callback(null, barsRes.dataValues);

@@ -3,7 +3,7 @@ const ERROR_ENUM = require('../business-logic-layer/models/error_enum');
 module.exports = function({}){
 
     return {
-        storeBarRunda: (barRunda, userId, callback) => {
+        storePubcrawl: (barRunda, userId, callback) => {
             const query = `INSERT INTO pubcrawl (owner_id, data) VALUES (?,?)`;
             const values = [userId, JSON.stringify(barRunda)];
 
@@ -21,17 +21,13 @@ module.exports = function({}){
             });
         },
 
-        getBarRunda: (account, callback) => {
+        getPubcrawl: (account, callback) => {
             const qBid = `SELECT pubcrawl_id FROM account WHERE username = ?`
             const qBarRunda = `SELECT * FROM pubcrawl WHERE id = ?`;
 
             db.query(qBid, [account.username], (error, result) => {
                 if (error) callback(error, null);
-
-                else if (!result[0].pubcrawl_id) {
-                    callback(null, null);
-                }
-
+                else if (!result[0].pubcrawl_id) callback(null, null);
                 else {
                     const values = [result[0].pubcrawl_id];
 
@@ -46,7 +42,7 @@ module.exports = function({}){
             });
         },
 
-        getBarrundaById: (id, callback) => {
+        getPubcrawlById: (id, callback) => {
             db.query('SELECT * FROM pubcrawl WHERE id = ?', id, (error, result) => {
                 callback(error, result);
             })

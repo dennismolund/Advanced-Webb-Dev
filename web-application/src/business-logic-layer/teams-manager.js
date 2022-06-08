@@ -22,7 +22,7 @@ module.exports = function({ teamsRepository, barsManager }){
                     // Create new barrund for team.
                     await getPlaces();
                     const barrunda = barlist.getRandom();
-                    barsManager.storeBarRunda(barrunda, account.id, (error, result) => {
+                    barsManager.storePubcrawl(barrunda, account.id, (error, result) => {
                         if (error) callback(error, null);
                         else {
                             const data = {
@@ -116,7 +116,7 @@ module.exports = function({ teamsRepository, barsManager }){
                 else {
                     await getPlaces();
                     const barrunda = barlist.getRandom();
-                    barsManager.storeBarRunda(barrunda, account.id, (error, result) => {
+                    barsManager.storePubcrawl(barrunda, account.id, (error, result) => {
                         if (error) callback(error, null);
                         else {
                             // Update members

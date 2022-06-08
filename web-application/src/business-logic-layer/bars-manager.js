@@ -5,22 +5,22 @@ const ERROR_ENUM = require('./models/error_enum');
 
 module.exports = ({ barsRepository }) => {
 
-    const storeBarRunda = (barRunda, userId, callback) => {
-        if (!validParams('storeBarRunda', barRunda)) {
+    const storePubcrawl = (barRunda, userId, callback) => {
+        if (!validParams('storePubcrawl', barRunda)) {
             const e = new Error('Invalid Params');
             callback(e, null);
         } else {
-            barsRepository.storeBarRunda(barRunda, userId, callback)
+            barsRepository.storePubcrawl(barRunda, userId, callback)
         }
     };
     
 
-    const getBarRunda = (account, callback) => {
-        if (!validParams('getBarRunda', {account})) {
+    const getPubcrawl = (account, callback) => {
+        if (!validParams('getPubcrawl', {account})) {
             const e = new Error('Invalid Params');
             callback(e, null);
         } else {
-            barsRepository.getBarRunda(account, (error, result) => {
+            barsRepository.getPubcrawl(account, (error, result) => {
 
                 if (error) callback(error, null);
                 else {
@@ -44,8 +44,8 @@ module.exports = ({ barsRepository }) => {
         }
     };
 
-    const getBarrundaById = (id, callback) => {
-        barsRepository.getBarrundaById(id, (error, result) => {
+    const getPubcrawlById = (id, callback) => {
+        barsRepository.getPubcrawlById(id, (error, result) => {
             if (error) {
                 callback(error, null);
             } else if (!result) {
@@ -67,7 +67,7 @@ module.exports = ({ barsRepository }) => {
     }
 
     const deleteBarrundaById = (id, account, callback) => {
-        getBarRunda(account, (error, result) => {
+        getPubcrawl(account, (error, result) => {
             if (error) callback(error, null);
             else {
                 if (result.raw.owner_id !== account.id) {
@@ -88,9 +88,9 @@ module.exports = ({ barsRepository }) => {
     }
 
     return {
-        storeBarRunda,
-        getBarRunda,
+        storePubcrawl,
+        getPubcrawl,
         deleteBarrundaById,
-        getBarrundaById,
+        getPubcrawlById,
     }
 }

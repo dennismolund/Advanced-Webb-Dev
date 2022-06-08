@@ -9,7 +9,7 @@ module.exports = function({barsManager, teamsManager, accountManager}){
 
     router.get("/", (req, res) => {
         const account = req.session.activeAccount;
-        barsManager.getBarRunda(account, (error, result) => {
+        barsManager.getPubcrawl(account, (error, result) => {
             if (error) {
                 res.render("start.hbs", { activeAccount: account });
             } else if (result){
@@ -29,7 +29,7 @@ module.exports = function({barsManager, teamsManager, accountManager}){
         await getPlaces();
         const barRunda = barlist.getRandom();
         let barid = null
-        barsManager.storeBarRunda(barRunda, req.session.activeAccount.id, (error, result) => {
+        barsManager.storePubcrawl(barRunda, req.session.activeAccount.id, (error, result) => {
             if (error) {
                 console.log('Failed to save barrunda');
                 console.log(error);

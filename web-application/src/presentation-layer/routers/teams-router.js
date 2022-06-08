@@ -95,7 +95,7 @@ module.exports = ({teamsManager, barsManager}) => {
                 res.redirect('/teams')
             } else {
                 req.session.activeAccount.barrundaid = result.id;
-                // barsManager.getBarrundaById(result.id, (error, result) => {
+                // barsManager.getPubcrawlById(result.id, (error, result) => {
                 //     if (error) console.log('ERROR: ', error);
                 //      else {
                 //          console.log(result);

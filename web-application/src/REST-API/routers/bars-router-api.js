@@ -14,7 +14,7 @@ module.exports = ({ barsManager, accountManager }) => {
         const token = req.headers['authorization'].split(' ')[1];
         const { username, sub: userId } = decode(token);
         
-        barsManager.storeBarRunda(barRunda, userId, (error, result) => {
+        barsManager.storePubcrawl(barRunda, userId, (error, result) => {
             if (error) {
                 if (error === ERROR_ENUM.SERVER_ERROR) return res.status(500).json({ error: ERROR_ENUM.SERVER_ERROR });
                 else {
@@ -44,7 +44,7 @@ module.exports = ({ barsManager, accountManager }) => {
     router.get('/:id', (req, res) => {
         const { id } = req.params;
         const { account } = req;
-        barsManager.getBarrundaById(id, (error, data) => {
+        barsManager.getPubcrawlById(id, (error, data) => {
             if (error) {
                 if (error === ERROR_ENUM.SERVER_ERROR) {
                     res.status(500).json({ error: ERROR_ENUM.SERVER_ERROR });
