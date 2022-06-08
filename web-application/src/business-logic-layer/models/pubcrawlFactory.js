@@ -1,3 +1,4 @@
+const scrambleArray = require('../helpFunctions')
 class BarTemplate {
     constructor(bar) {
         this.raw = bar;
@@ -29,27 +30,12 @@ class Pubcrawl {
         })
     }
 
-    static scramble(array) {
-        let currentIndex = array.length,  randomIndex;
-
-        while (currentIndex != 0) {
-      
-          randomIndex = Math.floor(Math.random() * currentIndex);
-          currentIndex--;
-      
-          [array[currentIndex], array[randomIndex]] = [
-            array[randomIndex], array[currentIndex]];
-        }
-      
-        return array;
-    }
-
     getRandom(amount) {
         const max = amount || 5;
         let pickFrom = Array.from(this.list);
         let res = [];
         // If we try to make bigger list than we have, we return what we have in scrambled order.
-        if (max > this.list.length) return Pubcrawl.scramble(this.list);
+        if (max > this.list.length) return scrambleArray(this.list);
 
         for (let i = 0; i < max; i++) {
             const item = pickFrom[Math.floor(Math.random() * pickFrom.length)];
