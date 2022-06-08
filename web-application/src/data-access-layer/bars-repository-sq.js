@@ -43,7 +43,11 @@ module.exports = ({}) => {
                     return;
                 } 
 
-                const barRes = await Barrunda.findOne({ where: { id: accountRes.dataValues.pubcrawl_id } });
+                const barRes = await Barrunda.findOne({ 
+                    where: { 
+                        id: accountRes.dataValues.pubcrawl_id
+                    } 
+                });
                 if (!barRes) callback(null, null);
                 console.log("barRes", barRes);
                 await transaction.commit();
@@ -56,7 +60,11 @@ module.exports = ({}) => {
         },
         getPubcrawlById: async (id, callback) => {
             try {
-                const [barsRes] = await Barrunda.findAll({ where: { id } });
+                const [barsRes] = await Barrunda.findAll({ 
+                    where: { 
+                        id
+                    } 
+                });
                 callback(null, barsRes.dataValues);
             } catch (e) {
                 callback(ERROR_ENUM.SERVER_ERROR, null);
@@ -66,7 +74,11 @@ module.exports = ({}) => {
         deleteBarrundaById: async (id, callback) => {
             const transaction = await Sequelize.transaction();
             try {
-                const deleteRes = await Barrunda.destroy({ where: { id } });
+                const deleteRes = await Barrunda.destroy({ 
+                    where: { 
+                        id
+                    } 
+                });
                 await transaction.commit();
                 callback(null, null);
 
