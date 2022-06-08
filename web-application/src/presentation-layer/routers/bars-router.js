@@ -1,6 +1,6 @@
 const express = require('express')
 const session = require('express-session')
-const barlist = require('../../business-logic-layer/models/bar.model')
+const Pubcrawl = require('../../business-logic-layer/models/pubcrawlFactory')
 const { getPlaces } = require('../../data-access-layer/service/fetch.data.service');
 
 module.exports = function({barsManager, teamsManager, accountManager}){
@@ -27,17 +27,17 @@ module.exports = function({barsManager, teamsManager, accountManager}){
     router.post('/', async (req, res) => {
         console.log('Creating and storing new barrunda');
         await getPlaces();
-        const barRunda = barlist.getRandom();
+        const pubcrawl = Pubcrawl.getRandom();
         let barid = null
-        barsManager.storePubcrawl(barRunda, req.session.activeAccount.id, (error, result) => {
+        barsManager.storePubcrawl(pubcrawl, req.session.activeAccount.id, (error, result) => {
             if (error) {
-                console.log('Failed to save barrunda');
+                console.log('Failed to save pubcrawl');
                 console.log(error);
                 res.render("start.hbs", { error })
             } else {
                 barid = result.insertId
                 req.session.activeAccount.barrundaid = barid;
-                res.render("barrundasolo.hbs", {barid,bars: barRunda.list, activeAccount: req.session.activeAccount})
+                res.render("barrundasolo.hbs", {barid,bars: pubcrawl.list, activeAccount: req.session.activeAccount})
             }
         });
     });

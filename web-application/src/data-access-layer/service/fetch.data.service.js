@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const Bars = require('../../business-logic-layer/models/bar.model');
+const Bars = require('../../business-logic-layer/models/pubcrawlFactory');
 
 const API_KEY = 'AIzaSyDPwirw4Wvb4y4vDRGUgAsx5yEcSfQR08Q';
 const NEARBY_SEARCH_URL = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?';

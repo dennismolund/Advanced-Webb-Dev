@@ -1,4 +1,4 @@
-class Bar {
+class BarTemplate {
     constructor(bar) {
         this.raw = bar;
         this.name = bar.name;
@@ -9,15 +9,15 @@ class Bar {
         this.types = bar.types;
     }
 }
-class Bars {
+class Pubcrawl {
     constructor() {
         this.list = [];
     }
 
     //bars retrieved from Google API
-    aggregate(bars) {
-        bars.forEach((bar_item) => {
-            const bar = new Bar(bar_item)
+    aggregate(rawBars) {
+        rawBars.forEach((barItem) => {
+            const bar = new BarTemplate(barItem)
             this.list.push(bar);
         });
         return this;
@@ -49,7 +49,7 @@ class Bars {
         let pickFrom = Array.from(this.list);
         let res = [];
         // If we try to make bigger list than we have, we return what we have in scrambled order.
-        if (max > this.list.length) return Bars.scramble(this.list);
+        if (max > this.list.length) return Pubcrawl.scramble(this.list);
 
         for (let i = 0; i < max; i++) {
             const item = pickFrom[Math.floor(Math.random() * pickFrom.length)];
@@ -59,8 +59,8 @@ class Bars {
             pickFrom.splice(remove_ix, 1);
         }
         const a = res.map((item) => item.name);
-        return new Bars().aggregate(res);
+        return new Pubcrawl().aggregate(res);
     }
 }
 
-module.exports = new Bars();
+module.exports = new Pubcrawl();

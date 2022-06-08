@@ -1,6 +1,6 @@
 const express = require('express')
 const { validTeamName } = require('./teams-validator');
-const barlist = require('../business-logic-layer/models/bar.model')
+const barlist = require('./models/pubcrawlFactory')
 const { validParams, validRows, parseResult } = require('./bars-validator');
 const barsRepository = require('../data-access-layer/bars-repository');
 const { getPlaces } = require('../data-access-layer/service/fetch.data.service');
