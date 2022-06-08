@@ -3,9 +3,10 @@ class Bars {
         this.list = [];
     }
 
-    aggregate(list) {
-        list.forEach((item) => {
-            const bar = new Bar(item)
+    //bars retrieved from Google API
+    aggregate(bars) {
+        bars.forEach((bar_item) => {
+            const bar = new Bar(bar_item)
             this.list.push(bar);
         });
         return this;
