@@ -1,4 +1,4 @@
-class BarList {
+class Bars {
     constructor() {
         this.list = [];
     }
@@ -37,7 +37,7 @@ class BarList {
         let pickFrom = Array.from(this.list);
         let res = [];
         // If we try to make bigger list than we have, we return what we have in scrambled order.
-        if (max > this.list.length) return BarList.scramble(this.list);
+        if (max > this.list.length) return Bars.scramble(this.list);
 
         for (let i = 0; i < max; i++) {
             const item = pickFrom[Math.floor(Math.random() * pickFrom.length)];
@@ -47,7 +47,7 @@ class BarList {
             pickFrom.splice(remove_ix, 1);
         }
         const a = res.map((item) => item.name);
-        return new BarList().aggregate(res);
+        return new Bars().aggregate(res);
     }
 }
 
@@ -63,4 +63,4 @@ class Bar {
     }
 }
 
-module.exports = new BarList();
+module.exports = new Bars();

@@ -188,7 +188,7 @@ const onBarrundaRemoved = () => {
 }
 
 const onBarrundaReceived = (data) => {
-    User.setBarList(data);
+    User.setBars(data);
     if (ViewController.activeView.name === 'home') {
         console.log('Displaying bar list');
         ViewController.showBarlist();

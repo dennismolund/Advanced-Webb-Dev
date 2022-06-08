@@ -40,7 +40,7 @@ class User {
         }
     }
 
-    setBarList(data) {
+    setBars(data) {
         const { barrunda: list, id } = data;
         this.barrundaid = id;
         this.barList = list || [];

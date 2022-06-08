@@ -33,11 +33,11 @@ export default class View {
         const createComp = this.element.querySelector('#bar_create');
         listComp.setAttribute('style', 'display: none');
         createComp.setAttribute('style', 'display: none');
-        if (listComp.id === id) this.displayBarList(listComp);
+        if (listComp.id === id) this.displayBars(listComp);
         else createComp.setAttribute('style', 'display: block');
     }
 
-    displayBarList(listComp) {
+    displayBars(listComp) {
         listComp.setAttribute('style', 'display: block');
         const listItems = listComp.querySelectorAll('.bar__list--item');
         for (let i = 0; i < User.barList.length; i++) {
