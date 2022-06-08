@@ -1,3 +1,14 @@
+class Bar {
+    constructor(bar) {
+        this.raw = bar;
+        this.name = bar.name;
+        this.vicinity = bar.vicinity;
+        this.rating = bar.rating;
+        this.tot_rating = bar.user_rating_total;
+        this.price_level = bar.price_level;
+        this.types = bar.types;
+    }
+}
 class Bars {
     constructor() {
         this.list = [];
@@ -34,7 +45,7 @@ class Bars {
     }
 
     getRandom(amount) {
-        const max = amount || 5;
+        const max = _amount || 5;
         let pickFrom = Array.from(this.list);
         let res = [];
         // If we try to make bigger list than we have, we return what we have in scrambled order.
@@ -49,18 +60,6 @@ class Bars {
         }
         const a = res.map((item) => item.name);
         return new Bars().aggregate(res);
-    }
-}
-
-class Bar {
-    constructor(bar) {
-        this.raw = bar;
-        this.name = bar.name;
-        this.vicinity = bar.vicinity;
-        this.rating = bar.rating;
-        this.tot_rating = bar.user_rating_total;
-        this.price_level = bar.price_level;
-        this.types = bar.types;
     }
 }
 
