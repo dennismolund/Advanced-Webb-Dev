@@ -49,7 +49,7 @@ module.exports = function({accountManager}){
             return;
         }
         
-        accountManager.loginRequest(loginAccount, function(error, account){
+        accountManager.getAccountByUsername(loginAccount, function(error, account){
             if(error){
                 console.log("errors ", error);
                 if (error === ERROR_ENUM.SERVER_ERROR) {

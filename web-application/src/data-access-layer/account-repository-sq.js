@@ -27,7 +27,7 @@ module.exports = ({}) => {
                 else callback(ERROR_ENUM.SERVER_ERROR, null);
             }
         },
-        loginRequest: async (account, callback) => { 
+        getAccountByUsername: async (account, callback) => { 
             try {
                 const users = await Account.findAll({ 
                     where: { 
@@ -51,20 +51,6 @@ module.exports = ({}) => {
                 console.log(e);
                 callback(ERROR_ENUM.SERVER_ERROR, null);
             }
-        },
-        getAccountIdByUsername: async (username, callback) => {
-            try {
-                const users = await Account.findAll({ 
-                    where: { 
-                        username 
-                    }
-                });
-                if (users.length) callback(null, users[0].dataValues.id);
-                else callback(null, null);
-            } catch (e) {
-                console.log(e);
-                callback(ERROR_ENUM.SERVER_ERROR, null);
-            }
-        },
+        }
     }
 }

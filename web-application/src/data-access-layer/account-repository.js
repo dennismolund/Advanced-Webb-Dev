@@ -3,24 +3,8 @@ const ERROR_ENUM = require('../business-logic-layer/models/error_enum');
 
 module.exports = function({}){
 	// Name all the dependencies in the curly brackets above (none in this case). 
-	
-	const allAccounts = [];
-	
-	return {
-	  getAccountIdByUsername: (username, callback) => {
-		const query = `SELECT id FROM account WHERE username = ?`;
-		const values = [username];
 
-		db.query(query, values, (error, results) => {
-			if(error){
-				console.log("Error in database: ", error);
-				callback(ERROR_ENUM.SERVER_ERROR, null);
-			}else{
-				if (results && resluts.length) callback(ERROR_ENUM.USER_NOT_FOUND, null);
-				else callback(null, results[0].id);
-			}
-		});
-	  },
+	return {
 	  getAccountById: (id, callback) => {
 		  const query = 'SELECT * FROM account WHERE id = ?';
 		  const values = [id];
@@ -52,7 +36,7 @@ module.exports = function({}){
 			}
 		})
 		},
-		loginRequest: (account, callback) => {
+		getAccountByUsername: (account, callback) => {
 		
 			const query = "SELECT * FROM account WHERE username = ?";
 			const values = [account.enteredUsername];

@@ -49,7 +49,7 @@ module.exports = ({accountManager}) => {
             enteredUsername: request.body.username,
             enteredPassword: request.body.password,
         };
-        accountManager.loginRequest(account, (error, results) => {
+        accountManager.getAccountByUsername(account, (error, results) => {
             if(error){
                 console.log("errors ", error);
                 const errors = [];

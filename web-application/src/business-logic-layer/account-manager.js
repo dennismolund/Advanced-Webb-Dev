@@ -7,12 +7,6 @@ module.exports = ({ accountRepository }) => {
     // Name all the dependencies in the curly brackets above.
     
     return {
-        getAccountIdByUsername: (username, callback) => {
-            accountRepository.getAccountIdByUsername(username, (error, results) => {
-                if(error) callback(error, null);
-                else callback(null, results);
-            });
-        },
         hasTeamCheck: (req, res, next) => {
             const { id } = req.account;
             console.log(id);
@@ -48,7 +42,7 @@ module.exports = ({ accountRepository }) => {
             });
         },
 
-        loginRequest: (account, callback) => {
+        getAccountByUsername: (account, callback) => {
             // Validate the login credentials.
             const errors = accountValidator.getErrorsLogin(account);
 
@@ -57,7 +51,7 @@ module.exports = ({ accountRepository }) => {
                 return;
             }
 
-            accountRepository.loginRequest(account, (error, results) => {
+            accountRepository.getAccountByUsername(account, (error, results) => {
                 if(error) callback(error, null);
                 else if (!results) callback (ERROR_ENUM.BAD_CREDENTIALS, null);
                 else {
