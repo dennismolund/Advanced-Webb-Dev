@@ -1,3 +1,4 @@
+const ERROR_ENUM = require('../business-logic-layer/models/error_enum');
 const db = require('./db')
 
 module.exports = function({}){
@@ -14,7 +15,7 @@ module.exports = function({}){
                     console.log("Error in database: ", error);
                     const err = {
                         code: error.code,
-                        message: 'Internal server error'
+                        message: ERROR_ENUM.SERVER_ERROR
                     };
                     callback(err, null);
                 } else {

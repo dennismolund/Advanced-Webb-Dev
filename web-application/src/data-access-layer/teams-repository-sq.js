@@ -2,6 +2,7 @@ const Sequelize = require('./connection-sq');
 const Team = require('../business-logic-layer/models/Team')
 const Account = require('../business-logic-layer/models/Account')
 const Pubcrawl = require('../business-logic-layer/models/Pubcrawl');
+const ERROR_ENUM = require('../business-logic-layer/models/error_enum');
 
 
 const errHandler = (err) =>{
@@ -34,7 +35,7 @@ module.exports = ({}) => {
                 await transaction.rollback();
                 const err = {
                     code: e.parent.code,
-                    message: 'Internal server error'
+                    message: ERROR_ENUM.SERVER_ERROR
                 };
                 callback(err, null);
             }
