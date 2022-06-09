@@ -30,11 +30,12 @@ module.exports = function({}){
                 else if (!result[0].pubcrawl_id) callback(null, null);
                 else {
                     const values = [result[0].pubcrawl_id];
-
+                    console.log("id:", result[0].pubcrawl_id);
                     db.query(qPubcrawl, values, (error, result) => {
                         if (error) callback(ERROR_ENUM.SERVER_ERROR, null);
                         else {
-                            if (!result.lenght) callback(null, null);
+                            console.log("result from db:", result[0].length);
+                            if (!result.length) {callback(null, null);}
                             else callback(null, result[0]);
                         }
                     })
@@ -49,7 +50,6 @@ module.exports = function({}){
         },
 
         deletePubcrawlById: (id, callback) => {
-
             const query = `DELETE FROM pubcrawl WHERE id = ?`;
             db.query(query, id, (error, result) => {
                 if (error) callback(error, null);

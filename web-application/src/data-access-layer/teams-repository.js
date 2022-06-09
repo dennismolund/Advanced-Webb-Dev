@@ -105,7 +105,7 @@ module.exports = function({}){
                             db.query(q3, values, (error, result) => {
                                 if (error) {
                                     console.log("ERROR WHEN GETTING TEAMMEMBERS", error);
-                                    callback(null, team, pubcrawl, null)
+                                    callback(null, team.dataValues, pubcrawl.dataValues, null)
                                 }else{
                                     const teamMembers = []
                                     result.forEach(element => {

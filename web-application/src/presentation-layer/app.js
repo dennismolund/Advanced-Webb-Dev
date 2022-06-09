@@ -105,7 +105,7 @@ container.register("accountRepository", awilix.asFunction(accountRepository))
 
 container.register("barsRouter", awilix.asFunction(barsRouter))
 container.register("barsManager", awilix.asFunction(barsManager))
-container.register("barsRepository", awilix.asFunction(barsRepositorySq))
+container.register("barsRepository", awilix.asFunction(barsRepository))
 
 container.register("teamsRouter", awilix.asFunction(teamsRouter))
 container.register("teamsManager", awilix.asFunction(teamsManager))

@@ -86,7 +86,6 @@ module.exports = function({ teamsRepository, barsManager }){
                             pubcrawl: bars,
                             teamMembers: teamMembers
                         };
-                        
                         callback(null, data)
                     } catch (e) {
                         //Using sequilze the data is already parsed
