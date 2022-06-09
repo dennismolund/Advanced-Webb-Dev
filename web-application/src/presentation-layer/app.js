@@ -94,15 +94,15 @@ const { Socket } = require('dgram');
 const container = awilix.createContainer()
 container.register("accountRouter", awilix.asFunction(accountRouter))
 container.register("accountManager", awilix.asFunction(accountManager))
-container.register("accountRepository", awilix.asFunction(accountRepository))
+container.register("accountRepository", awilix.asFunction(accountRepositorySq))
 
 container.register("barsRouter", awilix.asFunction(barsRouter))
 container.register("barsManager", awilix.asFunction(barsManager))
-container.register("barsRepository", awilix.asFunction(barsRepository))
+container.register("barsRepository", awilix.asFunction(barsRepositorySq))
 
 container.register("teamsRouter", awilix.asFunction(teamsRouter))
 container.register("teamsManager", awilix.asFunction(teamsManager))
-container.register("teamsRepository", awilix.asFunction(teamsRepository))
+container.register("teamsRepository", awilix.asFunction(teamsRepositorySq))
 
 // Retrieve the router, which resolves all other dependencies.
 const theAccountRouter = container.resolve("accountRouter")

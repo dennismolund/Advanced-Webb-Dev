@@ -67,8 +67,7 @@ module.exports = ({teamsManager, barsManager}) => {
 
     router.post("/join", (req,res) => {
         const teamName = req.body.teamName;
-        const accountId = req.session.activeAccount.id;
-        teamsManager.joinTeam(teamName, accountId, (error, result) => {
+        teamsManager.joinTeam(teamName, req.session.activeAccount, (error, result) => {
             if(error){
                 const errors = [];
                 errors.push(error);

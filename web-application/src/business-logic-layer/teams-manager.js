@@ -2,11 +2,10 @@ const express = require('express');
 const { validTeamName } = require('./teams-validator');
 const barlist = require('./models/pubcrawlFactory')
 const { validParams, validRows, parseResult } = require('./bars-validator');
-const barsRepository = require('../data-access-layer/bars-repository');
 const { getPlaces } = require('../data-access-layer/service/fetch.data.service');
-const {TEAM_NOT_FOUND, TEAM_NAME_TAKEN} = require('../business-logic-layer/models/error_enum')
+const {TEAM_NOT_FOUND, TEAM_NAME_TAKEN, AUTHORIZATION_FAIL} = require('../business-logic-layer/models/error_enum')
 
-module.exports = function({ teamsRepository, barsManager }){
+module.exports = function({ teamsRepository, barsManager, accountRepository }){
 
     return {
         createTeam: function(team, account, callback){
@@ -16,6 +15,19 @@ module.exports = function({ teamsRepository, barsManager }){
                 callback(error, null);
                 return;
             }
+
+            accountRepository.getAccountById(account.id, (error, accountFromDb) => {
+                if(error) {
+                    callback(AUTHORIZATION_FAIL, null);
+                    return;
+                }
+                if(!account.username == accountFromDb.username 
+                    && account.email == accountFromDb.email){
+                        callback(AUTHORIZATION_FAIL, null);
+                        return;
+                    }
+            })
+
             teamsRepository.createTeam(team, async (error, newTeam) => {
                 if (error) {
                     console.log("Errors in teams-manager:", error);
@@ -57,8 +69,19 @@ module.exports = function({ teamsRepository, barsManager }){
                 }
             });
         },
-        joinTeam: (teamName, accountId, callback) => {
-            teamsRepository.joinTeam(teamName, accountId, (error, results) => {
+        joinTeam: (teamName, account, callback) => {
+            accountRepository.getAccountById(account.id, (error, accountFromDb) => {
+                if(error) {
+                    callback(AUTHORIZATION_FAIL, null);
+                    return;
+                }
+                if(!account.username == accountFromDb.username 
+                    && account.email == accountFromDb.email){
+                        callback(AUTHORIZATION_FAIL, null);
+                        return;
+                    }
+            })
+            teamsRepository.joinTeam(teamName, account.id, (error, results) => {
                 if(error){
                     error = TEAM_NOT_FOUND
                     callback(error, null)

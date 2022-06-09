@@ -18,7 +18,8 @@ const ERROR_ENUM = {
     TEAMNAME_TO_LONG: "Team name för långt (max 20).",
     TEAM_NOT_FOUND: "Teamet du vill joina finns inte.",
     ERROR_BCRYPT: "Felaktigt lösenord",
-    TEAM_NAME_TAKEN: "Team namn upptaget"
+    TEAM_NAME_TAKEN: "Team namn upptaget",
+    AUTHORIZATION_FAIL: "Du har inte tillstånd för din begäran."
 
 }
 
