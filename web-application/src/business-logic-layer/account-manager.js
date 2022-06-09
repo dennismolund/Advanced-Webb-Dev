@@ -2,6 +2,7 @@ const accountValidator = require('./account-validator')
 const ERROR_ENUM = require('./models/error_enum');
 var bcrypt = require('bcrypt');
 const saltRounds = 10;
+const {ERROR_BCRYPT} = require("../business-logic-layer/models/error_enum")
 
 module.exports = ({ accountRepository }) => {
     // Name all the dependencies in the curly brackets above.
@@ -10,8 +11,8 @@ module.exports = ({ accountRepository }) => {
         hasTeamCheck: (req, res, next) => {
             const { id } = req.account;
             console.log(id);
-            accountRepository.getAccountById(id, (err, data) => {
-                if (err || !data) return res.statsu(500).send({ error: SERVER_ERROR });
+            accountRepository.getAccountById(id, (error, data) => {
+                if (error || !data) return res.statsu(500).send({ error: SERVER_ERROR });
                 if (data.team_id) {
                     res.status(403).send({
                         error: 'has_team_error',
@@ -35,9 +36,12 @@ module.exports = ({ accountRepository }) => {
                 return;
             }
 
-            bcrypt.hash(account.password, saltRounds, (err, hash) => {
+            bcrypt.hash(account.password, saltRounds, (error, hash) => {
+                if (error) { 
+                    callback(ERROR_BCRYPT, null);
+                    return;
+                }
                 account.password = hash;
-
                 accountRepository.createAccount(account, callback);
             });
         },
@@ -51,21 +55,15 @@ module.exports = ({ accountRepository }) => {
                 return;
             }
 
-            accountRepository.getAccountByUsername(account, (error, results) => {
+            accountRepository.getAccountByUsername(account, (error, accountFromDb) => {
                 if(error) callback(error, null);
-                else if (!results) callback (ERROR_ENUM.BAD_CREDENTIALS, null);
+                else if (!accountFromDb) callback (ERROR_ENUM.BAD_CREDENTIALS, null);
                 else {
-                    bcrypt.compare(account.enteredPassword, results.password, (err, res) => {
-                        if(res){
-                            //Only sending back username, id and email, excluding password due to security.
-                            const activeAccount = {
-                                username: results.username,
-                                email: results.email,
-                                id: results.id,
-                                pubcrawl_id: results.pubcrawl_id,
-                                team_id: results.team_id
-                            };
-                            callback(null, activeAccount);
+                    bcrypt.compare(account.enteredPassword, accountFromDb.password, (error, result) => {
+                        if(result){
+                            //Deleting password due to security reasons.
+                            delete accountFromDb.password
+                            callback(null, accountFromDb);
                         }else{
                             callback(ERROR_ENUM.BAD_CREDENTIALS, null);
                         }
