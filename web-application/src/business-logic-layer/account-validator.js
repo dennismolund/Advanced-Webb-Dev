@@ -1,4 +1,4 @@
-const { USERNAME_TO_LONG, USERNAME_TO_SHORT, MISSING_USERNAME, MISSING_PASSWORD, PASSWORD_TO_LONG, PASSWORD_TO_SHORT, PASSWORD_NO_MATCH } = require('./models/error_enum');
+const { USERNAME_TO_LONG, USERNAME_TO_SHORT, MISSING_USERNAME, MISSING_PASSWORD, PASSWORD_TO_LONG, PASSWORD_TO_SHORT, PASSWORD_NO_MATCH, INVALID_EMAIL_ADDRESS } = require('./models/error_enum');
 const MIN_USERNAME_LENGTH = 3
 const MAX_USERNAME_LENGTH = 10
 const MIN_PASSWORD_LENGTH = 3
@@ -27,7 +27,14 @@ exports.getErrorsNewAccount = function(account){
 		errors.push(PASSWORD_NO_MATCH)
 	}
 
-    //Implement email validator.
+	if(!account.hasOwnProperty("email")){
+		errors.push(MISSING_EMAIL)
+	}else{
+		var validRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+		if(!account.email.match(validRegex)){
+			errors.push(INVALID_EMAIL_ADDRESS)
+		}
+	}
 
 	return errors
 	

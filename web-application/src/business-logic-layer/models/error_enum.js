@@ -13,6 +13,7 @@ const ERROR_ENUM = {
     PASSWORD_NO_MATCH: 'Lösenorden matchar inte',
     NO_TEAMOWNER_MESSAGE: 'Endast teamägare kan byta generera ny barrunda, gåt till Web-applikationen för att lämna ditt team.',
     UNAUTHORIZED: 'unauthorized_client',
+    INVALID_EMAIL_ADDRESS: "Ogiltig e-postadress"
 
 }
 
