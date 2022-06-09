@@ -66,18 +66,18 @@ const setListeners = () => {
         signup();
     });
 
-    document.addEventListener('createBarrundaClick', (evt) => {
+    document.addEventListener('createPubcrawlClick', (evt) => {
         if (!User.isSignedIn()) changeView('login');
-        createBarrunda();
+        createPubcrawl();
     });
 
-    document.addEventListener('newBarrundaClick', (evt) => {
+    document.addEventListener('newPubcrawlClick', (evt) => {
         if (!User.isSignedIn()) changeView('login');
-        createBarrunda();
+        createPubcrawl();
     });
-    document.addEventListener('removeBarrundaClick', (evt) => {
+    document.addEventListener('removePubcrawlClick', (evt) => {
         if (!User.isSignedIn()) changeView('login');
-        removeBarrunda();
+        removePubcrawl();
     });
 }
 
@@ -159,7 +159,7 @@ const login = async () => {
     ViewController.goToHome();
 }
 
-const createBarrunda = async () => {
+const createPubcrawl = async () => {
     ViewController.hideError();
     const response = await AjaxClient.get('http://localhost:3002/api/bars/new');
 
@@ -167,27 +167,27 @@ const createBarrunda = async () => {
 
     if (requestError) return;
 
-    onBarrundaReceived(response.data);
+    onPubcrawlReceived(response.data);
 }
 
-const removeBarrunda = async () => {
+const removePubcrawl = async () => {
     ViewController.hideError();
-    const id = User.barrundaid;
+    const id = User.pubcrawl_id;
     const response = await AjaxClient.get(`http://localhost:3002/api/bars/delete/${id}`);
 
     const errorResponse = checkResponse(response);
     if (errorResponse) return;
 
-    onBarrundaRemoved();
+    onPubcrawlRemoved();
 }
 
-const onBarrundaRemoved = () => {
+const onPubcrawlRemoved = () => {
     User.barList = [];
-    User.barrundaid = null;
+    User.pubcrawl_id = null;
     ViewController.goToHome();
 }
 
-const onBarrundaReceived = (data) => {
+const onPubcrawlReceived = (data) => {
     User.setBars(data);
     if (ViewController.activeView.name === 'home') {
         console.log('Displaying bar list');

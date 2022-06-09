@@ -25,7 +25,7 @@ module.exports = function({barsManager, teamsManager, accountManager}){
     });
 
     router.post('/', async (req, res) => {
-        console.log('Creating and storing new barrunda');
+        console.log('Creating and storing new pubcrawl');
         await getPlaces();
         const pubcrawl = Pubcrawl.getRandom();
         let barid = null
@@ -36,7 +36,7 @@ module.exports = function({barsManager, teamsManager, accountManager}){
                 res.render("start.hbs", { error })
             } else {
                 barid = result.insertId
-                req.session.activeAccount.barrundaid = barid;
+                req.session.activeAccount.pubcrawl_id = barid;
                 res.render("barrundasolo.hbs", {barid,bars: pubcrawl.list, activeAccount: req.session.activeAccount})
             }
         });
@@ -45,10 +45,10 @@ module.exports = function({barsManager, teamsManager, accountManager}){
     router.get('/delete/:id', (req, res, next) => {
         const { id } = req.params;
         const user = req.session.activeAccount;
-        barsManager.deleteBarrundaById(id, user, (error, result) => {
-            if (error) console.log('Failed to delete barrunda: ', error);
+        barsManager.deletePubcrawlById(id, user, (error, result) => {
+            if (error) console.log('Failed to delete pubcrawl: ', error);
             else {
-                console.log('Succesfully deleted barrunda');
+                console.log('Succesfully deleted pubcrawl');
                 res.render("start.hbs", {activeAccount: user});
             }
         });

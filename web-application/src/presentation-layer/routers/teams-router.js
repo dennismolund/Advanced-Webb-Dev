@@ -28,7 +28,7 @@ module.exports = ({teamsManager, barsManager}) => {
                 }
                 if(model.data.team.creatorid == model.activeAccount.id) model.owner = true
                 req.session.activeAccount.team_id = result.team.id;
-                req.session.activeAccount.barrundaid = result.barrunda.insertId;
+                req.session.activeAccount.pubcrawl_id = result.pubcrawl.insertId;
                 res.render("barrundan.hbs", model);
             }
         });
@@ -87,14 +87,14 @@ module.exports = ({teamsManager, barsManager}) => {
     router.post("/:id/update", (req, res) => {
         const { id: team_id } = req.params;
         const { activeAccount: account } = req.session;
-        const { barrundaid } = account;
-        console.log('DELETING RUNDA WITH id: ', barrundaid);
-        teamsManager.updateTeamBarrunda(team_id, account, barrundaid, (error, result) => {
+        const { pubcrawl_id } = account;
+        console.log('DELETING RUNDA WITH id: ', pubcrawl_id);
+        teamsManager.updateTeamPubcrawl(team_id, account, pubcrawl_id, (error, result) => {
             if (error) {
-                console.log('Error in update team barrunda router', error);
+                console.log('Error in update team pubcrawl router', error);
                 res.redirect('/teams')
             } else {
-                req.session.activeAccount.barrundaid = result.id;
+                req.session.activeAccount.pubcrawl_id = result.id;
                 // barsManager.getPubcrawlById(result.id, (error, result) => {
                 //     if (error) console.log('ERROR: ', error);
                 //      else {

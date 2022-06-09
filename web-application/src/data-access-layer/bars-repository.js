@@ -3,9 +3,9 @@ const ERROR_ENUM = require('../business-logic-layer/models/error_enum');
 module.exports = function({}){
 
     return {
-        storePubcrawl: (barRunda, userId, callback) => {
+        storePubcrawl: (pubcrawl, userId, callback) => {
             const query = `INSERT INTO pubcrawl (owner_id, data) VALUES (?,?)`;
-            const values = [userId, JSON.stringify(barRunda)];
+            const values = [userId, JSON.stringify(pubcrawl)];
 
             db.query(query, values, (error, result) => {
                 if (error) callback(error, null);
@@ -23,7 +23,7 @@ module.exports = function({}){
 
         getPubcrawl: (account, callback) => {
             const qBid = `SELECT pubcrawl_id FROM account WHERE username = ?`
-            const qBarRunda = `SELECT * FROM pubcrawl WHERE id = ?`;
+            const qPubcrawl = `SELECT * FROM pubcrawl WHERE id = ?`;
 
             db.query(qBid, [account.username], (error, result) => {
                 if (error) callback(error, null);
@@ -31,7 +31,7 @@ module.exports = function({}){
                 else {
                     const values = [result[0].pubcrawl_id];
 
-                    db.query(qBarRunda, values, (error, result) => {
+                    db.query(qPubcrawl, values, (error, result) => {
                         if (error) callback(ERROR_ENUM.SERVER_ERROR, null);
                         else {
                             if (!result.lenght) callback(null, null);
@@ -48,7 +48,7 @@ module.exports = function({}){
             })
         },
 
-        deleteBarrundaById: (id, callback) => {
+        deletePubcrawlById: (id, callback) => {
 
             const query = `DELETE FROM pubcrawl WHERE id = ?`;
             db.query(query, id, (error, result) => {

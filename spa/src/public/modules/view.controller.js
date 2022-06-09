@@ -55,7 +55,7 @@ class ViewController {
 
     goToHome() {
         const homeView = this.getView('home');
-        if(User.hasBarrunda()) {
+        if(User.hasPubcrawl()) {
             homeView.showComponent('bar_list');
         } else {
             homeView.showComponent('bar_create');

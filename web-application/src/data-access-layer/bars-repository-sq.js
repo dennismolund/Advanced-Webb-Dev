@@ -1,26 +1,26 @@
 const Sequelize = require('./connection-sq');
 const Team = require('../business-logic-layer/models/Team')
 const Account = require('../business-logic-layer/models/Account')
-const Barrunda = require('../business-logic-layer/models/Pubcrawl');
+const Pubcrawl = require('../business-logic-layer/models/Pubcrawl');
 const ERROR_ENUM = require('../business-logic-layer/models/error_enum');
 
 module.exports = ({}) => { 
 
     return {
-        storePubcrawl: async (barRunda, userId, callback) => {
+        storePubcrawl: async (pubcrawl, userId, callback) => {
             const transaction = await Sequelize.transaction();
             try {
-                const newBarrunda = await Barrunda.create({
+                const newPubcrawl = await Pubcrawl.create({
                     owner_id: userId,
-                    data: JSON.stringify(barRunda)
+                    data: JSON.stringify(pubcrawl)
                 });
                 const update = await Account.update(
-                    { pubcrawl_id: newBarrunda.dataValues.id },
+                    { pubcrawl_id: newPubcrawl.dataValues.id },
                     { where: { id: userId } }
                 );
                 await transaction.commit();
                 
-                const result = newBarrunda.dataValues;
+                const result = newPubcrawl.dataValues;
                 result.insertId = result.id;
 
                 callback(null, result);
@@ -43,7 +43,7 @@ module.exports = ({}) => {
                     return;
                 } 
 
-                const barRes = await Barrunda.findOne({ 
+                const barRes = await Pubcrawl.findOne({ 
                     where: { 
                         id: accountRes.dataValues.pubcrawl_id
                     } 
@@ -60,7 +60,7 @@ module.exports = ({}) => {
         },
         getPubcrawlById: async (id, callback) => {
             try {
-                const [barsRes] = await Barrunda.findAll({ 
+                const [barsRes] = await Pubcrawl.findAll({ 
                     where: { 
                         id
                     } 
@@ -71,10 +71,10 @@ module.exports = ({}) => {
             }
         },
 
-        deleteBarrundaById: async (id, callback) => {
+        deletePubcrawlById: async (id, callback) => {
             const transaction = await Sequelize.transaction();
             try {
-                const deleteRes = await Barrunda.destroy({ 
+                const deleteRes = await Pubcrawl.destroy({ 
                     where: { 
                         id
                     } 

@@ -92,6 +92,7 @@ module.exports = function({}){
                     callback(['databaseError'], null, null, null)
                 }else{
                     const team = result[0]
+                    console.log("team in teams repo:", team);
                     if (!team) callback('No team found', null, null, null);
                     else db.query(q2, result[0].creator_id, (error, result) => {
                         if(error){
@@ -122,7 +123,7 @@ module.exports = function({}){
                 }
             })
         },
-        updateRundaForMembers: (team_id, pubcrawlid, callback) => {
+        updatePubcrawlForMembers: (team_id, pubcrawlid, callback) => {
             console.log('settings pubcrawl id: ', pubcrawlid);
             const query = 'UPDATE account SET pubcrawl_id = ? WHERE team_id = ?';
             const values = [pubcrawlid, team_id];

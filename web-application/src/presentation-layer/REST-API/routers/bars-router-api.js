@@ -10,25 +10,25 @@ module.exports = ({ barsManager, accountManager }) => {
     router.get('/new', accountManager.hasTeamCheck, async (req, res) => {
         if (!req.isLoggedIn) return res.status(401).json( {error: ERROR_ENUM.UNAUTHORIZED });
         await getPlaces();
-        const barRunda = barlist.getRandom();
+        const pubcrawl = barlist.getRandom();
         const token = req.headers['authorization'].split(' ')[1];
         const { username, sub: userId } = decode(token);
         
-        barsManager.storePubcrawl(barRunda, userId, (error, result) => {
+        barsManager.storePubcrawl(pubcrawl, userId, (error, result) => {
             if (error) {
                 if (error === ERROR_ENUM.SERVER_ERROR) return res.status(500).json({ error: ERROR_ENUM.SERVER_ERROR });
                 else {
                     return res.status(400).json({ error: error });
                 }
             } else {
-                res.status(200).json({ barrunda: barRunda.list, id: result.insertId });
+                res.status(200).json({ pubcrawl: pubcrawl.list, id: result.insertId });
             }
         });
     });
 
     router.get('/delete/:id', accountManager.hasTeamCheck, (req, res) => {
         const { id } = req.params;
-        barsManager.deleteBarrundaById(id, req.account, (error, result) => {
+        barsManager.deletePubcrawlById(id, req.account, (error, result) => {
             if (error) {
                 if (error === ERROR_ENUM.SERVER_ERROR) return res.status(500).send({ error: ERROR_ENUM.SERVER_ERROR });
                 if (error === ERROR_ENUM.UNAUTHORIZED) {

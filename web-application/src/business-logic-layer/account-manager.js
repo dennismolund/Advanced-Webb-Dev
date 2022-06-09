@@ -62,7 +62,7 @@ module.exports = ({ accountRepository }) => {
                                 username: results.username,
                                 email: results.email,
                                 id: results.id,
-                                barrundaid: results.pubcrawl_id,
+                                pubcrawl_id: results.pubcrawl_id,
                                 team_id: results.team_id
                             };
                             callback(null, activeAccount);

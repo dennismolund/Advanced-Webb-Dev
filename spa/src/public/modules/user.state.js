@@ -2,7 +2,7 @@ import AjaxClient from './api.js';
 
 class User {
     constructor() {
-        this.barrundaid = null;
+        this.pubcrawl_id = null;
         this.username = null;
         this.team_id = null;
         this.id = null;
@@ -12,9 +12,9 @@ class User {
     }
 
     init(pack) {
-        const { barrundaid, id, team_id, username } = pack.account;
+        const { pubcrawl_id, id, team_id, username } = pack.account;
         this.token = pack.idToken ? pack.idToken : this.token;
-        this.barrundaid = barrundaid;
+        this.pubcrawl_id = pubcrawl_id;
         this.id = id;
         this.team_id = team_id;
         this.username = username;
@@ -23,7 +23,7 @@ class User {
     }
 
     logout() {
-        this.barrundaid = null;
+        this.pubcrawl_id = null;
         this.username = null;
         this.team_id = null;
         this.id = null;
@@ -33,21 +33,21 @@ class User {
     }
 
     async loadData() {
-        if (!this.barrundaid) return;
-        const { data } = await AjaxClient.get(`http://localhost:3002/api/bars/${this.barrundaid}`);
+        if (!this.pubcrawl_id) return;
+        const { data } = await AjaxClient.get(`http://localhost:3002/api/bars/${this.pubcrawl_id}`);
         if (data?.parsed?.list) {
             this.barList = data.parsed.list;
         }
     }
 
     setBars(data) {
-        const { barrunda: list, id } = data;
-        this.barrundaid = id;
+        const { pubcrawl: list, id } = data;
+        this.pubcrawl_id = id;
         this.barList = list || [];
     }
 
-    hasBarrunda() {
-        return !!this.barrundaid;
+    hasPubcrawl() {
+        return !!this.pubcrawl_id;
     }
 
     isSignedIn() {

@@ -5,12 +5,12 @@ const ERROR_ENUM = require('./models/error_enum');
 
 module.exports = ({ barsRepository }) => {
 
-    const storePubcrawl = (barRunda, userId, callback) => {
-        if (!validParams('storePubcrawl', barRunda)) {
+    const storePubcrawl = (pubcrawl, userId, callback) => {
+        if (!validParams('storePubcrawl', pubcrawl)) {
             const e = new Error('Invalid Params');
             callback(e, null);
         } else {
-            barsRepository.storePubcrawl(barRunda, userId, callback)
+            barsRepository.storePubcrawl(pubcrawl, userId, callback)
         }
     };
     
@@ -25,7 +25,7 @@ module.exports = ({ barsRepository }) => {
                 if (error) callback(error, null);
                 else {
                     if (!result) {
-                        callback('Found no barrunda for account', null);
+                        callback('Found no pubcrawl for account', null);
                         return;
                     }
                     try {
@@ -66,7 +66,7 @@ module.exports = ({ barsRepository }) => {
         });
     }
 
-    const deleteBarrundaById = (id, account, callback) => {
+    const deletePubcrawlById = (id, account, callback) => {
         getPubcrawl(account, (error, result) => {
             if (error) callback(error, null);
             else {
@@ -74,10 +74,10 @@ module.exports = ({ barsRepository }) => {
                     console.log('User is not authroized to delete resource', result);
                     callback(ERROR_ENUM.UNAUTHORIZED, null);
                 } else {
-                    barsRepository.deleteBarrundaById(id, (error, result) => {
+                    barsRepository.deletePubcrawlById(id, (error, result) => {
                         if (error) callback(error, null);
                         else {
-                            console.log('successfully deleted barrunda');
+                            console.log('successfully deleted pubcrawl');
                             callback(null, 'success');
                         }
                     });
@@ -90,7 +90,7 @@ module.exports = ({ barsRepository }) => {
     return {
         storePubcrawl,
         getPubcrawl,
-        deleteBarrundaById,
+        deletePubcrawlById,
         getPubcrawlById,
     }
 }

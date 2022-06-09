@@ -21,13 +21,13 @@ module.exports = function({ teamsRepository, barsManager }){
                 }else{
                     // Create new barrund for team.
                     await getPlaces();
-                    const barrunda = barlist.getRandom();
-                    barsManager.storePubcrawl(barrunda, account.id, (error, result) => {
+                    const pubcrawl = barlist.getRandom();
+                    barsManager.storePubcrawl(pubcrawl, account.id, (error, result) => {
                         if (error) callback(error, null);
                         else {
                             const data = {
                                 team: newTeam,
-                                barrunda: result,
+                                pubcrawl: result,
                             };
                             callback(null, data);
                         }
@@ -68,37 +68,37 @@ module.exports = function({ teamsRepository, barsManager }){
         getTeam: (id, callback) => {
             //error handling
             if (!id) callback('No team', null);
-            else teamsRepository.getTeam(id, (errors, team, barrunda, teamMembers) => {
+            else teamsRepository.getTeam(id, (errors, team, pubcrawl, teamMembers) => {
                 if(errors){
                     console.log("Errors in teams-manager:", errors);
                     callback(errors, null)
                 }else{
                     
                     try {
-                        const parsed = parseResult(barrunda.data);
+                        const parsed = parseResult(pubcrawl.data);
                         
                         const bars = {
                             parsed,
-                            raw: barrunda,
+                            raw: pubcrawl,
                         }
                         const data = {
                             team: team,
-                            barrunda: bars,
+                            pubcrawl: bars,
                             teamMembers: teamMembers
                         };
                         
                         callback(null, data)
                     } catch (e) {
                         //Using sequilze the data is already parsed
-                        const parsed = barrunda.data;
+                        const parsed = pubcrawl.data;
                         
                         const bars = {
                             parsed,
-                            raw: barrunda,
+                            raw: pubcrawl,
                         }
                         const data = {
                             team: team,
-                            barrunda: bars,
+                            pubcrawl: bars,
                             teamMembers: teamMembers
                         };
                         callback(null, data)
@@ -109,22 +109,22 @@ module.exports = function({ teamsRepository, barsManager }){
                 }
             })
         },
-        updateTeamBarrunda: (team_id, account, barrundaid, callback) => {
-            // Featch barrunda and check if account.id is owner id
-            barsManager.deleteBarrundaById(barrundaid, account.id, async (error, result) => {
+        updateTeamPubcrawl: (team_id, account, pubcrawl_id, callback) => {
+            // Featch pubcrawl and check if account.id is owner id
+            barsManager.deletePubcrawlById(pubcrawl_id, account.id, async (error, result) => {
                 if (error) callback(error, null);
                 else {
                     await getPlaces();
-                    const barrunda = barlist.getRandom();
-                    barsManager.storePubcrawl(barrunda, account.id, (error, result) => {
+                    const pubcrawl = barlist.getRandom();
+                    barsManager.storePubcrawl(pubcrawl, account.id, (error, result) => {
                         if (error) callback(error, null);
                         else {
                             // Update members
-                            console.log('Stored new barrunda');
+                            console.log('Stored new pubcrawl');
                             const data = {
                                 id: result.insertId
                             };
-                            teamsRepository.updateRundaForMembers(team_id, result.insertId, (error, result) => {
+                            teamsRepository.updatePubcrawlForMembers(team_id, result.insertId, (error, result) => {
                                 if (error) callback(error, null);
                                 else callback(null, data);
                             });
