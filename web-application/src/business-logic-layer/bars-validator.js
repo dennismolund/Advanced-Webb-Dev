@@ -1,13 +1,12 @@
 
 const validParams = (fName, paramsObj) => {
-    let valid = true;
     Object.keys(paramsObj).forEach((key) => {
         if (!paramsObj[key]) {
             console.log('Missing value for param', key, 'when running', fName);
-            valid = false;
+            return false;
         } 
     });
-    return valid;
+    return true;
 }
 
 const validRows = (result) => {
