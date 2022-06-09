@@ -15,7 +15,8 @@ const ERROR_ENUM = {
     UNAUTHORIZED: 'unauthorized_client',
     INVALID_EMAIL_ADDRESS: "Ogiltig e-postadress",
     TEAMNAME_TO_SHORT: "Team namn för kort (min 2).",
-    TEAMNAME_TO_LONG: "Team name för långt (max 20)."
+    TEAMNAME_TO_LONG: "Team name för långt (max 20).",
+    JOIN_TEAM_NOT_EXIST: "Teamet du vill joina finns inte."
 
 }
 

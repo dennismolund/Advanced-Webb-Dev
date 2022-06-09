@@ -77,8 +77,9 @@ module.exports = ({teamsManager, barsManager}) => {
         const accountId = req.session.activeAccount.id
         teamsManager.joinTeam(teamName, accountId, (error, result)=>{
             if(error){
-                console.log("error:" , error);
-                res.redirect("/");
+                const errors = [];
+                errors.push(error);
+                res.render("start.hbs", { errors , activeAccount: req.session.activeAccount});
             }else {
                 req.session.activeAccount.team_id = result
                 res.redirect("/teams")
