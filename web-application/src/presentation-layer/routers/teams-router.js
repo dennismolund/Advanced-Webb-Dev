@@ -16,7 +16,9 @@ module.exports = ({teamsManager, barsManager}) => {
         teamsManager.createTeam(team, req.session.activeAccount, (error, result) => {
             if(error){
                 console.log("errors ", error);
-                res.render("barrundan.hbs", { error: error });
+                const errors = [];
+                errors.push(error);
+                res.render("start.hbs", { errors , activeAccount: req.session.activeAccount});
             }else{
                 result.teamMembers = [];
                 result.teamMembers.push(req.session.activeAccount.username);
@@ -39,7 +41,7 @@ module.exports = ({teamsManager, barsManager}) => {
         teamsManager.getTeam(req.session.activeAccount.team_id, (error, result) => {
             if(error){
                 console.log("ERROR TRIGGER IN TEAMS-ROUTER (GetTeam)", error);
-                res.render("barrundan.hbs", error);
+                res.render("start.hbs", {activeAccount: req.session.activeAccount});
             }else{
                 const model = {
                     team: showteam,

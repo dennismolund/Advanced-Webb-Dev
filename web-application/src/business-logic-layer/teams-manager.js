@@ -13,6 +13,7 @@ module.exports = function({ teamsRepository, barsManager }){
                 validTeamName(team.teamName);
             } catch (error) {
                 callback(error, null);
+                return;
             }
             teamsRepository.createTeam(team, async (errors, newTeam) => {
                 if(errors){

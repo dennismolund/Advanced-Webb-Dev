@@ -12,6 +12,9 @@
           <div class="blackboard">
 
             <div>
+              {{#each errors}}
+              <p class="has-text-centered" style="color:red">{{this}}</p>
+              {{/each}}
               <h3 class="subtitle is-4 mt-3 chalk"> </span> Skapa ett team </h3>
               <form action="/teams" method="post">
                 <div class="field">

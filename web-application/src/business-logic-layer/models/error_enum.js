@@ -13,7 +13,9 @@ const ERROR_ENUM = {
     PASSWORD_NO_MATCH: 'Lösenorden matchar inte',
     NO_TEAMOWNER_MESSAGE: 'Endast teamägare kan byta generera ny barrunda, gåt till Web-applikationen för att lämna ditt team.',
     UNAUTHORIZED: 'unauthorized_client',
-    INVALID_EMAIL_ADDRESS: "Ogiltig e-postadress"
+    INVALID_EMAIL_ADDRESS: "Ogiltig e-postadress",
+    TEAMNAME_TO_SHORT: "Team namn för kort (min 2).",
+    TEAMNAME_TO_LONG: "Team name för långt (max 20)."
 
 }
 
