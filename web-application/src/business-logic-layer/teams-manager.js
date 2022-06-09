@@ -4,7 +4,7 @@ const barlist = require('./models/pubcrawlFactory')
 const { validParams, validRows, parseResult } = require('./bars-validator');
 const barsRepository = require('../data-access-layer/bars-repository');
 const { getPlaces } = require('../data-access-layer/service/fetch.data.service');
-const {JOIN_TEAM_NOT_EXIST, TEAM_NAME_TAKEN} = require('../business-logic-layer/models/error_enum')
+const {TEAM_NOT_FOUND, TEAM_NAME_TAKEN} = require('../business-logic-layer/models/error_enum')
 
 module.exports = function({ teamsRepository, barsManager }){
 
@@ -60,7 +60,7 @@ module.exports = function({ teamsRepository, barsManager }){
         joinTeam: (teamName, accountId, callback) => {
             teamsRepository.joinTeam(teamName, accountId, (error, results) => {
                 if(error){
-                    error = JOIN_TEAM_NOT_EXIST
+                    error = TEAM_NOT_FOUND
                     callback(error, null)
                 }else{
                     callback(null, results)
