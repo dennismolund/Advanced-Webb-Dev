@@ -96,7 +96,7 @@ module.exports = function({}){
                     console.log(error);
                     callback('error in database: ', error);
                 } else {
-                    callback(null, teams[0]?.dataValues);
+                    callback(null, teams[0]);
                 }
             });
         },

@@ -39,15 +39,14 @@ module.exports = function({ teamsRepository, barsManager }){
             })
         },
         delete: (sessionUserId, teamId, callback) => {
-
             teamsRepository.getTeamById(teamId, (error, team) => {
-                console.log(team);
-                if (sessionUserId == team?.id){
+                if (sessionUserId == team?.creator_id) {
                     teamsRepository.deleteTeamById(teamId, (error, result) => {
                         if (error) callback(error, null);
                         else callback(null, null);
                     });
                 } else {
+                    console.log('LEAVING TEAM');
                     teamsRepository.leaveTeam(sessionUserId, (error, result) => {
                         if (error) {
                             callback(error, null);

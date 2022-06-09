@@ -102,7 +102,7 @@ container.register("barsRepository", awilix.asFunction(barsRepository))
 
 container.register("teamsRouter", awilix.asFunction(teamsRouter))
 container.register("teamsManager", awilix.asFunction(teamsManager))
-container.register("teamsRepository", awilix.asFunction(teamsRepositorySq))
+container.register("teamsRepository", awilix.asFunction(teamsRepository))
 
 // Retrieve the router, which resolves all other dependencies.
 const theAccountRouter = container.resolve("accountRouter")

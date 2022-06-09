@@ -45,7 +45,7 @@ module.exports = ({}) => {
                 const team = await Team.findOne({
                     where: { id }
                 });
-                callback(null, team);
+                callback(null, team?.dataValues);
             } catch (e) {
                 console.log('error getting team', e);
                 callback(e, null);
