@@ -115,7 +115,7 @@ module.exports = function({ teamsRepository, barsManager }){
         },
         updateTeamPubcrawl: (team_id, account, pubcrawl_id, callback) => {
             // Featch pubcrawl and check if account.id is owner id
-            barsManager.deletePubcrawlById(pubcrawl_id, account.id, async (error, result) => {
+            barsManager.deletePubcrawlById(pubcrawl_id, account, async (error, result) => {
                 if (error) callback(error, null);
                 else {
                     await getPlaces();
