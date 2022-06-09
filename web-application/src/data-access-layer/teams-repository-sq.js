@@ -30,12 +30,26 @@ module.exports = ({}) => {
                 result.insertId = result.id;
                 callback(null, result);
             } catch (e) {
-                console.log('Error creating new team: ', e);
+                console.log('Error creating new team: ', e.parent);
                 await transaction.rollback();
-                callback('Internal server error', null);
+                const err = {
+                    code: e.parent.code,
+                    message: 'Internal server error'
+                };
+                callback(err, null);
             }
         },
-
+        getTeamById: async (id, callback) => {
+            try {
+                const team = await Team.findOne({
+                    where: { id }
+                });
+                callback(null, team);
+            } catch (e) {
+                console.log('error getting team', e);
+                callback(e, null);
+            }
+        },
         getTeam: async (id, callback) => {
             const transaction = await Sequelize.transaction();
             try {

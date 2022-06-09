@@ -4,7 +4,7 @@ module.exports = function({}){
 
     return{
         
-        createTeam: (team, callback)=>{
+        createTeam: (team, callback) => {
             const query = `INSERT INTO team (teamname, creator_id) VALUES (?, ?)`;
             const values = [team.teamName, team.creatorId];
             const q2 = `UPDATE account SET team_id = ? WHERE id = ?`;
@@ -12,7 +12,11 @@ module.exports = function({}){
             db.query(query, values, (error, result) => {
                 if (error) {
                     console.log("Error in database: ", error);
-                    callback('Internal server error', null);
+                    const err = {
+                        code: error.code,
+                        message: 'Internal server error'
+                    };
+                    callback(err, null);
                 } else {
                     const v2 = [result.insertId, team.creatorId];
                     db.query(q2, v2, (error, result) => {
@@ -57,7 +61,7 @@ module.exports = function({}){
             })
         },
         joinTeam: (teamName, accountId, callback) => {
-            const query = `SELECT * FROM team WHERE teamname = ?`
+            const query = `SELECT * FROM team WHERE teamname = ?`;
             const q2 = `UPDATE account SET team_id = ? WHERE id = ?`;
 		    const values = [teamName]
             
@@ -83,6 +87,18 @@ module.exports = function({}){
                 }
             })
         },
+        getTeamById: (id, callback) => {
+            const query = `SELECT * FROM team where id = ?`;
+            const values = [id];
+            db.query(query, values, (error, teams) => {
+                if (error) {
+                    console.log(error);
+                    callback('error in database: ', error);
+                } else {
+                    callback(null, teams[0]?.dataValues);
+                }
+            });
+        },
         getTeam: (id, callback)=>{
             const query = `SELECT * FROM team WHERE id = ?`
 		    const values = [id]
@@ -93,7 +109,7 @@ module.exports = function({}){
                 if(error){
                     console.log("Error in database: ", error);
                     callback(['databaseError'], null, null, null)
-                }else{
+                } else {
                     const team = result[0]
                     console.log("team in teams repo:", team);
                     if (!team) callback('No team found', null, null, null);

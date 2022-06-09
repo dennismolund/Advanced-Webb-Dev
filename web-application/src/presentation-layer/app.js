@@ -60,21 +60,14 @@ app.use(session({
   cookie: { secure: false }
 }))
 
-// app.use((req, res, next) => {
-//   console.log('*** ROUTING ***');
-//   console.log(req.url);
-//   next();
-// });
 
 app.get('/', async (req, res) => {
     //if account is active, show home page
     if(req.session.activeAccount) {
       const account = req.session.activeAccount
-      //a.logBy('name');
       if(req.session.activeAccount.team_id) res.redirect('/teams');
       else if(req.session.activeAccount.pubcrawl_id) res.redirect('/bars');
       else res.render('start.hbs', {activeAccount: account});
-      // res.render('home.hbs');
     }
     //if account is not active, show login page
     else res.redirect('anvandare/login')
@@ -109,7 +102,7 @@ container.register("barsRepository", awilix.asFunction(barsRepository))
 
 container.register("teamsRouter", awilix.asFunction(teamsRouter))
 container.register("teamsManager", awilix.asFunction(teamsManager))
-container.register("teamsRepository", awilix.asFunction(teamsRepository))
+container.register("teamsRepository", awilix.asFunction(teamsRepositorySq))
 
 // Retrieve the router, which resolves all other dependencies.
 const theAccountRouter = container.resolve("accountRouter")

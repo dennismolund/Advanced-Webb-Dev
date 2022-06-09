@@ -15,11 +15,10 @@ module.exports = ({teamsManager, barsManager}) => {
         };
         teamsManager.createTeam(team, req.session.activeAccount, (error, result) => {
             if(error){
-                console.log("errors ", error);
                 const errors = [];
                 errors.push(error);
                 res.render("start.hbs", { errors , activeAccount: req.session.activeAccount});
-            }else{
+            } else {
                 result.teamMembers = [];
                 result.teamMembers.push(req.session.activeAccount.username);
                 const model = {
@@ -58,31 +57,25 @@ module.exports = ({teamsManager, barsManager}) => {
     })
 
     router.post("/delete/:id", (req,res) => {
-        const team = {
-            team_id: req.params.id,
-            userid: req.session.activeAccount.id,
-            teamowner: req.body.teamcreatorid
-        }
-        console.log("TEAM IN ROUTER WHEN DELETE:", team);
-        teamsManager.delete(team, (error, results) => {
+        teamsManager.delete(req.session.activeAccount.id, req.params.id, (error, results) => {
             if(error){
                 res.redirect("/");
-            }else res.render("start.hbs", {activeAccount: req.session.activeAccount})
-        })
+            }else res.render("start.hbs", {activeAccount: req.session.activeAccount});
+        });
 
-    })
+    });
 
-    router.post("/join", (req,res)=>{
-        const teamName = req.body.teamName
-        const accountId = req.session.activeAccount.id
-        teamsManager.joinTeam(teamName, accountId, (error, result)=>{
+    router.post("/join", (req,res) => {
+        const teamName = req.body.teamName;
+        const accountId = req.session.activeAccount.id;
+        teamsManager.joinTeam(teamName, accountId, (error, result) => {
             if(error){
                 const errors = [];
                 errors.push(error);
                 res.render("start.hbs", { errors , activeAccount: req.session.activeAccount});
             }else {
-                req.session.activeAccount.team_id = result
-                res.redirect("/teams")
+                req.session.activeAccount.team_id = result;
+                res.redirect("/teams");
             }
         });
     });

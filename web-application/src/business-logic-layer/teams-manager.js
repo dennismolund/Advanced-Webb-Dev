@@ -1,10 +1,10 @@
-const express = require('express')
+const express = require('express');
 const { validTeamName } = require('./teams-validator');
 const barlist = require('./models/pubcrawlFactory')
 const { validParams, validRows, parseResult } = require('./bars-validator');
 const barsRepository = require('../data-access-layer/bars-repository');
 const { getPlaces } = require('../data-access-layer/service/fetch.data.service');
-const {JOIN_TEAM_NOT_EXIST} = require('../business-logic-layer/models/error_enum')
+const {JOIN_TEAM_NOT_EXIST, TEAM_NAME_TAKEN} = require('../business-logic-layer/models/error_enum')
 
 module.exports = function({ teamsRepository, barsManager }){
 
@@ -16,11 +16,12 @@ module.exports = function({ teamsRepository, barsManager }){
                 callback(error, null);
                 return;
             }
-            teamsRepository.createTeam(team, async (errors, newTeam) => {
-                if(errors){
-                    console.log("Errors in teams-manager:", errors);
-                    callback(errors, null)
-                }else{
+            teamsRepository.createTeam(team, async (error, newTeam) => {
+                if (error) {
+                    console.log("Errors in teams-manager:", error);
+                    if (error.code === 'ER_DUP_ENTRY') error.message = TEAM_NAME_TAKEN;
+                    callback(error.message, null);
+                } else {
                     // Create new barrund for team.
                     await getPlaces();
                     const pubcrawl = barlist.getRandom();
@@ -37,26 +38,25 @@ module.exports = function({ teamsRepository, barsManager }){
                 }
             })
         },
-        delete: (team, callback) => {
+        delete: (sessionUserId, teamId, callback) => {
 
-            if(team.teamowner == team.userid){
-                teamsRepository.deleteTeamById(team.team_id, (error, result) => {
-                    if(error){
-                        callback(error, null)
-                    }else{
-                        callback(null, null)
-                    }
-                });
-            }else{
-                teamsRepository.leaveTeam(team.userid, (error, result) => {
-                    if(error){
-                        callback(error, null)
-                    }else{
-                        callback(null, null)
-                    }
-                })
-            }
-            
+            teamsRepository.getTeamById(teamId, (error, team) => {
+                console.log(team);
+                if (sessionUserId == team?.id){
+                    teamsRepository.deleteTeamById(teamId, (error, result) => {
+                        if (error) callback(error, null);
+                        else callback(null, null);
+                    });
+                } else {
+                    teamsRepository.leaveTeam(sessionUserId, (error, result) => {
+                        if (error) {
+                            callback(error, null);
+                        } else {
+                            callback(null, null);
+                        }
+                    })
+                }
+            });
         },
         joinTeam: (teamName, accountId, callback) => {
             teamsRepository.joinTeam(teamName, accountId, (error, results) => {
@@ -70,12 +70,15 @@ module.exports = function({ teamsRepository, barsManager }){
         },
         getTeam: (id, callback) => {
             //error handling
-            if (!id) callback('No team', null);
-            else teamsRepository.getTeam(id, (errors, team, pubcrawl, teamMembers) => {
-                if(errors){
+            if (!id) {
+                callback('No team', null);
+                return;
+            }
+            teamsRepository.getTeam(id, (errors, team, pubcrawl, teamMembers) => {
+                if (errors) {
                     console.log("Errors in teams-manager:", errors);
-                    callback(errors, null)
-                }else{
+                    callback(errors, null);
+                } else {
                     
                     try {
                         const parsed = parseResult(pubcrawl.data);
