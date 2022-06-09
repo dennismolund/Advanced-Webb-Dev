@@ -41,13 +41,25 @@ module.exports = ({}) => {
             try {
                 console.log("ID", id);
                 // [team] => Array destruction => [team] === Team.findAll()[0]
-                const [team] = await Team.findAll({ where: { id }});
+                const [team] = await Team.findAll({ 
+                    where: { 
+                        id
+                    }
+                });
                 if (!team) {
                     callback('No team found', null, null, null);
                     return;
                 } 
-                const [pubcrawl] = await Pubcrawl.findAll({ where: { owner_id: team.dataValues.creator_id } });
-                const teamMembers = await Account.findAll({ where: { team_id: id } });
+                const [pubcrawl] = await Pubcrawl.findAll({ 
+                    where: { 
+                        owner_id: team.dataValues.creator_id
+                    }
+                });
+                const teamMembers = await Account.findAll({ 
+                    where: { 
+                        team_id: id
+                    }
+                });
 
                 const usernameList = teamMembers.map((member) => member.dataValues.username);
 
@@ -62,7 +74,11 @@ module.exports = ({}) => {
         deleteTeamById: async (team_id, callback) => {
             const transaction = await Sequelize.transaction();
             try {
-                const deleteRes = await Team.destroy({ where: { id: team_id } });
+                const deleteRes = await Team.destroy({ 
+                    where: { 
+                        id: team_id
+                    }
+                });
                 // { team_id: team_id } === { team_id } 
                 const updateRes = await Account.update(
                     { team_id: null, pubcrawl_id: null },
@@ -91,7 +107,11 @@ module.exports = ({}) => {
         joinTeam: async (teamName, accountId, callback) => {
             const transaction = await Sequelize.transaction();
             try {
-                const [team] = await Team.findAll({ where: { teamname: teamName } });
+                const [team] = await Team.findAll({ 
+                    where: {
+                        teamname: teamName
+                    }
+                });
                 if (!team) callback('No team found', null); 
                 const update = await Account.update(
                     { team_id: team.dataValues.id },
