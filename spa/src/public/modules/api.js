@@ -84,7 +84,7 @@ export default class AjaxClient {
                 data,
             }
             ViewController.hideLoader();
-            return res;            
+            return res;
         } catch (e) {
             console.log('Get error: ', e);
             ViewController.hideLoader();
