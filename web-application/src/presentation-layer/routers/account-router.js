@@ -49,14 +49,14 @@ module.exports = ({accountManager}) => {
             enteredUsername: request.body.username,
             enteredPassword: request.body.password,
         };
-        accountManager.getAccountByUsername(account, (error, results) => {
+        accountManager.getAccountByUsername(account, (error, account) => {
             if(error){
                 console.log("errors ", error);
                 const errors = [];
                 errors.push(error);
                 response.render("login.hbs", {errors});
             }else{
-                request.session.activeAccount = results;
+                request.session.activeAccount = account;
                 
                 response.redirect("/");
             }

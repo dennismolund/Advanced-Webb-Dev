@@ -23,11 +23,10 @@ module.exports = function({}){
                     db.query(q2, v2, (error, result) => {
                         if (error) console.log('Error updating account table for creator after creating team.', error);
                     });
-                    db.query(q3, result.insertId, (error, result) => {
-                        
+                    db.query(q3, result.insertId, (error, newTeam) => {
                         if (error) console.log('Error getting team after creating it', error);
 
-                        callback(null, result[0])
+                        callback(null, newTeam[0])
                     });
                 }
             });
@@ -66,17 +65,17 @@ module.exports = function({}){
             const q2 = `UPDATE account SET team_id = ? WHERE id = ?`;
 		    const values = [teamName]
             
-            db.query(query, values, (error, result) => {
+            db.query(query, values, (error, teamFromDb) => {
                 if(error){
                     console.log("error in database (join team):", error);
                     callback(error, null)
                 } else {
-                    if (!result.length) {
+                    if (!teamFromDb.length) {
                         callback('No team found', null);
                         return;
                     }
-                    const team_id = result[0].id
-                    const v2 = [result[0].id,accountId]
+                    const team_id = teamFromDb[0].id
+                    const v2 = [teamFromDb[0].id,accountId]
                     db.query(q2, v2, (error, result) => {
                         if(error){
                             console.log("error in database (join team):", error);
@@ -106,29 +105,29 @@ module.exports = function({}){
             const q2 = `SELECT * FROM pubcrawl WHERE owner_id = ?`
             const q3 = `SELECT username FROM account WHERE team_id = ?`
             
-            db.query(query, values, (error, result) => {
+            db.query(query, values, (error, teamFromDb) => {
                 if(error){
                     console.log("Error in database: ", error);
                     callback(['databaseError'], null, null, null)
                 } else {
-                    const team = result[0]
+                    const team = teamFromDb[0]
                     console.log("team in teams repo:", team);
                     if (!team) callback('No team found', null, null, null);
-                    else db.query(q2, result[0].creator_id, (error, result) => {
+                    else db.query(q2, team.creator_id, (error, pubcrawlFromDb) => {
                         if(error){
                             console.log("error getTeam in repository", error);
                             callback(['databaseError'], null, null, null)
                         }
                         else {
-                            console.log('Found barrundor?: ', result.length);
-                            const pubcrawl = result.pop();
-                            db.query(q3, values, (error, result) => {
+                            console.log('Found barrundor?: ', pubcrawlFromDb.length);
+                            const pubcrawl = pubcrawlFromDb.pop();
+                            db.query(q3, values, (error, usernamesFromDb) => {
                                 if (error) {
                                     console.log("ERROR WHEN GETTING TEAMMEMBERS", error);
                                     callback(null, team.dataValues, pubcrawl.dataValues, null)
                                 }else{
                                     const teamMembers = []
-                                    result.forEach(element => {
+                                    usernamesFromDb.forEach(element => {
                                         teamMembers.push(element.username)
                                     });
                                     

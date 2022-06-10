@@ -37,14 +37,14 @@ module.exports = ({teamsManager, barsManager}) => {
 
     router.get("/", (req,res) => {
         const showteam = req.query.showteam === "true" ? true : false
-        teamsManager.getTeam(req.session.activeAccount.team_id, (error, result) => {
+        teamsManager.getTeam(req.session.activeAccount.team_id, (error, team) => {
             if(error){
                 console.log("ERROR TRIGGER IN TEAMS-ROUTER (GetTeam)", error);
                 res.render("start.hbs", {activeAccount: req.session.activeAccount});
             }else{
                 const model = {
                     team: showteam,
-                    data: result,
+                    data: team,
                     activeAccount: req.session.activeAccount,
                     owner: null
                 }

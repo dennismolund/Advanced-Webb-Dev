@@ -25,18 +25,18 @@ module.exports = function({}){
             const qBid = `SELECT pubcrawl_id FROM account WHERE username = ?`
             const qPubcrawl = `SELECT * FROM pubcrawl WHERE id = ?`;
 
-            db.query(qBid, [account.username], (error, result) => {
+            db.query(qBid, [account.username], (error, pubcrawlId) => {
                 if (error) callback(error, null);
-                else if (!result[0].pubcrawl_id) callback(null, null);
+                else if (!pubcrawlId[0].pubcrawl_id) callback(null, null);
                 else {
-                    const values = [result[0].pubcrawl_id];
-                    console.log("id:", result[0].pubcrawl_id);
-                    db.query(qPubcrawl, values, (error, result) => {
+                    const values = [pubcrawlId[0].pubcrawl_id];
+                    console.log("id:", pubcrawlId[0].pubcrawl_id);
+                    db.query(qPubcrawl, values, (error, pubcrawl) => {
                         if (error) callback(ERROR_ENUM.SERVER_ERROR, null);
                         else {
-                            console.log("result from db:", result[0].length);
-                            if (!result.length) {callback(null, null);}
-                            else callback(null, result[0]);
+                            console.log("result from db:", pubcrawl[0].length);
+                            if (!pubcrawl.length) {callback(null, null);}
+                            else callback(null, pubcrawl[0]);
                         }
                     })
                 }
@@ -44,8 +44,8 @@ module.exports = function({}){
         },
 
         getPubcrawlById: (id, callback) => {
-            db.query('SELECT * FROM pubcrawl WHERE id = ?', id, (error, result) => {
-                callback(error, result);
+            db.query('SELECT * FROM pubcrawl WHERE id = ?', id, (error, pubcrawlFromDb) => {
+                callback(error, pubcrawlFromDb);
             })
         },
 

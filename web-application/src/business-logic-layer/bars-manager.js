@@ -1,12 +1,12 @@
 
 const { logBy } = require('./models/pubcrawlFactory');
-const { validParams, validRows, parseResult } = require('./bars-validator');
+const { validPubcrawl, validRows, parsePubcrawl } = require('./pubcrawl-validator');
 const ERROR_ENUM = require('./models/error_enum');
 
 module.exports = ({ barsRepository }) => {
 
     const storePubcrawl = (pubcrawl, userId, callback) => {
-        if (!validParams('storePubcrawl', pubcrawl)) {
+        if (!validPubcrawl('storePubcrawl', pubcrawl)) {
             const e = new Error('Invalid Params');
             callback(e, null);
         } else {
@@ -16,23 +16,23 @@ module.exports = ({ barsRepository }) => {
     
 
     const getPubcrawl = (account, callback) => {
-        if (!validParams('getPubcrawl', {account})) {
+        if (!validPubcrawl('getPubcrawl', {account})) {
             const e = new Error('Invalid Params');
             callback(e, null);
         } else {
-            barsRepository.getPubcrawl(account, (error, result) => {
+            barsRepository.getPubcrawl(account, (error, pubcrawl) => {
 
                 if (error) callback(error, null);
                 else {
-                    if (!result) {
+                    if (!pubcrawl) {
                         callback('Found no pubcrawl for account', null);
                         return;
                     }
                     try {
-                        const parsed = parseResult(result.data);
+                        const parsed = parsePubcrawl(pubcrawl.data);
                         const data = {
                             parsed,
-                            raw: result,
+                            raw: pubcrawl,
                         }
                         callback(null, data);
                     } catch (e) {
@@ -45,17 +45,17 @@ module.exports = ({ barsRepository }) => {
     };
 
     const getPubcrawlById = (id, callback) => {
-        barsRepository.getPubcrawlById(id, (error, result) => {
+        barsRepository.getPubcrawlById(id, (error, pubcrawl) => {
             if (error) {
                 callback(error, null);
-            } else if (!result) {
+            } else if (!pubcrawl) {
                 callback(null, null);
             } else {
                 try {
-                    const parsed = parseResult(result.data);
+                    const parsed = parsePubcrawl(pubcrawl.data);
                     const data = {
                         parsed,
-                        raw: result,
+                        raw: pubcrawl,
                     }
                     callback(null, data);
                 } catch (e) {
@@ -67,10 +67,10 @@ module.exports = ({ barsRepository }) => {
     }
 
     const deletePubcrawlById = (id, account, callback) => {
-        getPubcrawl(account, (error, result) => {
+        getPubcrawl(account, (error, pubcrawl) => {
             if (error) callback(error, null);
             else {
-                if (result.raw.owner_id !== account.id) {
+                if (pubcrawl.raw.owner_id !== account.id) {
                     console.log('User is not authroized to delete resource', result);
                     callback(ERROR_ENUM.UNAUTHORIZED, null);
                 } else {

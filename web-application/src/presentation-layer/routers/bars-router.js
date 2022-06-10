@@ -9,12 +9,12 @@ module.exports = function({barsManager, teamsManager, accountManager}){
 
     router.get("/", (req, res) => {
         const account = req.session.activeAccount;
-        barsManager.getPubcrawl(account, (error, result) => {
+        barsManager.getPubcrawl(account, (error, pubcrawl) => {
             if (error) {
                 res.render("start.hbs", { activeAccount: account });
-            } else if (result){
-                var bars = result.parsed.list
-                const barid = result.raw.id
+            } else if (pubcrawl){
+                var bars = pubcrawl.parsed.list
+                const barid = pubcrawl.raw.id
                 res.render("barrundasolo.hbs", {barid, bars, activeAccount: account});
             } else {
                 console.log('**** ESLE');
