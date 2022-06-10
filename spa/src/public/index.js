@@ -180,7 +180,7 @@ const createPubcrawl = async () => {
 const removePubcrawl = async () => {
     ViewController.hideError();
     const id = User.pubcrawl_id;
-    const response = await AjaxClient.get(`http://localhost:3002/api/bars/delete/${id}`);
+    const response = await AjaxClient.delete(`http://localhost:3002/api/bars/${id}`);
 
     const errorResponse = checkResponse(response);
     if (errorResponse) return;

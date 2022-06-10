@@ -1,3 +1,4 @@
+import parseJwt from './helpers.js';
 import AjaxClient from './api.js';
 
 class User {
@@ -12,7 +13,8 @@ class User {
     }
 
     init(pack) {
-        const { pubcrawl_id, id, team_id, username } = pack.account;
+        const { user } = parseJwt(pack.access_token);
+        const { pubcrawl_id, id, team_id, username } = user;
         this.token = pack.access_token ? pack.access_token : this.token;
         this.pubcrawl_id = pubcrawl_id;
         this.id = id;

@@ -62,4 +62,33 @@ export default class AjaxClient {
             return;
         }
     }
+
+    static async delete(url) {
+        try {
+            ViewController.showLoader();
+            const response = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.accessToken}`,
+                    accept: 'application/json',
+                },
+            });
+            let data = {};
+            try {
+                data = await response.json();
+            } catch (e) {
+                console.log('Error could not parse data ', e);
+            }
+            const res = {
+                response,
+                data,
+            }
+            ViewController.hideLoader();
+            return res;            
+        } catch (e) {
+            console.log('Get error: ', e);
+            ViewController.hideLoader();
+            return;
+        }
+    }
 }

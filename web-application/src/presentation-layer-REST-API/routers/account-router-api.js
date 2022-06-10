@@ -60,9 +60,15 @@ module.exports = function({accountManager}){
                     response.status(400).json({ error: "invalid_grant", error_description: error });
                 }
             } else {
+                const payload = {
+                    id: account.id,
+                    username: account.username,
+                    pubcrawl_id: account.pubcrawl_id,
+                    team_id: account.team_id
+                };
                 const idToken = {
                     sub: account.id,
-                    username: account.username,
+                    user: payload,
                     iss: "api.barrundan.se",
                     iat: Date.now(),
                     exp: Date.now() + 1000 * 60 * 60,
@@ -72,7 +78,6 @@ module.exports = function({accountManager}){
                 response.status(200).send({
                     access_token,
                     token_type: "Bearer",
-                    account,
                 });
             }
         });

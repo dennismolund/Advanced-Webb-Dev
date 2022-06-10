@@ -49,7 +49,6 @@ module.exports = ({}) => {
                     } 
                 });
                 if (!barRes) callback(null, null);
-                console.log("barRes", barRes);
                 await transaction.commit();
                 callback(null, barRes.dataValues);
             } catch (e) {

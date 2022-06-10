@@ -26,8 +26,9 @@ module.exports = ({ barsManager, accountManager }) => {
         });
     });
 
-    router.get('/delete/:id', accountManager.hasTeamCheck, (req, res) => {
+    router.delete('/:id', accountManager.hasTeamCheck, (req, res) => {
         const { id } = req.params;
+        const { account } = req;
         barsManager.deletePubcrawlById(id, req.account, (error, result) => {
             if (error) {
                 if (error === ERROR_ENUM.SERVER_ERROR) return res.status(500).send({ error: ERROR_ENUM.SERVER_ERROR });
