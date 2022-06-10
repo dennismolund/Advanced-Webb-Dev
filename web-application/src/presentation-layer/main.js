@@ -1,5 +1,5 @@
-const rest = require('./presentation-layer/REST-API/app');
-const webApp = require('./presentation-layer/app');
+const rest = require('./REST-API/app');
+const webApp = require('./app');
 
 console.log('main.js');
 

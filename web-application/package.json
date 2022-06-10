@@ -5,7 +5,7 @@
   "main": "src/presentation-layer/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon src/main.js -L"
+    "start": "nodemon src/presentation-layer/main.js -L"
   },
   "repository": {
     "type": "git",
