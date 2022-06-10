@@ -37,34 +37,12 @@ module.exports = ({ barsRepository }) => {
                         callback(null, data);
                     } catch (e) {
                         console.log(e);
-                        callback('Failed to parse data', null);
+                        callback(ERROR_ENUM.SERVER_ERROR, null);
                     }
-                }
+                }   
             });
         }
     };
-
-    const getPubcrawlById = (id, callback) => {
-        barsRepository.getPubcrawlById(id, (error, pubcrawl) => {
-            if (error) {
-                callback(error, null);
-            } else if (!pubcrawl) {
-                callback(null, null);
-            } else {
-                try {
-                    const parsed = parsePubcrawl(pubcrawl.data);
-                    const data = {
-                        parsed,
-                        raw: pubcrawl,
-                    }
-                    callback(null, data);
-                } catch (e) {
-                    console.log(e);
-                    callback(new Error('Failed to parse data'), null);
-                }
-            }
-        });
-    }
 
     const deletePubcrawlById = (id, account, callback) => {
         getPubcrawl(account, (error, pubcrawl) => {
@@ -84,13 +62,67 @@ module.exports = ({ barsRepository }) => {
                 }
             }
         });
-
     }
+
+    const getPubcrawlById = (id, callback) => {
+        barsRepository.getPubcrawlById(id, (error, pubcrawl) => {
+            if (error) {
+                callback(error, null);
+            } else if (!pubcrawl) {
+                callback(null, null);
+            } else {
+                try {
+                    const parsed = parsePubcrawl(pubcrawl.data);
+                    const data = {
+                        parsed,
+                        raw: pubcrawl,
+                    }
+                    callback(null, data);
+                } catch (e) {
+                    console.log(e);
+                    callback(ERROR_ENUM.SERVER_ERROR, null);
+                }
+            }
+        });
+    }    
+
+    const updatePubcrawl = (id, account, newPubcrawlData, callback) => {
+        getPubcrawlById(id, (error, pubcrawl) => {
+            let id;
+            if (error) {
+                callback(error, null);
+                return;
+            }
+
+            if (pubcrawl.raw.owner_id !== account.id) {
+                callback(ERROR_ENUM.MUST_BE_OWNER, null);
+                return;
+            }
+
+            if (!pubcrawl) {
+                callback(ERROR_ENUM.PUBCRAWL_NOT_FOUND, null);
+                return;
+            }
+
+            id = pubcrawl.raw.id;
+
+            barsRepository.updatePubcrawlById(id, newPubcrawlData, (error, result) => {
+                if (error) {
+                    console.log(error);
+                    callback(ERROR_ENUM.SERVER_ERROR, null);
+                    return;
+                }
+                callback(null, { id });
+            });
+        });
+    }
+
 
     return {
         storePubcrawl,
         getPubcrawl,
         deletePubcrawlById,
         getPubcrawlById,
+        updatePubcrawl,
     }
 }

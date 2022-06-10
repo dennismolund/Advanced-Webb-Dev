@@ -168,7 +168,13 @@ const login = async () => {
 
 const createPubcrawl = async () => {
     ViewController.hideError();
-    const response = await AjaxClient.get('http://localhost:3002/api/bars/new');
+    let response;
+    if (User.pubcrawl_id) {
+        response = await AjaxClient.put(`http://localhost:3002/api/bars/${User.pubcrawl_id}`, {})
+    } else {
+        response = await AjaxClient.post('http://localhost:3002/api/bars', {});
+    }
+
 
     const requestError = checkResponse(response);
 

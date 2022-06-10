@@ -82,7 +82,7 @@ const accountRepositorySq = require('../data-access-layer/account-repository-sq'
 const barsRouter = require('./routers/bars-router')
 const barsManager = require('../business-logic-layer/bars-manager')
 const barsRepository = require('../data-access-layer/bars-repository')
-const barsRepositorySq = require('../data-access-layer/bars-repository-sq')
+const barsRepositorySq = require('../data-access-layer/bars-repository')
 
 const teamsRouter = require('./routers/teams-router')
 const teamsManager = require('../business-logic-layer/teams-manager')

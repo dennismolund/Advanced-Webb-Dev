@@ -30,6 +30,22 @@ module.exports = ({}) => {
                 callback(new Error(ERROR_ENUM.SERVER_ERROR), null);
             }
         },
+        updatePubcrawlById: async (id, pubcrawl, callback) => {
+            try {
+                const result = await Pubcrawl.update({
+                    data: JSON.stringify(pubcrawl)
+                }, {
+                    where: {
+                        id
+                    }
+                });
+                console.log('Successfull update');
+                callback(null, result);
+            } catch (e) {
+                console.log(e);
+                callback(e, null);
+            }
+        },
         getPubcrawl: async (account, callback) => {
             console.log('Get pub crawl: account ', account);
             const transaction = await Sequelize.transaction();

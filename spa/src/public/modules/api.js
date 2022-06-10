@@ -2,16 +2,16 @@ import ViewController from "./view.controller.js";
 
 export default class AjaxClient {
 
-    static async post(url, body, _headers) {
+    static async post(url, body, method = 'POST') {
         try {
             ViewController.showLoader();
             const headers = {
                 'Authorization': `Bearer ${localStorage.accessToken}`,
                 'Content-Type': 'application/json'
             };
-            Object.assign(headers, _headers);
+
             const response = await fetch(url, {
-                method: 'POST',
+                method: method,
                 headers,
                 body: JSON.stringify(body),
             });
@@ -90,5 +90,10 @@ export default class AjaxClient {
             ViewController.hideLoader();
             return;
         }
+    }
+
+    static async put(url, body) {
+        const res = await AjaxClient.post(url, body, 'PUT');
+        return res;
     }
 }

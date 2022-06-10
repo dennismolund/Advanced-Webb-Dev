@@ -19,8 +19,9 @@ const ERROR_ENUM = {
     TEAM_NOT_FOUND: "Teamet du vill joina finns inte.",
     ERROR_BCRYPT: "Felaktigt lösenord",
     TEAM_NAME_TAKEN: "Team namn upptaget",
-    AUTHORIZATION_FAIL: "Du har inte tillstånd för din begäran."
-
+    AUTHORIZATION_FAIL: "Du har inte tillstånd för din begäran.",
+    MUST_BE_OWNER: "Endast ägare av barrunda kan göra uppdateringar.",
+    PUBCRAWL_NOT_FOUND: "Barrundan hittades inte"
 }
 
 module.exports = ERROR_ENUM;

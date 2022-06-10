@@ -7,7 +7,7 @@ const ERROR_ENUM = require('../../../business-logic-layer/models/error_enum');
 module.exports = ({ barsManager, accountManager }) => {
     const router = express.Router();
 
-    router.get('/new', accountManager.hasTeamCheck, async (req, res) => {
+    router.post('', accountManager.hasTeamCheck, async (req, res) => {
         if (!req.isLoggedIn) return res.status(401).json( {error: ERROR_ENUM.UNAUTHORIZED });
         await getPlaces();
         const pubcrawl = barlist.getRandom();
@@ -26,8 +26,9 @@ module.exports = ({ barsManager, accountManager }) => {
         });
     });
 
-    router.delete('/:id', accountManager.hasTeamCheck, (req, res) => {
-        const { id } = req.params;
+    router.delete('/:pubcrawlid', accountManager.hasTeamCheck, (req, res) => {
+        console.log('TRYING TO DELETE ???!');
+        const { pubcrawlid: id } = req.params;
         const { account } = req;
         barsManager.deletePubcrawlById(id, req.account, (error, result) => {
             if (error) {
@@ -42,8 +43,8 @@ module.exports = ({ barsManager, accountManager }) => {
         });
     });
 
-    router.get('/:id', (req, res) => {
-        const { id } = req.params;
+    router.get('/:pubcrawlid', (req, res) => {
+        const { pubcrawlid: id } = req.params;
         const { account } = req;
         barsManager.getPubcrawlById(id, (error, data) => {
             if (error) {
@@ -55,10 +56,40 @@ module.exports = ({ barsManager, accountManager }) => {
                     return;
                 }
             } else {
+                if (account.pubcrawl_id !== data.raw.id){
+                    res.status(403).send({ error: ERROR_ENUM.UNAUTHORIZED });
+                    return;
+                }
                 res.status(200).json(data);
                 return;
             }
         });
+    });
+
+    router.put('/:pubcrawlid', async (req, res) => {
+        const { pubcrawlid: id } = req.params;
+        const { account } = req;
+        await getPlaces();
+        const pubcrawl = barlist.getRandom();
+        console.log('/pubcrawl id:', id);
+        barsManager.updatePubcrawl(id, account, pubcrawl, (error, data) => {
+            if (error) {
+                console.log('GOT ERROR: ', error);
+                if (error === ERROR_ENUM.SERVER_ERROR) {
+                    res.status(500).json({ error: ERROR_ENUM.SERVER_ERROR });
+                    return;
+                } else if(error === ERROR_ENUM.MUST_BE_OWNER) {
+                    res.status(403).send({ error: error })
+                    return;
+                } else {
+                    res.status(400).send({ error: error });
+                    return;
+                }
+            }
+            console.log('RESULT FROM PUT: ', data);
+            res.status(200).send({ pubcrawl: pubcrawl.list, id: data.id });
+        });
+        
     });
     return router;
 }

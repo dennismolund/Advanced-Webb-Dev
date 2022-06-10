@@ -21,6 +21,19 @@ module.exports = function({}){
             });
         },
 
+        updatePubcrawlById: (id, pubcrawl, callback) => {
+            const query = 'UPDATE TABLE pubcrawl SET data = ? WHERE id = ?';
+            const values = [pubcrawl, id];
+
+            db.query(query, values, (error, result) => {
+                if (error) {
+                    callback(error, null);
+                    return;
+                }
+                callback(null, result);
+            });
+        },
+
         getPubcrawl: (account, callback) => {
             const qBid = `SELECT pubcrawl_id FROM account WHERE username = ?`
             const qPubcrawl = `SELECT * FROM pubcrawl WHERE id = ?`;
