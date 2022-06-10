@@ -18,7 +18,7 @@ class User {
         this.id = id;
         this.team_id = team_id;
         this.username = username;
-        // localStorage.setItem('accessToken', this.token);
+        localStorage.setItem('accessToken', this.token);
         this.signedIn = true;
     }
 
