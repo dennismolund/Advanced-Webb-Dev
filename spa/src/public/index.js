@@ -102,7 +102,7 @@ const signup = async () => {
         return;
     }
 
-    const response = await AjaxClient.post('http://localhost:3002/api/anvandare/signup', newUser);
+    const response = await AjaxClient.post('http://localhost:3002/api/anvandare', newUser);
 
     const requestError = checkResponse(response);
 
@@ -147,8 +147,15 @@ const login = async () => {
         return;
     }
 
-    const url = `http://localhost:3002/api/anvandare/login?grant_type=password&username=${username}&password=${password}&client_id=${client_id}`;
-    const response = await AjaxClient.post(url,{});
+    const body = {
+        grant_type: 'password',
+        username,
+        password,
+        client_id
+    };
+
+    const url = `http://localhost:3002/api/anvandare/login-sessions`;
+    const response = await AjaxClient.post(url, body);
 
     const requestError = checkResponse(response);
 

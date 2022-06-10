@@ -13,7 +13,7 @@ class User {
 
     init(pack) {
         const { pubcrawl_id, id, team_id, username } = pack.account;
-        this.token = pack.idToken ? pack.idToken : this.token;
+        this.token = pack.access_token ? pack.access_token : this.token;
         this.pubcrawl_id = pubcrawl_id;
         this.id = id;
         this.team_id = team_id;
@@ -30,6 +30,7 @@ class User {
         this.token = null;
         this.signedIn = false;
         this.barList = [];
+        localStorage.removeItem('accessToken');
     }
 
     async loadData() {

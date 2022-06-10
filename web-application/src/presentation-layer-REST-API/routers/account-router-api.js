@@ -16,9 +16,9 @@ module.exports = function({accountManager}){
         res.status(200).json('hello');
     });
 
-    router.post("/login", function(request, response) {
+    router.post("/login-sessions", function(request, response) {
     
-        const { grant_type, username: enteredUsername, password: enteredPassword, client_id } = request.query;
+        const { grant_type, username: enteredUsername, password: enteredPassword, client_id } = request.body;
 
         const loginAccount = {
             enteredUsername,
@@ -27,15 +27,16 @@ module.exports = function({accountManager}){
 
         if (grant_type != "password") {
             response.status(400).send({
-                error: "unsupported_grant_type"
+                error: "unsupported_grant_type",
+                error_description: "Grant type is not supported"
             });
             return;
         }
 
         if (!enteredUsername || !enteredPassword || !client_id) {
-            console.log(enteredUsername, enteredPassword, client_id);
             response.status(400).send({
                 error: "invalid_request",
+                error_description: "Missing parameter in request"
             });
             return;
         }
@@ -44,7 +45,8 @@ module.exports = function({accountManager}){
             console.log(supportedClients);
             console.log(client_id);
             response.status(400).send({
-                error: "invalid_client"
+                error: "invalid_client",
+                error_description: "The client is not registered"
             });
             return;
         }
@@ -58,17 +60,17 @@ module.exports = function({accountManager}){
                     response.status(400).json({ error: "invalid_grant", error_description: error });
                 }
             } else {
-                const payload = {
+                const idToken = {
                     sub: account.id,
                     username: account.username,
                     iss: "api.barrundan.se",
                     iat: Date.now(),
                     exp: Date.now() + 1000 * 60 * 60,
                 }
-                const idToken = jwt.sign(payload, SECRET);
+                const access_token = jwt.sign(idToken, SECRET);
 
                 response.status(200).send({
-                    idToken: idToken,
+                    access_token,
                     token_type: "Bearer",
                     account,
                 });
@@ -76,7 +78,7 @@ module.exports = function({accountManager}){
         });
     });
 
-    router.post('/signup', (req, res) => {
+    router.post('', (req, res) => {
         const newAccount = {
             username: req.body.username,
             email: req.body.email,
