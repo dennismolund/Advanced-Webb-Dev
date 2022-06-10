@@ -2,10 +2,10 @@
   "name": "web-application",
   "version": "1.0.0",
   "description": "",
-  "main": "src/presentation-layer/app.js",
+  "main": "src/presentation-layer-website/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon src/presentation-layer/main.js -L"
+    "start": "nodemon src/presentation-layer-website/main.js -L"
   },
   "repository": {
     "type": "git",
