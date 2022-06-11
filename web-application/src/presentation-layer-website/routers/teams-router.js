@@ -27,7 +27,7 @@ module.exports = ({teamsManager, barsManager}) => {
                     activeAccount: req.session.activeAccount,
                     owner: null
                 }
-                if(model.data.team.creatorid == model.activeAccount.id) model.owner = true
+                if(model.data.team.creator_id == model.activeAccount.id) model.owner = true
                 req.session.activeAccount.team_id = result.team.id;
                 req.session.activeAccount.pubcrawl_id = result.pubcrawl.insertId;
                 res.render("barrundan.hbs", model);
@@ -49,7 +49,7 @@ module.exports = ({teamsManager, barsManager}) => {
                     owner: null
                 }
 
-                if(model.data.team.creatorid == model.activeAccount.id) model.owner = true
+                if(model.data.team.creator_id == model.activeAccount.id) model.owner = true
                 res.render("barrundan.hbs", model);
             }
         })
