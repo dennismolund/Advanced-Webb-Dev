@@ -90,26 +90,26 @@ const teamsRepository = require('../data-access-layer/teams-repository');
 const teamsRepositorySq = require('../data-access-layer/teams-repository-sq');
 
 // Create a container and add the dependencies we want to use.
-const container = awilix.createContainer()
-container.register("accountRouter", awilix.asFunction(accountRouter))
-container.register("accountManager", awilix.asFunction(accountManager))
-container.register("accountRepository", awilix.asFunction(accountRepository))
+const container = awilix.createContainer();
+container.register("accountRouter", awilix.asFunction(accountRouter));
+container.register("accountManager", awilix.asFunction(accountManager));
+container.register("accountRepository", awilix.asFunction(accountRepository));
 
-container.register("barsRouter", awilix.asFunction(barsRouter))
-container.register("barsManager", awilix.asFunction(barsManager))
-container.register("barsRepository", awilix.asFunction(barsRepository))
+container.register("barsRouter", awilix.asFunction(barsRouter));
+container.register("barsManager", awilix.asFunction(barsManager));
+container.register("barsRepository", awilix.asFunction(barsRepository));
 
-container.register("teamsRouter", awilix.asFunction(teamsRouter))
-container.register("teamsManager", awilix.asFunction(teamsManager))
-container.register("teamsRepository", awilix.asFunction(teamsRepository))
+container.register("teamsRouter", awilix.asFunction(teamsRouter));
+container.register("teamsManager", awilix.asFunction(teamsManager));
+container.register("teamsRepository", awilix.asFunction(teamsRepository));
 
-// Retrieve the router, which resolves all other dependencies.
-const theAccountRouter = container.resolve("accountRouter")
-const theBarsRouter = container.resolve("barsRouter")
-const theTeamsRouter = container.resolve("teamsRouter")
+// Retrieve the router, which resolves all other dependencies.;
+const theAccountRouter = container.resolve("accountRouter");
+const theBarsRouter = container.resolve("barsRouter");
+const theTeamsRouter = container.resolve("teamsRouter");
 
-app.use("/anvandare", theAccountRouter)
-app.use("/bars", isSignedIn, theBarsRouter)
-app.use("/teams", isSignedIn, theTeamsRouter)
+app.use("/anvandare", theAccountRouter);
+app.use("/bars", isSignedIn, theBarsRouter);
+app.use("/teams", isSignedIn, theTeamsRouter);
 
 module.exports = app;
