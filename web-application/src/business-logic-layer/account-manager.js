@@ -37,21 +37,33 @@ module.exports = ({ accountRepository }) => {
                 return;
             }
 
-            accountRepository.getAccountByUsername(account, (error, accountFromDb) => {
-                if(error) callback(error, null);
-                else if (!accountFromDb) callback (ERROR_ENUM.BAD_CREDENTIALS, null);
-                else {
-                    bcrypt.compare(account.enteredPassword, accountFromDb.password, (error, result) => {
-                        if(result){
-                            //Deleting password due to security reasons.
-                            delete accountFromDb.password
-                            callback(null, accountFromDb);
-                        }else{
-                            callback(ERROR_ENUM.BAD_CREDENTIALS, null);
-                        }
-                    });
+            accountRepository.getAccountByUsername(
+                account,
+                (error, accountFromDb) => {
+
+                    if(error) {
+                        callback(error, null);
+                    }
+                    else if (!accountFromDb) {
+                        callback (ERROR_ENUM.BAD_CREDENTIALS, null);
+                    }
+                    else {
+                        bcrypt.compare(
+                            account.enteredPassword,
+                            accountFromDb.password,
+                            (error, result) => {
+                                if (result) {
+                                    //Deleting password due to security reasons.
+                                    delete accountFromDb.password;
+                                    callback(null, accountFromDb);
+                                } else {
+                                    callback(ERROR_ENUM.BAD_CREDENTIALS, null);
+                                }
+                            }
+                        );
+                    }
                 }
-            });
+            );
         }
     }
 }

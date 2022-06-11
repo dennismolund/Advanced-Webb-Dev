@@ -15,7 +15,7 @@ module.exports = function({}){
                     const values = [result.insertId, userId];
                     db.query(query, values, (e, r) => {
                         if (e) console.log('Failed to update user after creating pubcrawl');
-                    })
+                    });
                     callback(null, result);
                 }
             });
@@ -55,10 +55,13 @@ module.exports = function({}){
         },
 
         getPubcrawlById: (id, callback) => {
-            db.query('SELECT * FROM pubcrawl WHERE id = ?', id, (error, pubcrawlFromDb) => {
-                console.log('Repo found row in db: ', typeof pubcrawlFromDb[0].data);
-                callback(error, pubcrawlFromDb[0]);
-            });
+            db.query(
+                'SELECT * FROM pubcrawl WHERE id = ?',
+                id,
+                (error, pubcrawlFromDb) => {
+                    callback(error, pubcrawlFromDb[0]);
+                }
+            );
         },
 
         deletePubcrawlById: (id, callback) => {

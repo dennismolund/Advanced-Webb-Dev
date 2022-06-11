@@ -1,4 +1,6 @@
-const { getPlaces } = require('../data-access-layer/service/fetch.data.service.js');
+const {
+  getPlaces
+} = require('../data-access-layer/service/fetch.data.service.js');
 const { isSignedIn } = require('./middlewares/auth.middleware.js');
 const express = require('express');
 const hbs = require('express-handlebars');

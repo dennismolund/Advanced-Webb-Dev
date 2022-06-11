@@ -1,6 +1,10 @@
 
 const { logBy } = require('./models/pubcrawlFactory');
-const { validPubcrawl, validRows, parsePubcrawl } = require('./pubcrawl-validator');
+const {
+    validPubcrawl,
+    validRows,
+    parsePubcrawl
+} = require('./pubcrawl-validator');
 const ERROR_ENUM = require('./models/error_enum');
 
 
@@ -11,7 +15,7 @@ module.exports = ({ barsRepository }) => {
             const e = new Error('Invalid Params');
             callback(e, null);
         } else {
-            barsRepository.storePubcrawl(pubcrawl, userId, callback)
+            barsRepository.storePubcrawl(pubcrawl, userId, callback);
         }
     };
     
@@ -23,10 +27,11 @@ module.exports = ({ barsRepository }) => {
         } else {
             barsRepository.getPubcrawl(account, (error, pubcrawl) => {
 
-                if (error) callback(error, null);
-                else {
+                if (error) {
+                    callback(error, null);
+                } else {
                     if (!pubcrawl) {
-                        callback('Found no pubcrawl for account', null);
+                        callback(ERROR_ENUM.NO_PUBCRAWL_FOR_ACCOUNT, null);
                         return;
                     }
                     try {
@@ -47,15 +52,16 @@ module.exports = ({ barsRepository }) => {
 
     const deletePubcrawlById = (id, account, callback) => {
         getPubcrawl(account, (error, pubcrawl) => {
-            if (error) callback(error, null);
-            else {
+            if (error) {
+                callback(error, null);
+            } else {
                 if (pubcrawl.raw.owner_id !== account.id) {
-                    console.log('User is not authroized to delete resource', result);
                     callback(ERROR_ENUM.UNAUTHORIZED, null);
                 } else {
                     barsRepository.deletePubcrawlById(id, (error, result) => {
-                        if (error) callback(error, null);
-                        else {
+                        if (error) {
+                            callback(error, null);
+                        } else {
                             console.log('successfully deleted pubcrawl');
                             callback(null, 'success');
                         }
@@ -107,14 +113,18 @@ module.exports = ({ barsRepository }) => {
 
             id = pubcrawl.raw.id;
 
-            barsRepository.updatePubcrawlById(id, newPubcrawlData, (error, result) => {
-                if (error) {
-                    console.log(error);
-                    callback(ERROR_ENUM.SERVER_ERROR, null);
-                    return;
+            barsRepository.updatePubcrawlById(
+                id,
+                newPubcrawlData,
+                (error, result) => {
+                    if (error) {
+                        console.log(error);
+                        callback(ERROR_ENUM.SERVER_ERROR, null);
+                        return;
+                    }
+                    callback(null, { id });
                 }
-                callback(null, { id });
-            });
+            );
         });
     }
 

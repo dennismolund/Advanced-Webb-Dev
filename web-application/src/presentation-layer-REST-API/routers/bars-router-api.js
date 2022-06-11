@@ -1,7 +1,9 @@
 const express = require('express');
 const { decode } = require('jsonwebtoken');
 const { hasTeamCheck } = require('../middleware/barsMiddlewares');
-const { getPlaces } = require('../../../data-access-layer/service/fetch.data.service');
+const {
+    getPlaces
+} = require('../../../data-access-layer/service/fetch.data.service');
 const barlist = require('../../../business-logic-layer/models/pubcrawlFactory')
 const ERROR_ENUM = require('../../../business-logic-layer/models/error_enum');
 
@@ -16,12 +18,18 @@ module.exports = ({ barsManager, accountManager }) => {
         
         barsManager.storePubcrawl(pubcrawl, userId, (error, result) => {
             if (error) {
-                if (error === ERROR_ENUM.SERVER_ERROR) return res.status(500).json({ error: ERROR_ENUM.SERVER_ERROR });
-                else {
+                if (error === ERROR_ENUM.SERVER_ERROR) {
+                    return res
+                            .status(500)
+                            .json({ error: ERROR_ENUM.SERVER_ERROR });
+                } else {
                     return res.status(400).json({ error: error });
                 }
             } else {
-                res.status(200).json({ pubcrawl: pubcrawl.list, id: result.insertId });
+                res.status(200).json({
+                    pubcrawl: pubcrawl.list,
+                    id: result.insertId
+                });
             }
         });
     });
@@ -40,9 +48,14 @@ module.exports = ({ barsManager, accountManager }) => {
 
         barsManager.deletePubcrawlById(id, req.account, (error, result) => {
             if (error) {
-                if (error === ERROR_ENUM.SERVER_ERROR) return res.status(500).send({ error: ERROR_ENUM.SERVER_ERROR });
+                if (error === ERROR_ENUM.SERVER_ERROR) {
+                    return res.status(500).send({ error: ERROR_ENUM.SERVER_ERROR });
+                }
                 if (error === ERROR_ENUM.UNAUTHORIZED) {
-                    return res.status(403).send({ error: ERROR_ENUM.UNAUTHORIZED, error_description: ERROR_ENUM.NO_TEAMOWNER_MESSAGE });
+                    return res.status(403).send({
+                        error: ERROR_ENUM.UNAUTHORIZED,
+                        error_description: ERROR_ENUM.NO_TEAMOWNER_MESSAGE
+                    });
                 }
                 return res.status(400).json({ error: error });
             } else {

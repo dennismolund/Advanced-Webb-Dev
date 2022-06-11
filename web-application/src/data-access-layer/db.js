@@ -5,6 +5,6 @@ const connection = mysql.createConnection({
 	user : 'root',
 	password : 'jade123',
 	database : 'webAppDatabase'
-})
+});
 
 module.exports = connection;

@@ -27,8 +27,11 @@ module.exports = function({}){
 			if(error){
 				console.log("Error in database: ", error.code);
 				if (error.code === "ER_DUP_ENTRY") {
-					if (error.sqlMessage.includes('email')) callback(ERROR_ENUM.EMAIL_TAKEN, null);
-					else callback(ERROR_ENUM.USERNAME_TAKEN, null);
+					if (error.sqlMessage.includes('email')) {
+						callback(ERROR_ENUM.EMAIL_TAKEN, null);
+						return;
+					}
+					callback(ERROR_ENUM.USERNAME_TAKEN, null);
 				}
 				else callback(ERROR_ENUM.SERVER_ERROR, null);
 			}else{

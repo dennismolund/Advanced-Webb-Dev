@@ -18,7 +18,12 @@ module.exports = function({accountManager}){
 
     router.post("/login-sessions", function(request, response) {
     
-        const { grant_type, username: enteredUsername, password: enteredPassword, client_id } = request.body;
+        const {
+            grant_type,
+            username: enteredUsername,
+            password: enteredPassword,
+            client_id
+        } = request.body;
 
         const loginAccount = {
             enteredUsername,
@@ -51,36 +56,47 @@ module.exports = function({accountManager}){
             return;
         }
         
-        accountManager.getAccountByUsername(loginAccount, function(error, account){
-            if(error){
-                console.log("errors ", error);
-                if (error === ERROR_ENUM.SERVER_ERROR) {
-                    response.status(500).json({ error: ERROR_ENUM.SERVER_ERROR });
-                } else {
-                    response.status(400).json({ error: "invalid_grant", error_description: error });
-                }
-            } else {
-                const payload = {
-                    id: account.id,
-                    username: account.username,
-                    pubcrawl_id: account.pubcrawl_id,
-                    team_id: account.team_id
-                };
-                const idToken = {
-                    sub: account.id,
-                    user: payload,
-                    iss: "api.barrundan.se",
-                    iat: Date.now(),
-                    exp: Date.now() + 1000 * 60 * 60,
-                }
-                const access_token = jwt.sign(idToken, SECRET);
+        accountManager
+            .getAccountByUsername(
+                loginAccount,
+                (error, account) => {
+                    if(error){
+                        console.log("errors ", error);
+                        if (error === ERROR_ENUM.SERVER_ERROR) {
+                            response
+                                .status(500)
+                                .json({ error: ERROR_ENUM.SERVER_ERROR });
+                        } else {
+                            response
+                                .status(400)
+                                .json({
+                                    error: "invalid_grant",
+                                    error_description: error
+                                });
+                        }
+                    } else {
+                        const payload = {
+                            id: account.id,
+                            username: account.username,
+                            pubcrawl_id: account.pubcrawl_id,
+                            team_id: account.team_id
+                        };
+                        const idToken = {
+                            sub: account.id,
+                            user: payload,
+                            iss: "api.barrundan.se",
+                            iat: Date.now(),
+                            exp: Date.now() + 1000 * 60 * 60,
+                        }
+                        const access_token = jwt.sign(idToken, SECRET);
 
-                response.status(200).send({
-                    access_token,
-                    token_type: "Bearer",
-                });
-            }
-        });
+                        response.status(200).send({
+                            access_token,
+                            token_type: "Bearer",
+                        });
+                    }
+                }
+            );
     });
 
     router.post('', (req, res) => {

@@ -1,7 +1,9 @@
 const express = require('express')
 const session = require('express-session')
 const Pubcrawl = require('../../business-logic-layer/models/pubcrawlFactory')
-const { getPlaces } = require('../../data-access-layer/service/fetch.data.service');
+const {
+    getPlaces
+} = require('../../data-access-layer/service/fetch.data.service');
 
 module.exports = function({barsManager, teamsManager, accountManager}){
 
@@ -13,12 +15,17 @@ module.exports = function({barsManager, teamsManager, accountManager}){
             if (error) {
                 res.render("start.hbs", { activeAccount: account });
             } else if (pubcrawl){
-                var bars = pubcrawl.parsed.list
-                const barid = pubcrawl.raw.id
-                res.render("barrundasolo.hbs", {barid, bars, activeAccount: account});
+                const bars = pubcrawl.parsed.list;
+                const barid = pubcrawl.raw.id;
+                res.render(
+                    "barrundasolo.hbs",
+                    { barid, bars, activeAccount: account }
+                );
             } else {
-                res.render("barrundasolo.hbs", {barid, bars: [], activeAccount: account});
-                // There was no data found
+                res.render(
+                    "barrundasolo.hbs",
+                    { barid, bars: [], activeAccount: account }
+                );
             }
         });
     });
@@ -27,17 +34,28 @@ module.exports = function({barsManager, teamsManager, accountManager}){
         await getPlaces();
         const pubcrawl = Pubcrawl.getRandom();
         let barid = null
-        barsManager.storePubcrawl(pubcrawl, req.session.activeAccount.id, (error, result) => {
-            if (error) {
-                console.log('Failed to save pubcrawl');
-                console.log(error);
-                res.render("start.hbs", { error })
-            } else {
-                barid = result.insertId
-                req.session.activeAccount.pubcrawl_id = barid;
-                res.render("barrundasolo.hbs", {barid,bars: pubcrawl.list, activeAccount: req.session.activeAccount})
+        barsManager.storePubcrawl(
+            pubcrawl,
+            req.session.activeAccount.id,
+            (error, result) => {
+                if (error) {
+                    console.log('Failed to save pubcrawl');
+                    console.log(error);
+                    res.render("start.hbs", { error })
+                } else {
+                    barid = result.insertId
+                    req.session.activeAccount.pubcrawl_id = barid;
+                    res.render(
+                        "barrundasolo.hbs",
+                        {
+                            barid,
+                            bars: pubcrawl.list,
+                            activeAccount: req.session.activeAccount
+                        }
+                    );
+                }
             }
-        });
+        );
     });
     
     router.get('/delete/:id', (req, res, next) => {

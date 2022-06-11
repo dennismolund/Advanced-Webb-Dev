@@ -1,4 +1,7 @@
-const {TEAMNAME_TO_SHORT, TEAMNAME_TO_LONG} = require("../business-logic-layer/models/error_enum")
+const {
+    TEAMNAME_TO_SHORT,
+    TEAMNAME_TO_LONG
+} = require("../business-logic-layer/models/error_enum")
 
 const validTeamName = (name) => {
     if (name.length > 20) throw new Error(TEAMNAME_TO_LONG);

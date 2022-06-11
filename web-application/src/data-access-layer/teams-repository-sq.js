@@ -75,10 +75,19 @@ module.exports = ({}) => {
                     }
                 });
 
-                const usernameList = teamMembers.map((member) => member.dataValues.username);
+                const usernameList = teamMembers.map((member) =>
+                                                        member
+                                                        .dataValues
+                                                        .username
+                                                    );
 
                 await transaction.commit();
-                callback(null, team.dataValues, pubcrawl.dataValues, usernameList);
+                callback(
+                    null,
+                    team.dataValues,
+                    pubcrawl.dataValues,
+                    usernameList
+                );
             } catch (e) {
                 console.log('Error getting team: ', e);
                 await transaction.rollback();

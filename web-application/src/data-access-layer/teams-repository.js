@@ -25,7 +25,6 @@ module.exports = function({}){
                     });
                     db.query(q3, result.insertId, (error, newTeam) => {
                         if (error) console.log('Error getting team after creating it', error);
-
                         callback(null, newTeam[0])
                     });
                 }
@@ -52,7 +51,8 @@ module.exports = function({}){
             
         },
         leaveTeam: (accountId, callback) => {
-            const query = `UPDATE account SET team_id = ?, pubcrawl_id = ? WHERE id = ?`
+            const query = 
+                `UPDATE account SET team_id = ?, pubcrawl_id = ? WHERE id = ?`
             const values = [null, null, accountId]
             db.query(query, values, (error, results)=>{
                 if(error){
@@ -124,7 +124,12 @@ module.exports = function({}){
                             db.query(q3, values, (error, usernamesFromDb) => {
                                 if (error) {
                                     console.log("ERROR WHEN GETTING TEAMMEMBERS", error);
-                                    callback(null, team.dataValues, pubcrawl.dataValues, null)
+                                    callback(
+                                        null,
+                                        team.dataValues,
+                                        pubcrawl.dataValues,
+                                        null
+                                    );
                                 }else{
                                     const teamMembers = []
                                     usernamesFromDb.forEach(element => {
