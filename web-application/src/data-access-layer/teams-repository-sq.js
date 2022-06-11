@@ -54,8 +54,7 @@ module.exports = ({}) => {
         getTeam: async (id, callback) => {
             const transaction = await Sequelize.transaction();
             try {
-                console.log("ID", id);
-                // [team] => Array destruction => [team] === Team.findAll()[0]
+
                 const [team] = await Team.findAll({ 
                     where: { 
                         id

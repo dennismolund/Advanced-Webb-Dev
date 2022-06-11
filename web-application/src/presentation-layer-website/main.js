@@ -1,8 +1,6 @@
 const rest = require('../presentation-layer-REST-API/app');
 const webApp = require('./app');
 
-console.log('main.js');
-
 rest.listen(3002, ()=> {
     console.log("REST API listening to: 3002");
 });

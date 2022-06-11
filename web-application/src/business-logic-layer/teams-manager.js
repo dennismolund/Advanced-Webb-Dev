@@ -58,7 +58,6 @@ module.exports = function({ teamsRepository, barsManager, accountRepository }){
                         else callback(null, null);
                     });
                 } else {
-                    console.log('LEAVING TEAM');
                     teamsRepository.leaveTeam(sessionUserId, (error, result) => {
                         if (error) {
                             callback(error, null);

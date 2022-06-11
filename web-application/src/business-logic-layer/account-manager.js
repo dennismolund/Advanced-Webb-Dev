@@ -2,30 +2,12 @@ const accountValidator = require('./account-validator')
 const ERROR_ENUM = require('./models/error_enum');
 var bcrypt = require('bcrypt');
 const saltRounds = 10;
-const {ERROR_BCRYPT} = require("../business-logic-layer/models/error_enum")
+const { ERROR_BCRYPT } = require("../business-logic-layer/models/error_enum")
 
 module.exports = ({ accountRepository }) => {
     // Name all the dependencies in the curly brackets above.
     
     return {
-        hasTeamCheck: (req, res, next) => {
-            const { id } = req.account;
-            console.log(id);
-            accountRepository.getAccountById(id, (error, data) => {
-                if (error || !data) return res.statsu(500).send({ error: SERVER_ERROR });
-                if (data.team_id) {
-                    res.status(403).send({
-                        error: 'has_team_error',
-                        error_description: "Gå till http://localhost:3000 och lämna ditt team för ta bort / skapa barrunda.",
-                    });
-                    return;
-                }
-                console.log('Has team check running next()');
-                next();
-            });
-            console.log('End of has team check');
-        },
-
         createAccount: (account, callback) => {
 
             // Validate the account.

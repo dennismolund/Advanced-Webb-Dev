@@ -20,9 +20,7 @@ redisClient.connect().catch(console.error)
 
 //Sequilze DB connection
 require('../data-access-layer/connection-sq');
-console.log(process.env.REDIS_HOST);
-console.log(process.env.REDIS_USERNAME);
-console.log(process.env.REDIS_PASSWORD);
+
 const app = express();
 
 const engine = hbs.engine || hbs;
@@ -74,21 +72,20 @@ app.get('/', async (req, res) => {
 });
 
 // Import the ones we want to use (real or mockup), real in this case.
-const accountRouter = require('./routers/account-router')
-const accountManager = require('../business-logic-layer/account-manager')
-const accountRepository = require('../data-access-layer/account-repository')
-const accountRepositorySq = require('../data-access-layer/account-repository-sq')
+const accountRouter = require('./routers/account-router');
+const accountManager = require('../business-logic-layer/account-manager');
+const accountRepository = require('../data-access-layer/account-repository');
+const accountRepositorySq = require('../data-access-layer/account-repository-sq');
 
-const barsRouter = require('./routers/bars-router')
-const barsManager = require('../business-logic-layer/bars-manager')
-const barsRepository = require('../data-access-layer/bars-repository')
-const barsRepositorySq = require('../data-access-layer/bars-repository')
+const barsRouter = require('./routers/bars-router');
+const barsManager = require('../business-logic-layer/bars-manager');
+const barsRepository = require('../data-access-layer/bars-repository');
+const barsRepositorySq = require('../data-access-layer/bars-repository-sq');
 
-const teamsRouter = require('./routers/teams-router')
-const teamsManager = require('../business-logic-layer/teams-manager')
-const teamsRepository = require('../data-access-layer/teams-repository')
+const teamsRouter = require('./routers/teams-router');
+const teamsManager = require('../business-logic-layer/teams-manager');
+const teamsRepository = require('../data-access-layer/teams-repository');
 const teamsRepositorySq = require('../data-access-layer/teams-repository-sq');
-const { Socket } = require('dgram');
 
 // Create a container and add the dependencies we want to use.
 const container = awilix.createContainer()

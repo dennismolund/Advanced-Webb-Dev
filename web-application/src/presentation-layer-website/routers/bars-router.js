@@ -17,7 +17,6 @@ module.exports = function({barsManager, teamsManager, accountManager}){
                 const barid = pubcrawl.raw.id
                 res.render("barrundasolo.hbs", {barid, bars, activeAccount: account});
             } else {
-                console.log('**** ESLE');
                 res.render("barrundasolo.hbs", {barid, bars: [], activeAccount: account});
                 // There was no data found
             }
@@ -25,7 +24,6 @@ module.exports = function({barsManager, teamsManager, accountManager}){
     });
 
     router.post('/', async (req, res) => {
-        console.log('Creating and storing new pubcrawl');
         await getPlaces();
         const pubcrawl = Pubcrawl.getRandom();
         let barid = null

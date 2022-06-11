@@ -4,6 +4,8 @@ const Account = require('../business-logic-layer/models/Account')
 const Pubcrawl = require('../business-logic-layer/models/Pubcrawl');
 const ERROR_ENUM = require('../business-logic-layer/models/error_enum');
 
+console.log('BARS REPO SQ LOADED');
+
 module.exports = ({}) => { 
 
     return {
@@ -31,9 +33,10 @@ module.exports = ({}) => {
             }
         },
         updatePubcrawlById: async (id, pubcrawl, callback) => {
+            const data = JSON.stringify(pubcrawl);
             try {
                 const result = await Pubcrawl.update({
-                    data: JSON.stringify(pubcrawl)
+                    data,
                 }, {
                     where: {
                         id
@@ -75,15 +78,17 @@ module.exports = ({}) => {
         },
         getPubcrawlById: async (id, callback) => {
             try {
-                const [barsRes] = await Pubcrawl.findAll({ 
+                const barsRes = await Pubcrawl.findOne({ 
                     where: { 
                         id
                     } 
                 });
+                console.log('Get by id repo returning: ', barsRes.dataValues);
                 callback(null, barsRes.dataValues);
             } catch (e) {
+                console.log('Bars res got error: ', e);
                 callback(ERROR_ENUM.SERVER_ERROR, null);
-            }
+            }   
         },
 
         deletePubcrawlById: async (id, callback) => {

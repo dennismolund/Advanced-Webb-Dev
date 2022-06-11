@@ -50,7 +50,6 @@ module.exports = ({teamsManager, barsManager}) => {
                 }
 
                 if(model.data.team.creatorid == model.activeAccount.id) model.owner = true
-                console.log('TEAMS ROUTER returnng model: ', model);
                 res.render("barrundan.hbs", model);
             }
         })

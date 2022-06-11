@@ -14,6 +14,7 @@ const validRows = (pubcrawl) => {
 }
 
 const parsePubcrawl = (pubcrawl) => {
+    if (typeof pubcrawl === 'object') return pubcrawl;
     return JSON.parse(pubcrawl);
 }
 

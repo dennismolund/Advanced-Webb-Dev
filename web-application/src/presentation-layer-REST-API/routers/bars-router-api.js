@@ -1,5 +1,6 @@
 const express = require('express');
 const { decode } = require('jsonwebtoken');
+const { hasTeamCheck } = require('../middleware/barsMiddlewares');
 const { getPlaces } = require('../../../data-access-layer/service/fetch.data.service');
 const barlist = require('../../../business-logic-layer/models/pubcrawlFactory')
 const ERROR_ENUM = require('../../../business-logic-layer/models/error_enum');
@@ -7,12 +8,11 @@ const ERROR_ENUM = require('../../../business-logic-layer/models/error_enum');
 module.exports = ({ barsManager, accountManager }) => {
     const router = express.Router();
 
-    router.post('', accountManager.hasTeamCheck, async (req, res) => {
-        if (!req.isLoggedIn) return res.status(401).json( {error: ERROR_ENUM.UNAUTHORIZED });
+    router.post('', hasTeamCheck, async (req, res) => {
         await getPlaces();
         const pubcrawl = barlist.getRandom();
         const token = req.headers['authorization'].split(' ')[1];
-        const { username, sub: userId } = decode(token);
+        const { sub: userId } = decode(token);
         
         barsManager.storePubcrawl(pubcrawl, userId, (error, result) => {
             if (error) {
@@ -26,10 +26,18 @@ module.exports = ({ barsManager, accountManager }) => {
         });
     });
 
-    router.delete('/:pubcrawlid', accountManager.hasTeamCheck, (req, res) => {
-        console.log('TRYING TO DELETE ???!');
+    router.delete('/:pubcrawlid', hasTeamCheck, (req, res) => {
         const { pubcrawlid: id } = req.params;
         const { account } = req;
+
+        if (account.team_id) {
+            res.status(403).send({
+                error: 'has_team_error',
+                error_description: "Gå till http://localhost:3000 och lämna ditt team för ta bort / skapa barrunda.",
+            });
+            return;
+        }
+
         barsManager.deletePubcrawlById(id, req.account, (error, result) => {
             if (error) {
                 if (error === ERROR_ENUM.SERVER_ERROR) return res.status(500).send({ error: ERROR_ENUM.SERVER_ERROR });
@@ -86,7 +94,6 @@ module.exports = ({ barsManager, accountManager }) => {
                     return;
                 }
             }
-            console.log('RESULT FROM PUT: ', data);
             res.status(200).send({ pubcrawl: pubcrawl.list, id: data.id });
         });
         

@@ -1,12 +1,12 @@
 const db = require('./db')
 const ERROR_ENUM = require('../business-logic-layer/models/error_enum');
+
 module.exports = function({}){
 
     return {
         storePubcrawl: (pubcrawl, userId, callback) => {
             const query = `INSERT INTO pubcrawl (owner_id, data) VALUES (?,?)`;
             const values = [userId, JSON.stringify(pubcrawl)];
-
             db.query(query, values, (error, result) => {
                 if (error) callback(error, null);
                 else {
@@ -22,8 +22,8 @@ module.exports = function({}){
         },
 
         updatePubcrawlById: (id, pubcrawl, callback) => {
-            const query = 'UPDATE TABLE pubcrawl SET data = ? WHERE id = ?';
-            const values = [pubcrawl, id];
+            const query = 'UPDATE pubcrawl SET data = ? WHERE id = ?';
+            const values = [JSON.stringify(pubcrawl), id];
 
             db.query(query, values, (error, result) => {
                 if (error) {
@@ -43,11 +43,9 @@ module.exports = function({}){
                 else if (!pubcrawlId[0].pubcrawl_id) callback(null, null);
                 else {
                     const values = [pubcrawlId[0].pubcrawl_id];
-                    console.log("id:", pubcrawlId[0].pubcrawl_id);
                     db.query(qPubcrawl, values, (error, pubcrawl) => {
                         if (error) callback(ERROR_ENUM.SERVER_ERROR, null);
                         else {
-                            console.log("result from db:", pubcrawl[0].length);
                             if (!pubcrawl.length) {callback(null, null);}
                             else callback(null, pubcrawl[0]);
                         }
@@ -58,8 +56,9 @@ module.exports = function({}){
 
         getPubcrawlById: (id, callback) => {
             db.query('SELECT * FROM pubcrawl WHERE id = ?', id, (error, pubcrawlFromDb) => {
-                callback(error, pubcrawlFromDb);
-            })
+                console.log('Repo found row in db: ', typeof pubcrawlFromDb[0].data);
+                callback(error, pubcrawlFromDb[0]);
+            });
         },
 
         deletePubcrawlById: (id, callback) => {
