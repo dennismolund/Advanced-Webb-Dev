@@ -5,7 +5,6 @@ const Pubcrawl = require('../business-logic-layer/models/Pubcrawl');
 const ERROR_ENUM = require('../business-logic-layer/models/error_enum');
 
 module.exports = ({}) => { 
-
     return {
         storePubcrawl: async (pubcrawl, userId, callback) => {
             const transaction = await Sequelize.transaction();
@@ -87,7 +86,6 @@ module.exports = ({}) => {
                 callback(ERROR_ENUM.SERVER_ERROR, null);
             }   
         },
-
         deletePubcrawlById: async (id, callback) => {
             const transaction = await Sequelize.transaction();
             try {

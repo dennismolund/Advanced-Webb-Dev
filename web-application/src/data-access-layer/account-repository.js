@@ -3,7 +3,6 @@ const ERROR_ENUM = require('../business-logic-layer/models/error_enum');
 
 module.exports = function({}){
 	// Name all the dependencies in the curly brackets above (none in this case). 
-
 	return {
 	  getAccountById: (id, callback) => {
 		  const query = 'SELECT * FROM account WHERE id = ?';
@@ -19,7 +18,6 @@ module.exports = function({}){
 	  },
 
 	  createAccount: (account, callback) => {
-	
 		const query = `INSERT INTO account (username, email, password) VALUES (?, ?, ?)`;
 		const values = [account.username, account.email, account.password];
 		

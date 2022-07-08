@@ -70,10 +70,10 @@ module.exports = ({}) => {
                 });
 
                 const usernameList = teamMembers.map((member) =>
-                                                        member
-                                                        .dataValues
-                                                        .username
-                                                    );
+                    member
+                    .dataValues
+                    .username
+                );
 
                 await transaction.commit();
                 callback(

@@ -20,7 +20,6 @@ module.exports = function({}){
                 }
             });
         },
-
         updatePubcrawlById: (id, pubcrawl, callback) => {
             const query = 'UPDATE pubcrawl SET data = ? WHERE id = ?';
             const values = [JSON.stringify(pubcrawl), id];
@@ -33,7 +32,6 @@ module.exports = function({}){
                 callback(null, result);
             });
         },
-
         getPubcrawl: (account, callback) => {
             const qBid = `SELECT pubcrawl_id FROM account WHERE username = ?`
             const qPubcrawl = `SELECT * FROM pubcrawl WHERE id = ?`;
@@ -53,7 +51,6 @@ module.exports = function({}){
                 }
             });
         },
-
         getPubcrawlById: (id, callback) => {
             db.query(
                 'SELECT * FROM pubcrawl WHERE id = ?',
@@ -63,7 +60,6 @@ module.exports = function({}){
                 }
             );
         },
-
         deletePubcrawlById: (id, callback) => {
             const query = `DELETE FROM pubcrawl WHERE id = ?`;
             db.query(query, id, (error, result) => {

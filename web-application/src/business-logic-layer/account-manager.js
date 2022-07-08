@@ -9,7 +9,6 @@ module.exports = ({ accountRepository }) => {
     
     return {
         createAccount: (account, callback) => {
-
             // Validate the account.
             const errors = accountValidator.getErrorsNewAccount(account);
             

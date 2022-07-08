@@ -37,10 +37,10 @@ module.exports = function({}){
                 if(error){
                     console.log("ERROR WHEN UPDATING ACCOUNT", error);
                     callback(error, null)
-                }else{
+                } else {
                     const query2 = `DELETE FROM team WHERE id = ?`
 		            const values2 = [team_id]
-                    db.query(query2, values2, (error, results)=>{
+                    db.query(query2, values2, (error, results) => {
                         if(error){
                             console.log("ERROR WHEN DELETING TEAM", error);
                             callback('Error deleting team', null)
@@ -51,8 +51,7 @@ module.exports = function({}){
             
         },
         leaveTeam: (accountId, callback) => {
-            const query = 
-                `UPDATE account SET team_id = ?, pubcrawl_id = ? WHERE id = ?`
+            const query = `UPDATE account SET team_id = ?, pubcrawl_id = ? WHERE id = ?`
             const values = [null, null, accountId]
             db.query(query, values, (error, results)=>{
                 if(error){
