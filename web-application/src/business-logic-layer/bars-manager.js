@@ -1,8 +1,6 @@
 
-const { logBy } = require('./models/pubcrawlFactory');
 const {
     validPubcrawl,
-    validRows,
     parsePubcrawl
 } = require('./pubcrawl-validator');
 const ERROR_ENUM = require('./models/error_enum');

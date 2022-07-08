@@ -1,11 +1,7 @@
-const express = require('express');
+
 const { validTeamName } = require('./teams-validator');
 const barlist = require('./models/pubcrawlFactory')
-const {
-    validPubcrawl,
-    validRows,
-    parsePubcrawl
-} = require('./pubcrawl-validator');
+const { parsePubcrawl } = require('./pubcrawl-validator');
 const { getPlaces } = require('../data-access-layer/service/fetch.data.service');
 const {
     TEAM_NOT_FOUND,

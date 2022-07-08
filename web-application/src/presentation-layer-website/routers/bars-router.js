@@ -1,5 +1,4 @@
 const express = require('express')
-const session = require('express-session')
 const Pubcrawl = require('../../business-logic-layer/models/pubcrawlFactory')
 const {
     getPlaces

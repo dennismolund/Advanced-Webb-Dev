@@ -1,4 +1,3 @@
-const { Sequelize } = require('sequelize');
 const Account = require('../business-logic-layer/models/Account');
 const ERROR_ENUM = require('../business-logic-layer/models/error_enum');
 

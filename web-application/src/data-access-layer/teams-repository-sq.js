@@ -4,12 +4,6 @@ const Account = require('../business-logic-layer/models/Account')
 const Pubcrawl = require('../business-logic-layer/models/Pubcrawl');
 const ERROR_ENUM = require('../business-logic-layer/models/error_enum');
 
-
-const errHandler = (err) =>{
-    console.error("Error: ", err);
-    
-}
-
 module.exports = ({}) => {
     
 

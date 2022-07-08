@@ -1,8 +1,4 @@
-const { request } = require('express')
 const express = require('express')
-const session = require('express-session')
-const barsManager = require('../../business-logic-layer/bars-manager')
-const barsRepository = require('../../data-access-layer/bars-repository')
 
 module.exports = ({teamsManager, barsManager}) => {
 

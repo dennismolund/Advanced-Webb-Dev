@@ -1,10 +1,7 @@
 const express = require('express')
-var bcrypt = require('bcrypt');
 const ERROR_ENUM = require('../../../business-logic-layer/models/error_enum');
-const { authenticateToken } = require('../middleware/authenticateToken');
 const { jwt_secret, supportedClients } = require('../const');
 const jwt = require("jsonwebtoken");
-const saltRounds = 10;
 
 const SECRET = jwt_secret;
 
