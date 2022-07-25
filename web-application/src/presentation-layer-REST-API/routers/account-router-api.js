@@ -57,6 +57,7 @@ module.exports = function({accountManager}){
             .getAccountByUsername(
                 loginAccount,
                 (error, account) => {
+                    //Display server error or if username or password is incorrect.
                     if(error){
                         console.log("errors ", error);
                         if (error === ERROR_ENUM.SERVER_ERROR) {
@@ -86,6 +87,7 @@ module.exports = function({accountManager}){
                             exp: Date.now() + 1000 * 60 * 60,
                         }
                         const access_token = jwt.sign(idToken, SECRET);
+                        console.log("idToken:", SECRET);
 
                         response.status(200).send({
                             access_token,
