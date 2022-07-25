@@ -27,11 +27,10 @@ module.exports = ({}) => {
             } catch (e) {
                 console.log('Error creating new team: ', e.parent);
                 await transaction.rollback();
-                const err = {
-                    code: e.parent.code,
-                    message: ERROR_ENUM.SERVER_ERROR
-                };
-                callback(err, null);
+                
+                if (e.parent.code === 'ER_DUP_ENTRY') {
+                    callback(ERROR_ENUM.TEAM_NAME_TAKEN, null);
+                } else callback(ERROR_ENUM.SERVER_ERROR, null);
             }
         },
         getTeamById: async (id, callback) => {

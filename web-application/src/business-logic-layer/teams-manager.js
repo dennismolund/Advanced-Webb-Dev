@@ -38,10 +38,7 @@ module.exports = function({ teamsRepository, barsManager, accountRepository }){
 
             teamsRepository.createTeam(team, async (error, newTeam) => {
                 if (error) {
-                    if (error.code === 'ER_DUP_ENTRY') {
-                        error.message = TEAM_NAME_TAKEN;
-                    }
-                    callback(error.message, null);
+                    callback(error, null);
                 } else {
                     await getPlaces();
                     const pubcrawl = barlist.getRandom();

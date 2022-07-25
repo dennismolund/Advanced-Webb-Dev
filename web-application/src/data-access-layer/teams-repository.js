@@ -13,11 +13,9 @@ module.exports = function({}){
             db.query(query, values, (error, result) => {
                 if (error) {
                     console.log("Error in database: ", error);
-                    const err = {
-                        code: error.code,
-                        message: ERROR_ENUM.SERVER_ERROR
-                    };
-                    callback(err, null);
+                    if (error.code === 'ER_DUP_ENTRY') {
+                        callback(ERROR_ENUM.TEAM_NAME_TAKEN, null);
+                    } else callback(ERROR_ENUM.SERVER_ERROR, null);
                 } else {
                     const v2 = [result.insertId, team.creatorId];
                     db.query(q2, v2, (error, result) => {
