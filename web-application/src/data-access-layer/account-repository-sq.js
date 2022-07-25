@@ -1,4 +1,4 @@
-const Account = require('../business-logic-layer/models/Account');
+const Account = require('./models/Account');
 const ERROR_ENUM = require('../business-logic-layer/models/error_enum');
 
 module.exports = ({}) => { 

@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const sequelize = require('../../data-access-layer/connection-sq');
+const sequelize = require('../connection-sq');
 
 module.exports = sequelize.define("team", {
     id: {
