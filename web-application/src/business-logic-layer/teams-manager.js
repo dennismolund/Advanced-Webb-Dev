@@ -1,4 +1,3 @@
-
 const { validTeamName } = require('./teams-validator');
 const barlist = require('./models/pubcrawlFactory')
 const { parsePubcrawl } = require('./pubcrawl-validator');
@@ -64,15 +63,15 @@ module.exports = function({ teamsRepository, barsManager, accountRepository }){
                 }
             })
         },
-        delete: (sessionUserId, teamId, callback) => {
+        delete: (accountId, teamId, callback) => {
             teamsRepository.getTeamById(teamId, (error, team) => {
-                if (sessionUserId == team?.creator_id) {
+                if (accountId == team?.creator_id) {
                     teamsRepository.deleteTeamById(teamId, (error, result) => {
                         if (error) callback(error, null);
                         else callback(null, null);
                     });
                 } else {
-                    teamsRepository.leaveTeam(sessionUserId, (error, result) => {
+                    teamsRepository.leaveTeam(accountId, (error, result) => {
                         if (error) {
                             callback(error, null);
                         } else {
