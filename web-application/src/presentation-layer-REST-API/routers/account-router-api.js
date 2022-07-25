@@ -34,14 +34,6 @@ module.exports = function({accountManager}){
             });
             return;
         }
-
-        if (!enteredUsername || !enteredPassword || !client_id) {
-            response.status(400).send({
-                error: "invalid_request",
-                error_description: "Missing parameter in request"
-            });
-            return;
-        }
         
         if (!supportedClients.includes(client_id)) {
             console.log(supportedClients);
