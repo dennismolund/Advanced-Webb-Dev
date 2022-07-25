@@ -128,7 +128,7 @@ module.exports = ({}) => {
                         teamname: teamName
                     }
                 });
-                if (!team) callback('No team found', null); 
+                if (!team) callback(ERROR_ENUM.TEAM_NOT_FOUND, null); 
                 const update = await Account.update(
                     { team_id: team.dataValues.id },
                     { where: { id: accountId }}
@@ -138,7 +138,7 @@ module.exports = ({}) => {
             } catch (e) {
                 console.log('Error joining team: ', e);
                 await transaction.rollback();
-                callback(e, null);
+                callback(ERROR_ENUM.SERVER_ERROR, null);
             }
         }
     }

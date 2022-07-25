@@ -65,10 +65,10 @@ module.exports = function({}){
             db.query(query, values, (error, teamFromDb) => {
                 if(error){
                     console.log("error in database (join team):", error);
-                    callback(error, null)
+                    callback(ERROR_ENUM.SERVER_ERROR, null)
                 } else {
                     if (!teamFromDb.length) {
-                        callback('No team found', null);
+                        callback(ERROR_ENUM.TEAM_NOT_FOUND, null);
                         return;
                     }
                     const team_id = teamFromDb[0].id

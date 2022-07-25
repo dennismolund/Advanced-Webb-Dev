@@ -3,8 +3,6 @@ const barlist = require('./models/pubcrawlFactory')
 const { parsePubcrawl } = require('./pubcrawl-validator');
 const { getPlaces } = require('../data-access-layer/service/fetch.data.service');
 const {
-    TEAM_NOT_FOUND,
-    TEAM_NAME_TAKEN,
     AUTHORIZATION_FAIL
 } = require('../business-logic-layer/models/error_enum')
 
@@ -94,7 +92,6 @@ module.exports = function({ teamsRepository, barsManager, accountRepository }){
             });
             teamsRepository.joinTeam(teamName, account.id, (error, results) => {
                 if(error){
-                    error = TEAM_NOT_FOUND
                     callback(error, null)
                 }else{
                     callback(null, results)
