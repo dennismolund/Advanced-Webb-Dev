@@ -1,4 +1,4 @@
-const ERROR_ENUM = require('../business-logic-layer/models/error_enum');
+const ERROR_ENUM = require('./models/error_enum');
 const db = require('./db')
 
 module.exports = function({}){
@@ -76,7 +76,7 @@ module.exports = function({}){
                     db.query(q2, v2, (error, result) => {
                         if(error){
                             console.log("error in database (join team):", error);
-                            callback(error, null)
+                            callback(ERROR_ENUM.SERVER_ERROR, null)
                         }else{
                             callback(null, team_id)
                         }

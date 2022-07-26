@@ -1,5 +1,5 @@
 const db = require('./db')
-const ERROR_ENUM = require('../business-logic-layer/models/error_enum');
+const ERROR_ENUM = require('./models/error_enum');
 
 module.exports = function({}){
 
