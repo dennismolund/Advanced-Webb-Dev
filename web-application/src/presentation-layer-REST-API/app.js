@@ -38,7 +38,7 @@ container.register("accountRepository", awilix.asFunction(accountRepository));
 
 container.register('barsRouter', awilix.asFunction(barsRouter));
 container.register('barsManager', awilix.asFunction(barsManager));
-container.register('barsRepository', awilix.asFunction(barsRepositorySq));
+container.register('barsRepository', awilix.asFunction(barsRepository));
 
 // Retrieve the router, which resolves all other dependencies.
 const theAccountRouter = container.resolve("accountRouter");
