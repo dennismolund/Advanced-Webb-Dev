@@ -1,4 +1,3 @@
-const { connect } = require('./db');
 const db = require('./db')
 const ERROR_ENUM = require('./models/error_enum');
 
@@ -76,8 +75,8 @@ module.exports = function({}){
             db.query(
                 'SELECT * FROM pubcrawl WHERE id = ?',
                 id,
-                (error, pubcrawlFromDb) => {
-                    callback(error, pubcrawlFromDb[0]);
+                (error, pubcrawls) => {
+                    callback(error, pubcrawls[0]);
                 }
             );
         },
