@@ -5,7 +5,7 @@ module.exports = function({}){
 
     return {
         storePubcrawl: (pubcrawl, userId, callback) => {
-            const query = `INSERT INTO pubcrawl (owner_id, data) VALUES (?,?)`;
+            const query = `INSERT INTO pubcrawl (owner_id, pub_list) VALUES (?,?)`;
             const values = [userId, JSON.stringify(pubcrawl)];
             db.beginTransaction((transactionError) => {
                 if(transactionError) callback(transactionError, null);
@@ -41,7 +41,7 @@ module.exports = function({}){
             });
         },
         updatePubcrawlById: (id, pubcrawl, callback) => {
-            const query = 'UPDATE pubcrawl SET data = ? WHERE id = ?';
+            const query = 'UPDATE pubcrawl SET pub_list = ? WHERE id = ?';
             const values = [JSON.stringify(pubcrawl), id];
 
             db.query(query, values, (error, result) => {

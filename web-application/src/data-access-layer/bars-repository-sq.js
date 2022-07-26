@@ -10,7 +10,7 @@ module.exports = ({}) => {
             try {
                 const newPubcrawl = await Pubcrawl.create({
                     owner_id: userId,
-                    data: JSON.stringify(pubcrawl)
+                    pub_list: JSON.stringify(pubcrawl)
                 });
                 const update = await Account.update(
                     { pubcrawl_id: newPubcrawl.dataValues.id },
@@ -29,10 +29,10 @@ module.exports = ({}) => {
             }
         },
         updatePubcrawlById: async (id, pubcrawl, callback) => {
-            const data = JSON.stringify(pubcrawl);
+            const pub_list = JSON.stringify(pubcrawl);
             try {
                 const result = await Pubcrawl.update({
-                    data,
+                    pub_list,
                 }, {
                     where: {
                         id

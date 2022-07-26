@@ -10,7 +10,7 @@ CREATE TABLE account (
 CREATE TABLE pubcrawl (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     owner_id INT NOT NULL,
-    data JSON NOT NULL,
+    pub_list JSON NOT NULL,
     FOREIGN KEY (owner_id) REFERENCES account(id) ON DELETE CASCADE
 );
 

@@ -12,7 +12,7 @@ module.exports = sequelize.define('pubcrawl', {
         type: Sequelize.INTEGER,
         allowNull: false
     },
-    data: {
+    pub_list: {
         type: Sequelize.JSON,
         allowNull: false
     }

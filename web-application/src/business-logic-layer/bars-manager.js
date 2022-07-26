@@ -33,7 +33,7 @@ module.exports = ({ barsRepository }) => {
                         return;
                     }
                     try {
-                        const parsed = parsePubcrawl(pubcrawl.data);
+                        const parsed = parsePubcrawl(pubcrawl.pub_list);
                         const data = {
                             parsed,
                             raw: pubcrawl,
@@ -77,7 +77,7 @@ module.exports = ({ barsRepository }) => {
                 callback(null, null);
             } else {
                 try {
-                    const parsed = parsePubcrawl(pubcrawl.data);
+                    const parsed = parsePubcrawl(pubcrawl.pub_list);
                     const data = {
                         parsed,
                         raw: pubcrawl,
