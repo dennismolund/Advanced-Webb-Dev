@@ -57,10 +57,10 @@ module.exports = function({}){
             const qBid = `SELECT pubcrawl_id FROM account WHERE username = ?`
             const qPubcrawl = `SELECT * FROM pubcrawl WHERE id = ?`;
 
-            db.query(qBid, [account.username], (error, pubcrawlIds) => {
+            db.query(qBid, [account.username], (error, results) => {
                 if (error) callback(error, null);
-                else if (pubcrawlIds.length) {
-                    const values = [pubcrawlIds[0].pubcrawl_id];
+                else if (results.length) {
+                    const values = [results[0].pubcrawl_id];
                     db.query(qPubcrawl, values, (error, pubcrawls) => {
                         if (error) callback(ERROR_ENUM.SERVER_ERROR, null);
                         else {
