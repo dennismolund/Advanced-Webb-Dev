@@ -12,7 +12,7 @@ module.exports = function({}){
                 db.query(query, values, (error, result) => {
                     if (error) {
                         return db.rollback(() => {
-                            callback(error, null);
+                            callback(ERROR_ENUM.SERVER_ERROR, null);
                         });
                     }
                     else {
@@ -23,14 +23,14 @@ module.exports = function({}){
                             if (e) {
                                 console.log('Failed to update user after creating pubcrawl');
                                 return db.rollback(() => {
-                                    callback(error, null);
+                                    callback(ERROR_ENUM.SERVER_ERROR, null);
                                 });
                             }
                         });
                         db.commit((commitError) => {
                             if(commitError){
                                 return db.rollback(() => {
-                                    callback(error, null);
+                                    callback(ERROR_ENUM.SERVER_ERROR, null);
                                 });
                             }
                             callback(null, result);
@@ -46,7 +46,7 @@ module.exports = function({}){
 
             db.query(query, values, (error, result) => {
                 if (error) {
-                    callback(error, null);
+                    callback(ERROR_ENUM.SERVER_ERROR, null);
                     return;
                 }
                 callback(null, result);
@@ -57,7 +57,7 @@ module.exports = function({}){
             const qPubcrawl = `SELECT * FROM pubcrawl WHERE id = ?`;
 
             db.query(qBid, [account.username], (error, results) => {
-                if (error) callback(error, null);
+                if (error) callback(ERROR_ENUM.SERVER_ERROR, null);
                 else if (results.length) {
                     const values = [results[0].pubcrawl_id];
                     db.query(qPubcrawl, values, (error, pubcrawls) => {
@@ -76,14 +76,14 @@ module.exports = function({}){
                 'SELECT * FROM pubcrawl WHERE id = ?',
                 id,
                 (error, pubcrawls) => {
-                    callback(error, pubcrawls[0]);
+                    callback(ERROR_ENUM.SERVER_ERROR, pubcrawls[0]);
                 }
             );
         },
         deletePubcrawlById: (id, callback) => {
             const query = `DELETE FROM pubcrawl WHERE id = ?`;
             db.query(query, id, (error, result) => {
-                if (error) callback(error, null);
+                if (error) callback(ERROR_ENUM.SERVER_ERROR, null);
                 else callback(null, null);
             });
         }
