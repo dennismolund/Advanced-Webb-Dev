@@ -7,13 +7,13 @@ module.exports = function({}){
 	  getAccountById: (id, callback) => {
 		  const query = 'SELECT * FROM account WHERE id = ?';
 		  const values = [id];
-		  db.query(query, values, (error, account) => {
+		  db.query(query, values, (error, accounts) => {
 			if (error) {
 				console.log('Error getting acocunt from db: ', error);
 				callback(ERROR_ENUM.SERVER_ERROR, null);
 				return;
 			}
-			callback(null, account[0]);
+			callback(null, accounts[0]);
 		  });
 	  },
 
@@ -42,10 +42,10 @@ module.exports = function({}){
 			const query = "SELECT * FROM account WHERE username = ?";
 			const values = [account.enteredUsername];
 		
-			db.query(query, values, (error, accountFromDb) => {
+			db.query(query, values, (error, accounts) => {
 				if(error) callback(ERROR_ENUM.SERVER_ERROR, null);
 
-				else if(accountFromDb) callback(null, accountFromDb[0]);
+				else if(accounts) callback(null, accounts[0]);
 
 				else callback(ERROR_ENUM.USER_NOT_FOUND, null);
 			});
