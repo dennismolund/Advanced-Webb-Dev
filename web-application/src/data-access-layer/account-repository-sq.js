@@ -22,14 +22,15 @@ module.exports = ({}) => {
                 else callback(ERROR_ENUM.SERVER_ERROR, null);
             }
         },
-        getAccountByUsername: async (account, callback) => { 
+        getAccountByUsername: async ({ enteredUsername }, callback) => { 
             try {
-                const users = await Account.findAll({ 
+                const account = await Account.findOne({ 
                     where: { 
-                        username: account.enteredUsername 
+                        username: enteredUsername 
                     }
                 });
-                if (users.length) callback(null, users[0].dataValues);
+                console.log("account: ", account);
+                if (!!account) callback(null, account.dataValues);
 				else callback(null, null);
             } catch (e) {
                 console.log(e);
@@ -39,8 +40,8 @@ module.exports = ({}) => {
         },
         getAccountById: async (id, callback) => {
             try {
-                const users = await Account.findAll({ where: { id }});
-                if (users.length) callback(null, users[0].dataValues);
+                const account = await Account.findOne({ where: { id }});
+                if (!!account) callback(null, account.dataValues);
                 else callback(null, null);
             } catch (e) {
                 console.log(e);
