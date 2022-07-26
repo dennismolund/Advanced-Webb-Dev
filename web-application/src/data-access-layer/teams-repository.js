@@ -8,8 +8,8 @@ module.exports = function({}){
         createTeam: (team, callback) => {
             const query = `INSERT INTO team (teamname, creator_id) VALUES (?, ?)`;
             const values = [team.teamName, team.creatorId];
-            const q2 = `UPDATE account SET team_id = ? WHERE id = ?`;
-            const q3 = `SELECT * FROM team WHERE id = ?`;
+            const query2 = `UPDATE account SET team_id = ? WHERE id = ?`;
+            const query3 = `SELECT * FROM team WHERE id = ?`;
             db.query(query, values, (error, result) => {
                 if (error) {
                     console.log("Error in database: ", error);
@@ -17,11 +17,11 @@ module.exports = function({}){
                         callback(ERROR_ENUM.TEAM_NAME_TAKEN, null);
                     } else callback(ERROR_ENUM.SERVER_ERROR, null);
                 } else {
-                    const v2 = [result.insertId, team.creatorId];
-                    db.query(q2, v2, (error, result) => {
+                    const value2 = [result.insertId, team.creatorId];
+                    db.query(query2, value2, (error, result) => {
                         if (error) console.log('Error updating account table for creator after creating team.', error);
                     });
-                    db.query(q3, result.insertId, (error, newTeam) => {
+                    db.query(query3, result.insertId, (error, newTeam) => {
                         if (error) console.log('Error getting team after creating it', error);
                         callback(null, newTeam[0])
                     });
@@ -59,7 +59,7 @@ module.exports = function({}){
         },
         joinTeam: (teamName, accountId, callback) => {
             const query = `SELECT * FROM team WHERE teamname = ?`;
-            const q2 = `UPDATE account SET team_id = ? WHERE id = ?`;
+            const query2 = `UPDATE account SET team_id = ? WHERE id = ?`;
 		    const values = [teamName]
             
             db.query(query, values, (error, teamFromDb) => {
@@ -72,8 +72,8 @@ module.exports = function({}){
                         return;
                     }
                     const team_id = teamFromDb[0].id
-                    const v2 = [teamFromDb[0].id,accountId]
-                    db.query(q2, v2, (error, result) => {
+                    const value2 = [teamFromDb[0].id,accountId]
+                    db.query(query2, value2, (error, result) => {
                         if(error){
                             console.log("error in database (join team):", error);
                             callback(ERROR_ENUM.SERVER_ERROR, null)
@@ -99,8 +99,8 @@ module.exports = function({}){
         getTeam: (id, callback)=>{
             const query = `SELECT * FROM team WHERE id = ?`
 		    const values = [id]
-            const q2 = `SELECT * FROM pubcrawl WHERE owner_id = ?`
-            const q3 = `SELECT username FROM account WHERE team_id = ?`
+            const query2 = `SELECT * FROM pubcrawl WHERE owner_id = ?`
+            const query3 = `SELECT username FROM account WHERE team_id = ?`
             
             db.query(query, values, (error, teamFromDb) => {
                 if(error){
@@ -110,7 +110,7 @@ module.exports = function({}){
                     const team = teamFromDb[0]
                     console.log("team in teams repo:", team);
                     if (!team) callback('No team found', null, null, null);
-                    else db.query(q2, team.creator_id, (error, pubcrawlFromDb) => {
+                    else db.query(query2, team.creator_id, (error, pubcrawlFromDb) => {
                         if(error){
                             console.log("error getTeam in repository", error);
                             callback(['databaseError'], null, null, null)
@@ -118,7 +118,7 @@ module.exports = function({}){
                         else {
                             console.log('Found barrundor?: ', pubcrawlFromDb.length);
                             const pubcrawl = pubcrawlFromDb.pop();
-                            db.query(q3, values, (error, usernamesFromDb) => {
+                            db.query(query3, values, (error, usernamesFromDb) => {
                                 if (error) {
                                     console.log("ERROR WHEN GETTING TEAMMEMBERS", error);
                                     callback(
