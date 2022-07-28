@@ -99,13 +99,13 @@ module.exports = ({ barsRepository }) => {
                 return;
             }
 
-            if (pubcrawl.raw.owner_id !== account.id) {
-                callback(ERROR_ENUM.MUST_BE_OWNER, null);
+            if (!pubcrawl) {
+                callback(ERROR_ENUM.PUBCRAWL_NOT_FOUND, null);
                 return;
             }
 
-            if (!pubcrawl) {
-                callback(ERROR_ENUM.PUBCRAWL_NOT_FOUND, null);
+            if (pubcrawl.raw.owner_id !== account.id) {
+                callback(ERROR_ENUM.MUST_BE_OWNER, null);
                 return;
             }
 
