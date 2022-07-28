@@ -1,5 +1,5 @@
 
-const validPubcrawl = (fName, pubcrawl) => {
+const validatePubcrawl = (fName, pubcrawl) => {
     Object.keys(pubcrawl).forEach((key) => {
         if (!pubcrawl[key]) {
             console.log('Missing value for param', key, 'when running', fName);
@@ -9,7 +9,7 @@ const validPubcrawl = (fName, pubcrawl) => {
     return true;
 }
 
-const validRows = (pubcrawl) => {
+const validateRows = (pubcrawl) => {
     return pubcrawl.length > 0 && pubcrawl[0] && pubcrawl[0].data;
 }
 
@@ -19,7 +19,7 @@ const parsePubcrawl = (pubcrawl) => {
 }
 
 module.exports = {
-    validPubcrawl,
-    validRows,
+    validatePubcrawl,
+    validateRows,
     parsePubcrawl,
 }

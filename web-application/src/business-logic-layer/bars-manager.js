@@ -1,6 +1,6 @@
 
 const {
-    validPubcrawl,
+    validatePubcrawl,
     parsePubcrawl
 } = require('./pubcrawl-validator');
 const ERROR_ENUM = require('./models/error_enum');
@@ -9,7 +9,7 @@ const ERROR_ENUM = require('./models/error_enum');
 module.exports = ({ barsRepository }) => {
 
     const storePubcrawl = (pubcrawl, userId, callback) => {
-        if (!validPubcrawl('storePubcrawl', pubcrawl)) {
+        if (!validatePubcrawl('storePubcrawl', pubcrawl)) {
             const e = new Error('Invalid Params');
             callback(e, null);
         } else {
@@ -19,7 +19,7 @@ module.exports = ({ barsRepository }) => {
     
 
     const getPubcrawl = (account, callback) => {
-        if (!validPubcrawl('getPubcrawl', {account})) {
+        if (!validatePubcrawl('getPubcrawl', {account})) {
             const e = new Error('Invalid Params');
             callback(e, null);
         } else {
