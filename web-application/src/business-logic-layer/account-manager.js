@@ -12,7 +12,7 @@ module.exports = ({ accountRepository }) => {
             const errors = accountValidator.getErrorsNewAccount(account);
             
             if(errors.length){
-                callback(errors[0], null);
+                callback(errors, null);
                 return;
             }
 
