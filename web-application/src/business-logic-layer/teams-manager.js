@@ -108,7 +108,7 @@ module.exports = function({ teamsRepository, barsManager, accountRepository }){
                 callback(ERROR_ENUM.NO_TEAM_FOR_ACCOUNT, null);
                 return;
             }
-            
+
             teamsRepository.getTeam(activeAccount.team_id, (errors, team, pubcrawl, teamMembers) => {
                 if (errors) {
                     console.log("Errors in teams-manager:", errors);
@@ -119,8 +119,8 @@ module.exports = function({ teamsRepository, barsManager, accountRepository }){
                         return;
                     }
                     try {
-                        const parsed = parsePubcrawl(pubcrawl.data);
-                        
+                        const parsed = parsePubcrawl(pubcrawl.pub_list);
+                        console.log("parsed:", parsed);
                         const bars = {
                             parsed,
                             raw: pubcrawl,
@@ -132,9 +132,10 @@ module.exports = function({ teamsRepository, barsManager, accountRepository }){
                         };
                         callback(null, data)
                     } catch (e) {
-                        //Using sequilze the data is already parsed
-                        const parsed = pubcrawl.data;
                         
+                        //Using sequilze the data is already parsed
+                        const parsed = pubcrawl.pub_list;
+                        console.log("parsed e:", pubcrawl);
                         const bars = {
                             parsed,
                             raw: pubcrawl,
