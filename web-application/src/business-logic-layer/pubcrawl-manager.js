@@ -25,38 +25,33 @@ module.exports = ({ pubcrawlRepository }) => {
         //Checks if an account is logged in.
         if(!activeAccount) callback(ERROR_ENUM.AUTHORIZATION_FAIL, null)
 
-        if (!validatePubcrawl('getPubcrawl', {activeAccount})) {
-            const e = new Error('Invalid Params');
-            callback(e, null);
-        } else {
-            pubcrawlRepository.getPubcrawl(activeAccount, (error, pubcrawl) => {
+        pubcrawlRepository.getPubcrawl(activeAccount, (error, pubcrawl) => {
+            if (error) {
+                callback(error, null);
+            } else {
+                if (!pubcrawl) {
+                    callback(ERROR_ENUM.NO_PUBCRAWL_FOR_ACCOUNT, null);
+                    return;
+                }
 
-                if (error) {
-                    callback(error, null);
-                } else {
-                    if (!pubcrawl) {
-                        callback(ERROR_ENUM.NO_PUBCRAWL_FOR_ACCOUNT, null);
-                        return;
-                    }
+                if (pubcrawl.owner_id !== activeAccount.id) {
+                    callback(ERROR_ENUM.AUTHORIZATION_FAIL, null);
+                }
 
-                    if (pubcrawl.owner_id !== activeAccount.id) {
-                        callback(ERROR_ENUM.AUTHORIZATION_FAIL, null);
+                try {
+                    const parsed = parsePubcrawl(pubcrawl.pub_list);
+                    const data = {
+                        parsed,
+                        raw: pubcrawl,
                     }
-
-                    try {
-                        const parsed = parsePubcrawl(pubcrawl.pub_list);
-                        const data = {
-                            parsed,
-                            raw: pubcrawl,
-                        }
-                        callback(null, data);
-                    } catch (e) {
-                        console.log(e);
-                        callback(ERROR_ENUM.SERVER_ERROR, null);
-                    }
-                }   
-            });
-        }
+                    callback(null, data);
+                } catch (e) {
+                    console.log(e);
+                    callback(ERROR_ENUM.SERVER_ERROR, null);
+                }
+            }   
+        });
+        
     };
 
     const deletePubcrawlById = (id, activeAccount, callback) => {
