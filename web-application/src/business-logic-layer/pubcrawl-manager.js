@@ -4,9 +4,18 @@ const {
     parsePubcrawl
 } = require('./pubcrawl-validator');
 const ERROR_ENUM = require('./models/error_enum');
-
+const Pubcrawl = require('.//models/pubcrawlFactory')
+const {
+    getPubsFromGoogleAPI
+} = require('./service/fetch.data.service');
 
 module.exports = ({ pubcrawlRepository }) => {
+
+    const createPubcrawl = async () => {
+        await getPubsFromGoogleAPI();
+        const pubcrawl = Pubcrawl.getRandom();
+        return pubcrawl
+    }
 
     const storePubcrawl = (pubcrawl, account_id, callback) => {
         //account_id is derived from an active session. Checks if an account is logged in.
@@ -145,5 +154,6 @@ module.exports = ({ pubcrawlRepository }) => {
         deletePubcrawlById,
         getPubcrawlById,
         updatePubcrawl,
+        createPubcrawl
     }
 }

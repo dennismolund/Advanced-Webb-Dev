@@ -1,10 +1,6 @@
 const express = require('express')
-const Pubcrawl = require('../../business-logic-layer/models/pubcrawlFactory')
-const {
-    getPubsFromGoogleAPI
-} = require('../../business-logic-layer/service/fetch.data.service');
 
-module.exports = function({pubcrawlManager, teamsManager, accountManager}){
+module.exports = function({pubcrawlManager}){
 
     const router = express.Router()
 
@@ -30,9 +26,7 @@ module.exports = function({pubcrawlManager, teamsManager, accountManager}){
     });
 
     router.post('/', async (req, res) => {
-        await getPubsFromGoogleAPI();
-        const pubcrawl = Pubcrawl.getRandom();
-        let pubcrawl_id = null
+        const pubcrawl = await pubcrawlManager.createPubcrawl();
         pubcrawlManager.storePubcrawl(
             pubcrawl,
             req.session.activeAccount.id,
@@ -42,6 +36,7 @@ module.exports = function({pubcrawlManager, teamsManager, accountManager}){
                     console.log(error);
                     res.render("start.hbs", { error })
                 } else {
+                    let pubcrawl_id = null
                     pubcrawl_id = result.insertId
                     req.session.activeAccount.pubcrawl_id = pubcrawl_id;
                     res.render(
@@ -57,7 +52,7 @@ module.exports = function({pubcrawlManager, teamsManager, accountManager}){
         );
     });
     
-    router.get('/delete/:id', (req, res, next) => {
+    router.get('/delete/:id', (req, res) => {
         const { id: pubcrawl_id } = req.params;
         const activeAccount = req.session.activeAccount;
         pubcrawlManager.deletePubcrawlById(pubcrawl_id , activeAccount, (error, result) => {
