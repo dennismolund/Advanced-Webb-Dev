@@ -2,7 +2,7 @@ const express = require('express');
 const { decode } = require('jsonwebtoken');
 const { hasTeamCheck } = require('../middleware/pubcrawlMiddlewares');
 const {
-    getPlaces
+    getPubsFromGoogleAPI
 } = require('../../data-access-layer/service/fetch.data.service');
 const publist = require('../../business-logic-layer/models/pubcrawlFactory')
 const ERROR_ENUM = require('../../business-logic-layer/models/error_enum');
@@ -11,7 +11,7 @@ module.exports = ({ pubcrawlManager, accountManager }) => {
     const router = express.Router();
 
     router.post('', hasTeamCheck, async (req, res) => {
-        await getPlaces();
+        await getPubsFromGoogleAPI();
         const pubcrawl = publist.getRandom();
         const token = req.headers['authorization'].split(' ')[1];
         const { sub: accountId } = decode(token);
@@ -90,7 +90,7 @@ module.exports = ({ pubcrawlManager, accountManager }) => {
     router.put('/:pubcrawlid', async (req, res) => {
         const { pubcrawlid: id } = req.params;
         const { account } = req;
-        await getPlaces();
+        await getPubsFromGoogleAPI();
         const pubcrawl = publist.getRandom();
         console.log('/pubcrawl id:', id);
         pubcrawlManager.updatePubcrawl(id, account, pubcrawl, (error, data) => {

@@ -1,7 +1,7 @@
 const { validTeamName } = require('./teams-validator');
 const publist = require('./models/pubcrawlFactory')
 const { parsePubcrawl } = require('./pubcrawl-validator');
-const { getPlaces } = require('../data-access-layer/service/fetch.data.service');
+const { getPubsFromGoogleAPI } = require('../data-access-layer/service/fetch.data.service');
 const ERROR_ENUM = require('../business-logic-layer/models/error_enum');
 
 module.exports = function({ teamsRepository, pubcrawlManager, accountRepository }){
@@ -38,7 +38,7 @@ module.exports = function({ teamsRepository, pubcrawlManager, accountRepository 
                 if (error) {
                     callback(error, null);
                 } else {
-                    await getPlaces();
+                    await getPubsFromGoogleAPI();
                     const pubcrawl = publist.getRandom();
                     pubcrawlManager.storePubcrawl(
                         pubcrawl,
@@ -158,7 +158,7 @@ module.exports = function({ teamsRepository, pubcrawlManager, accountRepository 
                     if (error) {
                         callback(error, null);
                     } else {
-                        await getPlaces();
+                        await getPubsFromGoogleAPI();
                         const pubcrawl = publist.getRandom();
                         pubcrawlManager.storePubcrawl(
                             pubcrawl,

@@ -1,7 +1,7 @@
 const express = require('express')
 const Pubcrawl = require('../../business-logic-layer/models/pubcrawlFactory')
 const {
-    getPlaces
+    getPubsFromGoogleAPI
 } = require('../../data-access-layer/service/fetch.data.service');
 
 module.exports = function({pubcrawlManager, teamsManager, accountManager}){
@@ -30,7 +30,7 @@ module.exports = function({pubcrawlManager, teamsManager, accountManager}){
     });
 
     router.post('/', async (req, res) => {
-        await getPlaces();
+        await getPubsFromGoogleAPI();
         const pubcrawl = Pubcrawl.getRandom();
         let pubid = null
         pubcrawlManager.storePubcrawl(
