@@ -22,7 +22,7 @@ module.exports = ({ pubcrawlRepository }) => {
         if(!account_id) callback(ERROR_ENUM.AUTHORIZATION_FAIL, null);
 
         if (!validatePubcrawl('storePubcrawl', pubcrawl)) {
-            const e = new Error('Invalid Params');
+            const e = new Error(ERROR_ENUM.INVALID_PUBCRAWL);
             callback(e, null);
         } else {
             pubcrawlRepository.storePubcrawl(pubcrawl, account_id, callback);

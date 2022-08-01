@@ -1,6 +1,6 @@
 const ERROR_ENUM = {
     BAD_CREDENTIALS: ' Fel användarnamn eller lösenord',
-    SERVER_ERROR: 'Internal server error',
+    SERVER_ERROR: 'Internt serverfel',
     MISSING_USERNAME: ' Användarnamn saknas',
     USERNAME_TO_SHORT: ' Användarnamn måste vara minst 3 tecken',
     USERNAME_TO_LONG: ' Användarnamn för långt (max 10)',
@@ -12,7 +12,7 @@ const ERROR_ENUM = {
     PASSWORD_TO_LONG: ' Lösenordet för långt (max 30)',
     PASSWORD_NO_MATCH: ' Lösenorden matchar inte',
     NO_TEAMOWNER_MESSAGE: 'Endast teamägare kan byta generera ny barrunda, gåt till Web-applikationen för att lämna ditt team.',
-    UNAUTHORIZED: 'unauthorized_client',
+    UNAUTHORIZED: 'Obehörig klient',
     INVALID_EMAIL_ADDRESS: " Ogiltig e-postadress",
     TEAMNAME_TO_SHORT: "Team namn för kort (min 2)",
     TEAMNAME_TO_LONG: "Team name för långt (max 20)",
@@ -23,7 +23,8 @@ const ERROR_ENUM = {
     MUST_BE_OWNER: "Endast ägare av barrunda kan göra uppdateringar",
     PUBCRAWL_NOT_FOUND: "Barrundan hittades inte",
     NO_PUBCRAWL_FOR_ACCOUNT: "Ingen barrunda för kontot hittades",
-    NO_TEAM_FOR_ACCOUNT: "Inget team finns registrerat till ditt konto"
+    NO_TEAM_FOR_ACCOUNT: "Inget team finns registrerat till ditt konto",
+    INVALID_PUBCRAWL: "Misslyckades med att validera din barrunda, vänligen försök igen."
 }
 
 module.exports = ERROR_ENUM;

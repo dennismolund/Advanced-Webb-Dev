@@ -54,7 +54,7 @@ module.exports = ({}) => {
                     }
                 });
                 if (!team) {
-                    callback('No team found', null, null, null);
+                    callback(TEAM_NOT_FOUND, null, null, null);
                     return;
                 } 
                 const [pubcrawl] = await Pubcrawl.findAll({ 

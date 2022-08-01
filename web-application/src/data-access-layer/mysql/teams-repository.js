@@ -41,7 +41,7 @@ module.exports = function({}){
                     db.query(query2, values2, (error, results) => {
                         if(error){
                             console.log("ERROR WHEN DELETING TEAM", error);
-                            callback('Error deleting team', null)
+                            callback(ERROR_ENUM.SERVER_ERROR, null)
                         } else callback(null, null)
                     })
                 }
@@ -90,7 +90,7 @@ module.exports = function({}){
             db.query(query, values, (error, teams) => {
                 if (error) {
                     console.log(error);
-                    callback('error in database: ', error);
+                    callback(ERROR_ENUM.SERVER_ERROR, error);
                 } else {
                     callback(null, teams[0]);
                 }
@@ -109,7 +109,7 @@ module.exports = function({}){
                 } else {
                     const team = teamFromDb[0]
                     console.log("team in teams repo:", team);
-                    if (!team) callback('No team found', null, null, null);
+                    if (!team) callback(TEAM_NOT_FOUND, null, null, null);
                     else db.query(query2, team.creator_id, (error, pubcrawlFromDb) => {
                         if(error){
                             console.log("error getTeam in repository", error);
@@ -151,7 +151,7 @@ module.exports = function({}){
             db.query(query, values, (error, _) => {
                 if (error) {
                     console.log(error);
-                    callback('Error updating pubcrawl for team members', null);
+                    callback(ERROR_ENUM.SERVER_ERROR, null);
                 }
                 else callback(null, null);
             });
