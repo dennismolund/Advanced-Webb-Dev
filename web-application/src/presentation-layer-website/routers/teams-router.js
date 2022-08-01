@@ -45,7 +45,7 @@ module.exports = ({teamsManager, barsManager}) => {
     router.get("/", (req,res) => {
         const showteam = req.query.showteam === "true" ? true : false
         teamsManager.getTeam(
-            req.session.activeAccount.team_id,
+            req.session.activeAccount,
             (error, team) => {
                 if (error) {
                     console.log("ERROR TRIGGER IN TEAMS-ROUTER (GetTeam)", error);

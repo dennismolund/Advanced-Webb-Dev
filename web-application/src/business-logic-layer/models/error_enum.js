@@ -22,7 +22,8 @@ const ERROR_ENUM = {
     AUTHORIZATION_FAIL: "Du har inte tillstånd för din begäran",
     MUST_BE_OWNER: "Endast ägare av barrunda kan göra uppdateringar",
     PUBCRAWL_NOT_FOUND: "Barrundan hittades inte",
-    NO_PUBCRAWL_FOR_ACCOUNT: "Ingen barrunda för kontot hittades"
+    NO_PUBCRAWL_FOR_ACCOUNT: "Ingen barrunda för kontot hittades",
+    NO_TEAM_FOR_ACCOUNT: "Inget team finns registrerat till ditt konto"
 }
 
 module.exports = ERROR_ENUM;

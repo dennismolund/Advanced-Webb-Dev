@@ -4,7 +4,8 @@ const { parsePubcrawl } = require('./pubcrawl-validator');
 const { getPlaces } = require('../data-access-layer/service/fetch.data.service');
 const {
     AUTHORIZATION_FAIL
-} = require('../business-logic-layer/models/error_enum')
+} = require('../business-logic-layer/models/error_enum');
+const ERROR_ENUM = require('../business-logic-layer/models/error_enum');
 
 module.exports = function({ teamsRepository, barsManager, accountRepository }){
 
@@ -98,18 +99,25 @@ module.exports = function({ teamsRepository, barsManager, accountRepository }){
                 }
             })
         },
-        getTeam: (id, callback) => {
-            //error handling
-            if (!id) {
-                callback('No team', null);
+        getTeam: (activeAccount, callback) => {
+            if(!activeAccount){
+                callback(ERROR_ENUM.AUTHORIZATION_FAIL, null);
                 return;
             }
-            teamsRepository.getTeam(id, (errors, team, pubcrawl, teamMembers) => {
+            else if (!activeAccount.team_id) {
+                callback(ERROR_ENUM.NO_TEAM_FOR_ACCOUNT, null);
+                return;
+            }
+            
+            teamsRepository.getTeam(activeAccount.team_id, (errors, team, pubcrawl, teamMembers) => {
                 if (errors) {
                     console.log("Errors in teams-manager:", errors);
                     callback(errors, null);
                 } else {
-                    
+                    if(pubcrawl.id !== activeAccount.pubcrawl_id){
+                        callback(ERROR_ENUM.AUTHORIZATION_FAIL, null);
+                        return;
+                    }
                     try {
                         const parsed = parsePubcrawl(pubcrawl.data);
                         
