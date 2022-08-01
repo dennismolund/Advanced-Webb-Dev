@@ -3,7 +3,7 @@ const { decode } = require('jsonwebtoken');
 const { hasTeamCheck } = require('../middleware/pubcrawlMiddlewares');
 const {
     getPubsFromGoogleAPI
-} = require('../../data-access-layer/service/fetch.data.service');
+} = require('../../business-logic-layer/service/fetch.data.service');
 const publist = require('../../business-logic-layer/models/pubcrawlFactory')
 const ERROR_ENUM = require('../../business-logic-layer/models/error_enum');
 

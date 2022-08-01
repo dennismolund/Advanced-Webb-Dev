@@ -1,7 +1,7 @@
 const { validTeamName } = require('./teams-validator');
 const publist = require('./models/pubcrawlFactory')
 const { parsePubcrawl } = require('./pubcrawl-validator');
-const { getPubsFromGoogleAPI } = require('../data-access-layer/service/fetch.data.service');
+const { getPubsFromGoogleAPI } = require('./service/fetch.data.service');
 const ERROR_ENUM = require('../business-logic-layer/models/error_enum');
 
 module.exports = function({ teamsRepository, pubcrawlManager, accountRepository }){

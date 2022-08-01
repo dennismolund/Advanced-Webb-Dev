@@ -2,7 +2,7 @@ const express = require('express')
 const Pubcrawl = require('../../business-logic-layer/models/pubcrawlFactory')
 const {
     getPubsFromGoogleAPI
-} = require('../../data-access-layer/service/fetch.data.service');
+} = require('../../business-logic-layer/service/fetch.data.service');
 
 module.exports = function({pubcrawlManager, teamsManager, accountManager}){
 
