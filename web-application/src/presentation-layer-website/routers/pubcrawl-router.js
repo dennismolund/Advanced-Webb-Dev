@@ -58,13 +58,13 @@ module.exports = function({pubcrawlManager, teamsManager, accountManager}){
     });
     
     router.get('/delete/:id', (req, res, next) => {
-        const { id } = req.params;
-        const account = req.session.activeAccount;
-        pubcrawlManager.deletePubcrawlById(id, account, (error, result) => {
+        const { id: pubcrawl_id } = req.params;
+        const activeAccount = req.session.activeAccount;
+        pubcrawlManager.deletePubcrawlById(pubcrawl_id , activeAccount, (error, result) => {
             if (error) console.log('Failed to delete pubcrawl: ', error);
             else {
                 console.log('Succesfully deleted pubcrawl');
-                res.render("start.hbs", {activeAccount: account});
+                res.render("start.hbs", {activeAccount});
             }
         });
     });

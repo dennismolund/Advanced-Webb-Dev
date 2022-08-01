@@ -8,22 +8,22 @@ const ERROR_ENUM = require('./models/error_enum');
 
 module.exports = ({ pubcrawlRepository }) => {
 
-    const storePubcrawl = (pubcrawl, userId, callback) => {
-        //userId is derived from an active session. Checks if an account is logged in.
-        if(!userId) callback(ERROR_ENUM.AUTHORIZATION_FAIL, null)
+    const storePubcrawl = (pubcrawl, account_id, callback) => {
+        //account_id is derived from an active session. Checks if an account is logged in.
+        if(!account_id) callback(ERROR_ENUM.AUTHORIZATION_FAIL, null);
 
         if (!validatePubcrawl('storePubcrawl', pubcrawl)) {
             const e = new Error('Invalid Params');
             callback(e, null);
         } else {
-            pubcrawlRepository.storePubcrawl(pubcrawl, userId, callback);
+            pubcrawlRepository.storePubcrawl(pubcrawl, account_id, callback);
         }
     };
     
 
     const getPubcrawl = (activeAccount, callback) => {
         //Checks if an account is logged in.
-        if(!activeAccount) callback(ERROR_ENUM.AUTHORIZATION_FAIL, null)
+        if(!activeAccount) callback(ERROR_ENUM.AUTHORIZATION_FAIL, null);
 
         pubcrawlRepository.getPubcrawl(activeAccount, (error, pubcrawl) => {
             if (error) {
@@ -54,15 +54,16 @@ module.exports = ({ pubcrawlRepository }) => {
         
     };
 
-    const deletePubcrawlById = (id, activeAccount, callback) => {
+    const deletePubcrawlById = (pubcrawl_id, activeAccount, callback) => {
         getPubcrawl(activeAccount, (error, pubcrawl) => {
             if (error) {
                 callback(error, null);
             } else {
+                //Check if the owner_id of the pubcrawl that is being delete has the same account id as the current logged in user.
                 if (pubcrawl.raw.owner_id !== activeAccount.id) {
                     callback(ERROR_ENUM.UNAUTHORIZED, null);
                 } else {
-                    pubcrawlRepository.deletePubcrawlById(id, (error, result) => {
+                    pubcrawlRepository.deletePubcrawlById(pubcrawl_id, (error, result) => {
                         if (error) {
                             callback(error, null);
                         } else {
@@ -77,7 +78,7 @@ module.exports = ({ pubcrawlRepository }) => {
 
     const getPubcrawlById = (activeAccount, id, callback) => {
         //Checks if an account is logged in.
-        if(!activeAccount) callback(ERROR_ENUM.AUTHORIZATION_FAIL, null)
+        if(!activeAccount) callback(ERROR_ENUM.AUTHORIZATION_FAIL, null);
         pubcrawlRepository.getPubcrawlById(id, (error, pubcrawl) => {
             console.log("in pubcrawlbyid after fetch");
             if (error) {
