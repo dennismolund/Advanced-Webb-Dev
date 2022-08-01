@@ -24,7 +24,7 @@ module.exports = ({ barsRepository }) => {
     const getPubcrawl = (activeAccount, callback) => {
         //Checks if a user is logged in.
         if(!activeAccount) callback(ERROR_ENUM.AUTHORIZATION_FAIL, null)
-        
+
         if (!validatePubcrawl('getPubcrawl', {activeAccount})) {
             const e = new Error('Invalid Params');
             callback(e, null);
@@ -38,6 +38,11 @@ module.exports = ({ barsRepository }) => {
                         callback(ERROR_ENUM.NO_PUBCRAWL_FOR_ACCOUNT, null);
                         return;
                     }
+
+                    if (pubcrawl.owner_id !== activeAccount.id) {
+                        callback(ERROR_ENUM.AUTHORIZATION_FAIL, null);
+                    }
+
                     try {
                         const parsed = parsePubcrawl(pubcrawl.pub_list);
                         const data = {
