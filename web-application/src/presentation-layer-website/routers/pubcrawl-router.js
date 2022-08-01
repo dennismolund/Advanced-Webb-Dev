@@ -15,15 +15,15 @@ module.exports = function({pubcrawlManager, teamsManager, accountManager}){
                 res.render("start.hbs", { activeAccount: account });
             } else if (pubcrawl){
                 const pubs = pubcrawl.parsed.list;
-                const pubcrawlId = pubcrawl.raw.id;
+                const pubcrawl_id = pubcrawl.raw.id;
                 res.render(
                     "barrundasolo.hbs",
-                    { pubcrawlId, pubs, activeAccount: account }
+                    { pubcrawl_id, pubs, activeAccount: account }
                 );
             } else {
                 res.render(
                     "barrundasolo.hbs",
-                    { pubcrawlId, pubs: [], activeAccount: account }
+                    { pubcrawl_id, pubs: [], activeAccount: account }
                 );
             }
         });
@@ -32,7 +32,7 @@ module.exports = function({pubcrawlManager, teamsManager, accountManager}){
     router.post('/', async (req, res) => {
         await getPubsFromGoogleAPI();
         const pubcrawl = Pubcrawl.getRandom();
-        let pubcrawlId = null
+        let pubcrawl_id = null
         pubcrawlManager.storePubcrawl(
             pubcrawl,
             req.session.activeAccount.id,
@@ -42,12 +42,12 @@ module.exports = function({pubcrawlManager, teamsManager, accountManager}){
                     console.log(error);
                     res.render("start.hbs", { error })
                 } else {
-                    pubcrawlId = result.insertId
-                    req.session.activeAccount.pubcrawl_id = pubcrawlId;
+                    pubcrawl_id = result.insertId
+                    req.session.activeAccount.pubcrawl_id = pubcrawl_id;
                     res.render(
                         "barrundasolo.hbs",
                         {
-                            pubcrawlId,
+                            pubcrawl_id,
                             pubs: pubcrawl.list,
                             activeAccount: req.session.activeAccount
                         }

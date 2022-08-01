@@ -14,9 +14,9 @@ module.exports = ({ pubcrawlManager, accountManager }) => {
         await getPubsFromGoogleAPI();
         const pubcrawl = publist.getRandom();
         const token = req.headers['authorization'].split(' ')[1];
-        const { sub: accountId } = decode(token);
+        const { sub: account_id } = decode(token);
         
-        pubcrawlManager.storePubcrawl(pubcrawl, accountId, (error, result) => {
+        pubcrawlManager.storePubcrawl(pubcrawl, account_id, (error, result) => {
             if (error) {
                 if (error === ERROR_ENUM.SERVER_ERROR) {
                     return res

@@ -48,16 +48,16 @@ module.exports = function({}){
             })
             
         },
-        leaveTeam: (accountId, callback) => {
+        leaveTeam: (account_id, callback) => {
             const query = `UPDATE account SET team_id = ?, pubcrawl_id = ? WHERE id = ?`
-            const values = [null, null, accountId]
+            const values = [null, null, account_id]
             db.query(query, values, (error, results)=>{
                 if(error){
                     callback(error, null)
                 }else callback(null, null)
             })
         },
-        joinTeam: (teamName, accountId, callback) => {
+        joinTeam: (teamName, account_id, callback) => {
             const query = `SELECT * FROM team WHERE teamname = ?`;
             const query2 = `UPDATE account SET team_id = ? WHERE id = ?`;
 		    const values = [teamName]
@@ -72,7 +72,7 @@ module.exports = function({}){
                         return;
                     }
                     const team_id = teamFromDb[0].id
-                    const value2 = [teamFromDb[0].id,accountId]
+                    const value2 = [teamFromDb[0].id,account_id]
                     db.query(query2, value2, (error, result) => {
                         if(error){
                             console.log("error in database (join team):", error);

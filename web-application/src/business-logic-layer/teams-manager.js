@@ -58,15 +58,15 @@ module.exports = function({ teamsRepository, pubcrawlManager, accountRepository 
                 }
             })
         },
-        delete: (accountId, teamId, callback) => {
-            teamsRepository.getTeamById(teamId, (error, team) => {
-                if (accountId == team?.creator_id) {
-                    teamsRepository.deleteTeamById(teamId, (error, result) => {
+        delete: (account_id, team_id, callback) => {
+            teamsRepository.getTeamById(team_id, (error, team) => {
+                if (account_id == team?.creator_id) {
+                    teamsRepository.deleteTeamById(team_id, (error, result) => {
                         if (error) callback(error, null);
                         else callback(null, null);
                     });
                 } else {
-                    teamsRepository.leaveTeam(accountId, (error, result) => {
+                    teamsRepository.leaveTeam(account_id, (error, result) => {
                         if (error) {
                             callback(error, null);
                         } else {

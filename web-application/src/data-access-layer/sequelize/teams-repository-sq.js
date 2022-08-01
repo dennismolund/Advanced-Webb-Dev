@@ -108,11 +108,11 @@ module.exports = ({}) => {
                 callback(e, null);
             }
         },
-        leaveTeam: async (accountId, callback) => {
+        leaveTeam: async (account_id, callback) => {
             try {
                 const update = await Account.update(
                     { team_id: null, pubcrawl_id: null },
-                    { where: { id: accountId } }
+                    { where: { id: account_id } }
                 );
                 callback(null, null);
             } catch (e) {
@@ -120,7 +120,7 @@ module.exports = ({}) => {
                 callback(error, null);
             }
         },
-        joinTeam: async (teamName, accountId, callback) => {
+        joinTeam: async (teamName, account_id, callback) => {
             const transaction = await Sequelize.transaction();
             try {
                 const [team] = await Team.findAll({ 
@@ -131,7 +131,7 @@ module.exports = ({}) => {
                 if (!team) callback(ERROR_ENUM.TEAM_NOT_FOUND, null); 
                 const update = await Account.update(
                     { team_id: team.dataValues.id },
-                    { where: { id: accountId }}
+                    { where: { id: account_id }}
                 );
                 await transaction.commit();
                 callback(null, team.dataValues.id);
