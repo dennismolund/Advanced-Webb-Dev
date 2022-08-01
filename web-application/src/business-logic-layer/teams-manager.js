@@ -4,7 +4,7 @@ const { parsePubcrawl } = require('./pubcrawl-validator');
 const { getPlaces } = require('../data-access-layer/service/fetch.data.service');
 const ERROR_ENUM = require('../business-logic-layer/models/error_enum');
 
-module.exports = function({ teamsRepository, barsManager, accountRepository }){
+module.exports = function({ teamsRepository, pubcrawlManager, accountRepository }){
 
     return {
         createTeam: function(team, activeAccount, callback){
@@ -40,7 +40,7 @@ module.exports = function({ teamsRepository, barsManager, accountRepository }){
                 } else {
                     await getPlaces();
                     const pubcrawl = barlist.getRandom();
-                    barsManager.storePubcrawl(
+                    pubcrawlManager.storePubcrawl(
                         pubcrawl,
                         activeAccount.id,
                         (error, result) => {
@@ -151,7 +151,7 @@ module.exports = function({ teamsRepository, barsManager, accountRepository }){
         },
         updateTeamPubcrawl: (team_id, activeAccount, pubcrawl_id, callback) => {
             // Featch pubcrawl and check if account.id is owner id
-            barsManager.deletePubcrawlById(
+            pubcrawlManager.deletePubcrawlById(
                 pubcrawl_id,
                 activeAccount,
                 async (error, result) => {
@@ -160,7 +160,7 @@ module.exports = function({ teamsRepository, barsManager, accountRepository }){
                     } else {
                         await getPlaces();
                         const pubcrawl = barlist.getRandom();
-                        barsManager.storePubcrawl(
+                        pubcrawlManager.storePubcrawl(
                             pubcrawl,
                             activeAccount.id,
                             (error, result) => {

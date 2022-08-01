@@ -66,7 +66,7 @@ app.get('/', async (req, res) => {
     if(req.session.activeAccount) {
       const account = req.session.activeAccount
       if(req.session.activeAccount.team_id) res.redirect('/teams');
-      else if(req.session.activeAccount.pubcrawl_id) res.redirect('/bars');
+      else if(req.session.activeAccount.pubcrawl_id) res.redirect('/pubcrawl');
       else res.render('start.hbs', {activeAccount: account});
     }
     //if account is not active, show login page
@@ -79,10 +79,10 @@ const accountManager = require('../business-logic-layer/account-manager');
 const accountRepository = require('../data-access-layer/account-repository');
 const accountRepositorySq = require('../data-access-layer/account-repository-sq');
 
-const barsRouter = require('./routers/bars-router');
-const barsManager = require('../business-logic-layer/bars-manager');
-const barsRepository = require('../data-access-layer/bars-repository');
-const barsRepositorySq = require('../data-access-layer/bars-repository-sq');
+const pubcrawlRouter = require('./routers/pubcrawl-router');
+const pubcrawlManager = require('../business-logic-layer/pubcrawl-manager');
+const pubcrawlRepository = require('../data-access-layer/pubcrawl-repository');
+const pubcrawlRepositorySq = require('../data-access-layer/pubcrawl-repository-sq');
 
 const teamsRouter = require('./routers/teams-router');
 const teamsManager = require('../business-logic-layer/teams-manager');
@@ -95,9 +95,9 @@ container.register("accountRouter", awilix.asFunction(accountRouter))
 container.register("accountManager", awilix.asFunction(accountManager))
 container.register("accountRepository", awilix.asFunction(accountRepository))
 
-container.register("barsRouter", awilix.asFunction(barsRouter))
-container.register("barsManager", awilix.asFunction(barsManager))
-container.register("barsRepository", awilix.asFunction(barsRepository))
+container.register("pubcrawlRouter", awilix.asFunction(pubcrawlRouter))
+container.register("pubcrawlManager", awilix.asFunction(pubcrawlManager))
+container.register("pubcrawlRepository", awilix.asFunction(pubcrawlRepository))
 
 container.register("teamsRouter", awilix.asFunction(teamsRouter))
 container.register("teamsManager", awilix.asFunction(teamsManager))
@@ -105,11 +105,11 @@ container.register("teamsRepository", awilix.asFunction(teamsRepository))
 
 // Retrieve the router, which resolves all other dependencies.
 const theAccountRouter = container.resolve("accountRouter")
-const theBarsRouter = container.resolve("barsRouter")
+const thepubcrawlRouter = container.resolve("pubcrawlRouter")
 const theTeamsRouter = container.resolve("teamsRouter")
 
 app.use("/anvandare", theAccountRouter)
-app.use("/bars", isSignedIn, theBarsRouter)
+app.use("/pubcrawl", isSignedIn, thepubcrawlRouter)
 app.use("/teams", isSignedIn, theTeamsRouter)
 
 module.exports = app;

@@ -1,6 +1,6 @@
 const express = require('express')
 
-module.exports = ({teamsManager, barsManager}) => {
+module.exports = ({teamsManager}) => {
 
     const router = express.Router()
 

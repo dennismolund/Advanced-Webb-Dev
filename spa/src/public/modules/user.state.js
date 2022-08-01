@@ -37,7 +37,7 @@ class User {
 
     async loadData() {
         if (!this.pubcrawl_id) return;
-        const { data } = await AjaxClient.get(`http://localhost:3002/api/bars/${this.pubcrawl_id}`);
+        const { data } = await AjaxClient.get(`http://localhost:3002/api/pubcrawl/${this.pubcrawl_id}`);
         if (data?.parsed?.list) {
             this.barList = data.parsed.list;
         }

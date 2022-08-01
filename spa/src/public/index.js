@@ -170,9 +170,9 @@ const createPubcrawl = async () => {
     ViewController.hideError();
     let response;
     if (User.pubcrawl_id) {
-        response = await AjaxClient.put(`http://localhost:3002/api/bars/${User.pubcrawl_id}`, {})
+        response = await AjaxClient.put(`http://localhost:3002/api/pubcrawl/${User.pubcrawl_id}`, {})
     } else {
-        response = await AjaxClient.post('http://localhost:3002/api/bars', {});
+        response = await AjaxClient.post('http://localhost:3002/api/pubcrawl', {});
     }
 
 
@@ -186,7 +186,7 @@ const createPubcrawl = async () => {
 const removePubcrawl = async () => {
     ViewController.hideError();
     const id = User.pubcrawl_id;
-    const response = await AjaxClient.delete(`http://localhost:3002/api/bars/${id}`);
+    const response = await AjaxClient.delete(`http://localhost:3002/api/pubcrawl/${id}`);
 
     const errorResponse = checkResponse(response);
     if (errorResponse) return;
@@ -201,7 +201,7 @@ const onPubcrawlRemoved = () => {
 }
 
 const onPubcrawlReceived = (data) => {
-    User.setBars(data);
+    User.setpubcrawl(data);
     if (ViewController.activeView.name === 'home') {
         console.log('Displaying bar list');
         ViewController.showBarlist();

@@ -4,13 +4,13 @@ const {
     getPlaces
 } = require('../../data-access-layer/service/fetch.data.service');
 
-module.exports = function({barsManager, teamsManager, accountManager}){
+module.exports = function({pubcrawlManager, teamsManager, accountManager}){
 
     const router = express.Router()
 
     router.get("/", (req, res) => {
         const account = req.session.activeAccount;
-        barsManager.getPubcrawl(account, (error, pubcrawl) => {
+        pubcrawlManager.getPubcrawl(account, (error, pubcrawl) => {
             if (error) {
                 res.render("start.hbs", { activeAccount: account });
             } else if (pubcrawl){
@@ -33,7 +33,7 @@ module.exports = function({barsManager, teamsManager, accountManager}){
         await getPlaces();
         const pubcrawl = Pubcrawl.getRandom();
         let barid = null
-        barsManager.storePubcrawl(
+        pubcrawlManager.storePubcrawl(
             pubcrawl,
             req.session.activeAccount.id,
             (error, result) => {
@@ -60,7 +60,7 @@ module.exports = function({barsManager, teamsManager, accountManager}){
     router.get('/delete/:id', (req, res, next) => {
         const { id } = req.params;
         const user = req.session.activeAccount;
-        barsManager.deletePubcrawlById(id, user, (error, result) => {
+        pubcrawlManager.deletePubcrawlById(id, user, (error, result) => {
             if (error) console.log('Failed to delete pubcrawl: ', error);
             else {
                 console.log('Succesfully deleted pubcrawl');

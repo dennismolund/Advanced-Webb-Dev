@@ -6,7 +6,7 @@ const {
 const ERROR_ENUM = require('./models/error_enum');
 
 
-module.exports = ({ barsRepository }) => {
+module.exports = ({ pubcrawlRepository }) => {
 
     const storePubcrawl = (pubcrawl, userId, callback) => {
         //userId is derived from an active session. Checks if a user is logged in.
@@ -16,7 +16,7 @@ module.exports = ({ barsRepository }) => {
             const e = new Error('Invalid Params');
             callback(e, null);
         } else {
-            barsRepository.storePubcrawl(pubcrawl, userId, callback);
+            pubcrawlRepository.storePubcrawl(pubcrawl, userId, callback);
         }
     };
     
@@ -29,7 +29,7 @@ module.exports = ({ barsRepository }) => {
             const e = new Error('Invalid Params');
             callback(e, null);
         } else {
-            barsRepository.getPubcrawl(activeAccount, (error, pubcrawl) => {
+            pubcrawlRepository.getPubcrawl(activeAccount, (error, pubcrawl) => {
 
                 if (error) {
                     callback(error, null);
@@ -67,7 +67,7 @@ module.exports = ({ barsRepository }) => {
                 if (pubcrawl.raw.owner_id !== activeAccount.id) {
                     callback(ERROR_ENUM.UNAUTHORIZED, null);
                 } else {
-                    barsRepository.deletePubcrawlById(id, (error, result) => {
+                    pubcrawlRepository.deletePubcrawlById(id, (error, result) => {
                         if (error) {
                             callback(error, null);
                         } else {
@@ -83,7 +83,7 @@ module.exports = ({ barsRepository }) => {
     const getPubcrawlById = (activeAccount, id, callback) => {
         //Checks if a user is logged in.
         if(!activeAccount) callback(ERROR_ENUM.AUTHORIZATION_FAIL, null)
-        barsRepository.getPubcrawlById(id, (error, pubcrawl) => {
+        pubcrawlRepository.getPubcrawlById(id, (error, pubcrawl) => {
             console.log("in pubcrawlbyid after fetch");
             if (error) {
                 callback(error, null);
@@ -127,7 +127,7 @@ module.exports = ({ barsRepository }) => {
 
             id = pubcrawl.raw.id;
 
-            barsRepository.updatePubcrawlById(
+            pubcrawlRepository.updatePubcrawlById(
                 id,
                 newPubcrawlData,
                 (error, result) => {
