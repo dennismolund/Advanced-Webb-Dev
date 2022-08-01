@@ -9,7 +9,7 @@ class User {
         this.id = null;
         this.token = null;
         this.signedIn = false;
-        this.barList = [];
+        this.pubList = [];
     }
 
     init(pack) {
@@ -31,7 +31,7 @@ class User {
         this.id = null;
         this.token = null;
         this.signedIn = false;
-        this.barList = [];
+        this.pubList = [];
         localStorage.removeItem('accessToken');
     }
 
@@ -39,14 +39,14 @@ class User {
         if (!this.pubcrawl_id) return;
         const { data } = await AjaxClient.get(`http://localhost:3002/api/pubcrawl/${this.pubcrawl_id}`);
         if (data?.parsed?.list) {
-            this.barList = data.parsed.list;
+            this.pubList = data.parsed.list;
         }
     }
 
-    setBars(data) {
+    setPubs(data) {
         const { pubcrawl: list, id } = data;
         this.pubcrawl_id = id;
-        this.barList = list || [];
+        this.pubList = list || [];
     }
 
     hasPubcrawl() {

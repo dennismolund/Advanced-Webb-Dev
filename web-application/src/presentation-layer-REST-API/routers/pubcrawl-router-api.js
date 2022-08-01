@@ -4,7 +4,7 @@ const { hasTeamCheck } = require('../middleware/pubcrawlMiddlewares');
 const {
     getPlaces
 } = require('../../data-access-layer/service/fetch.data.service');
-const barlist = require('../../business-logic-layer/models/pubcrawlFactory')
+const publist = require('../../business-logic-layer/models/pubcrawlFactory')
 const ERROR_ENUM = require('../../business-logic-layer/models/error_enum');
 
 module.exports = ({ pubcrawlManager, accountManager }) => {
@@ -12,7 +12,7 @@ module.exports = ({ pubcrawlManager, accountManager }) => {
 
     router.post('', hasTeamCheck, async (req, res) => {
         await getPlaces();
-        const pubcrawl = barlist.getRandom();
+        const pubcrawl = publist.getRandom();
         const token = req.headers['authorization'].split(' ')[1];
         const { sub: userId } = decode(token);
         
@@ -91,7 +91,7 @@ module.exports = ({ pubcrawlManager, accountManager }) => {
         const { pubcrawlid: id } = req.params;
         const { account } = req;
         await getPlaces();
-        const pubcrawl = barlist.getRandom();
+        const pubcrawl = publist.getRandom();
         console.log('/pubcrawl id:', id);
         pubcrawlManager.updatePubcrawl(id, account, pubcrawl, (error, data) => {
             if (error) {

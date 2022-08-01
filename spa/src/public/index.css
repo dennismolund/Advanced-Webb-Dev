@@ -34,7 +34,7 @@ h6 {
   box-shadow: 5px 5px 5px #d3d2d2;  
 }
 
-.top-bar {
+.top-pub {
   position: absolute;
   top: 0;
   width: 100%;
@@ -104,7 +104,7 @@ div .input {
   flex-direction: column;
 }
 
-.bar__list--item {
+.pub__list--item {
   padding: 1rem;
 }
 

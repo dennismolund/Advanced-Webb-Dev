@@ -195,7 +195,7 @@ const removePubcrawl = async () => {
 }
 
 const onPubcrawlRemoved = () => {
-    User.barList = [];
+    User.pubList = [];
     User.pubcrawl_id = null;
     ViewController.goToHome();
 }
@@ -203,8 +203,8 @@ const onPubcrawlRemoved = () => {
 const onPubcrawlReceived = (data) => {
     User.setpubcrawl(data);
     if (ViewController.activeView.name === 'home') {
-        console.log('Displaying bar list');
-        ViewController.showBarlist();
+        console.log('Displaying pub list');
+        ViewController.showPublist();
     } else {
         console.log('Changing view to home');
         ViewController.changeView('home');

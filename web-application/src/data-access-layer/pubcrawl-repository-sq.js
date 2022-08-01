@@ -58,14 +58,14 @@ module.exports = ({}) => {
                     return;
                 } 
 
-                const barRes = await Pubcrawl.findOne({ 
+                const pubRes = await Pubcrawl.findOne({ 
                     where: { 
                         id: accountRes.dataValues.pubcrawl_id
                     } 
                 });
-                if (!barRes) callback(null, null);
+                if (!pubRes) callback(null, null);
                 await transaction.commit();
-                callback(null, barRes.dataValues);
+                callback(null, pubRes.dataValues);
             } catch (e) {
                 await transaction.rollback();
                 console.log('Error getting pub crawl for account: ', e);
@@ -74,14 +74,14 @@ module.exports = ({}) => {
         },
         getPubcrawlById: async (id, callback) => {
             try {
-                const barsRes = await Pubcrawl.findOne({ 
+                const pubsRes = await Pubcrawl.findOne({ 
                     where: { 
                         id
                     } 
                 });
-                callback(null, barsRes.dataValues);
+                callback(null, pubsRes.dataValues);
             } catch (e) {
-                console.log('Bars res got error: ', e);
+                console.log('Pubs res got error: ', e);
                 callback(ERROR_ENUM.SERVER_ERROR, null);
             }   
         },

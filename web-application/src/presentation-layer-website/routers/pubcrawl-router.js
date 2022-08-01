@@ -14,16 +14,16 @@ module.exports = function({pubcrawlManager, teamsManager, accountManager}){
             if (error) {
                 res.render("start.hbs", { activeAccount: account });
             } else if (pubcrawl){
-                const bars = pubcrawl.parsed.list;
-                const barid = pubcrawl.raw.id;
+                const pubs = pubcrawl.parsed.list;
+                const pubid = pubcrawl.raw.id;
                 res.render(
                     "barrundasolo.hbs",
-                    { barid, bars, activeAccount: account }
+                    { pubid, pubs, activeAccount: account }
                 );
             } else {
                 res.render(
                     "barrundasolo.hbs",
-                    { barid, bars: [], activeAccount: account }
+                    { pubid, pubs: [], activeAccount: account }
                 );
             }
         });
@@ -32,7 +32,7 @@ module.exports = function({pubcrawlManager, teamsManager, accountManager}){
     router.post('/', async (req, res) => {
         await getPlaces();
         const pubcrawl = Pubcrawl.getRandom();
-        let barid = null
+        let pubid = null
         pubcrawlManager.storePubcrawl(
             pubcrawl,
             req.session.activeAccount.id,
@@ -42,13 +42,13 @@ module.exports = function({pubcrawlManager, teamsManager, accountManager}){
                     console.log(error);
                     res.render("start.hbs", { error })
                 } else {
-                    barid = result.insertId
-                    req.session.activeAccount.pubcrawl_id = barid;
+                    pubid = result.insertId
+                    req.session.activeAccount.pubcrawl_id = pubid;
                     res.render(
                         "barrundasolo.hbs",
                         {
-                            barid,
-                            bars: pubcrawl.list,
+                            pubid,
+                            pubs: pubcrawl.list,
                             activeAccount: req.session.activeAccount
                         }
                     );

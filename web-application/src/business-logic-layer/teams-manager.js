@@ -1,5 +1,5 @@
 const { validTeamName } = require('./teams-validator');
-const barlist = require('./models/pubcrawlFactory')
+const publist = require('./models/pubcrawlFactory')
 const { parsePubcrawl } = require('./pubcrawl-validator');
 const { getPlaces } = require('../data-access-layer/service/fetch.data.service');
 const ERROR_ENUM = require('../business-logic-layer/models/error_enum');
@@ -39,7 +39,7 @@ module.exports = function({ teamsRepository, pubcrawlManager, accountRepository 
                     callback(error, null);
                 } else {
                     await getPlaces();
-                    const pubcrawl = barlist.getRandom();
+                    const pubcrawl = publist.getRandom();
                     pubcrawlManager.storePubcrawl(
                         pubcrawl,
                         activeAccount.id,
@@ -122,26 +122,26 @@ module.exports = function({ teamsRepository, pubcrawlManager, accountRepository 
                     }
                     try {
                         const parsed = parsePubcrawl(pubcrawl.pub_list);
-                        const bars = {
+                        const pubs = {
                             parsed,
                             raw: pubcrawl,
                         }
                         const data = {
                             team: team,
-                            pubcrawl: bars,
+                            pubcrawl: pubs,
                             teamMembers: teamMembers
                         };
                         callback(null, data)
                     } catch (e) {
                         //Using sequilze the data is already parsed
                         const parsed = pubcrawl.pub_list;
-                        const bars = {
+                        const pubs = {
                             parsed,
                             raw: pubcrawl,
                         }
                         const data = {
                             team: team,
-                            pubcrawl: bars,
+                            pubcrawl: pubs,
                             teamMembers: teamMembers
                         };
                         callback(null, data)
@@ -159,7 +159,7 @@ module.exports = function({ teamsRepository, pubcrawlManager, accountRepository 
                         callback(error, null);
                     } else {
                         await getPlaces();
-                        const pubcrawl = barlist.getRandom();
+                        const pubcrawl = publist.getRandom();
                         pubcrawlManager.storePubcrawl(
                             pubcrawl,
                             activeAccount.id,

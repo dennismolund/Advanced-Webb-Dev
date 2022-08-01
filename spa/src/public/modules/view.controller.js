@@ -14,17 +14,17 @@ class ViewController {
         this.views = a.map((item) => new View(item));
     }
 
-    setTopBar() {
-        const topBar = document.querySelector('.top-bar');
+    setTopPub() {
+        const topPub = document.querySelector('.top-pub');
         if (User.isSignedIn()) {
-            topBar.setAttribute('style', 'display: flex');
+            topPub.setAttribute('style', 'display: flex');
         } else {
-            topBar.setAttribute('style', 'display: none');
+            topPub.setAttribute('style', 'display: none');
         }
     }
 
     changeView(viewName, _wasPopState) {
-        this.setTopBar();
+        this.setTopPub();
         let goTo = viewName;
         if (this.activeView) this.activeView.hideError();
         if (viewName === this.activeView?.name) return;
@@ -49,16 +49,16 @@ class ViewController {
         }
     }
 
-    showBarlist() {
-        this.activeView.showComponent('bar_list');
+    showPublist() {
+        this.activeView.showComponent('pub_list');
     }
 
     goToHome() {
         const homeView = this.getView('home');
         if(User.hasPubcrawl()) {
-            homeView.showComponent('bar_list');
+            homeView.showComponent('pub_list');
         } else {
-            homeView.showComponent('bar_create');
+            homeView.showComponent('pub_create');
         }
         this.changeView('home');
     }
