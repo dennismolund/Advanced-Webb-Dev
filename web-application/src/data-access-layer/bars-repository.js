@@ -76,7 +76,8 @@ module.exports = function({}){
                 'SELECT * FROM pubcrawl WHERE id = ?',
                 id,
                 (error, pubcrawls) => {
-                    callback(ERROR_ENUM.SERVER_ERROR, pubcrawls[0]);
+                    if (error) callback(ERROR_ENUM.SERVER_ERROR, null);
+                    else callback(null, pubcrawls[0]);
                 }
             );
         },

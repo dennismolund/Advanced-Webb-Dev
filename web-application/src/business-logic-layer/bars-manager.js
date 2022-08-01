@@ -80,8 +80,11 @@ module.exports = ({ barsRepository }) => {
         });
     }
 
-    const getPubcrawlById = (id, callback) => {
+    const getPubcrawlById = (activeAccount, id, callback) => {
+        //Checks if a user is logged in.
+        if(!activeAccount) callback(ERROR_ENUM.AUTHORIZATION_FAIL, null)
         barsRepository.getPubcrawlById(id, (error, pubcrawl) => {
+            console.log("in pubcrawlbyid after fetch");
             if (error) {
                 callback(error, null);
             } else if (!pubcrawl) {
@@ -93,7 +96,9 @@ module.exports = ({ barsRepository }) => {
                         parsed,
                         raw: pubcrawl,
                     }
-                    callback(null, data);
+                    if (pubcrawl.owner_id !== activeAccount.id) {
+                        callback(ERROR_ENUM.UNAUTHORIZED, null);
+                    }else callback(null, data);
                 } catch (e) {
                     console.log(e);
                     callback(ERROR_ENUM.SERVER_ERROR, null);
@@ -103,7 +108,7 @@ module.exports = ({ barsRepository }) => {
     }    
 
     const updatePubcrawl = (id, activeAccount, newPubcrawlData, callback) => {
-        getPubcrawlById(id, (error, pubcrawl) => {
+        getPubcrawlById(activeAccount, id, (error, pubcrawl) => {
             let id;
             if (error) {
                 callback(error, null);

@@ -67,7 +67,7 @@ module.exports = ({ barsManager, accountManager }) => {
     router.get('/:pubcrawlid', (req, res) => {
         const { pubcrawlid: id } = req.params;
         const { account } = req;
-        barsManager.getPubcrawlById(id, (error, data) => {
+        barsManager.getPubcrawlById(account, id, (error, data) => {
             if (error) {
                 if (error === ERROR_ENUM.SERVER_ERROR) {
                     res.status(500).json({ error: ERROR_ENUM.SERVER_ERROR });
