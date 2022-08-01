@@ -46,7 +46,7 @@ module.exports = function({accountManager}){
         }
         
         accountManager
-            .getAccountByUsername(
+            .loginRequest(
                 loginAccount,
                 (error, account) => {
                     //Display server error or if username or password is incorrect.
