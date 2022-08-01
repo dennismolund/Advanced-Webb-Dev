@@ -2,17 +2,16 @@ const { validTeamName } = require('./teams-validator');
 const barlist = require('./models/pubcrawlFactory')
 const { parsePubcrawl } = require('./pubcrawl-validator');
 const { getPlaces } = require('../data-access-layer/service/fetch.data.service');
-const {
-    AUTHORIZATION_FAIL
-} = require('../business-logic-layer/models/error_enum');
 const ERROR_ENUM = require('../business-logic-layer/models/error_enum');
 
 module.exports = function({ teamsRepository, barsManager, accountRepository }){
 
     return {
-        // No authorization needed. 
-        // Any authenticated user can join team. 
-        createTeam: function(team, account, callback){
+        createTeam: function(team, activeAccount, callback){
+            if(!activeAccount) {
+                callback(ERROR_ENUM.AUTHORIZATION_FAIL, null);
+                return;
+            }
             try {
                 validTeamName(team.teamName);
             } catch (error) {
@@ -21,15 +20,15 @@ module.exports = function({ teamsRepository, barsManager, accountRepository }){
             }
 
             accountRepository.getAccountById(
-                account.id,
+                activeAccount.id,
                 (error, accountFromDb) => {
                     if(error) {
-                        callback(AUTHORIZATION_FAIL, null);
+                        callback(ERROR_ENUM.AUTHORIZATION_FAIL, null);
                         return;
                     }
-                    if(!account.username == accountFromDb.username 
-                        && account.email == accountFromDb.email){
-                            callback(AUTHORIZATION_FAIL, null);
+                    if(!activeAccount.username == accountFromDb.username 
+                        && activeAccount.email == accountFromDb.email){
+                            callback(ERROR_ENUM.AUTHORIZATION_FAIL, null);
                             return;
                         }
                 }
@@ -43,7 +42,7 @@ module.exports = function({ teamsRepository, barsManager, accountRepository }){
                     const pubcrawl = barlist.getRandom();
                     barsManager.storePubcrawl(
                         pubcrawl,
-                        account.id,
+                        activeAccount.id,
                         (error, result) => {
                             if (error) {
                                 callback(error, null);
@@ -77,30 +76,33 @@ module.exports = function({ teamsRepository, barsManager, accountRepository }){
                 }
             });
         },
-        // No authorization needed, anyone can join a team if they have the name.
-        // Only owner can change team.
-        joinTeam: (teamName, account, callback) => {
-            accountRepository.getAccountById(account.id, (error, accountFromDb) => {
+        joinTeam: (teamName, activeAccount, callback) => {
+            //Check if user is logged in.
+            if(!activeAccount) {
+                callback(ERROR_ENUM.AUTHORIZATION_FAIL, null);
+                return;
+            }
+            accountRepository.getAccountById(activeAccount.id, (error, accountFromDb) => {
                 if(error) {
-                    callback(AUTHORIZATION_FAIL, null);
+                    callback(ERROR_ENUM.AUTHORIZATION_FAIL, null);
                     return;
                 }
-                if(!account.username == accountFromDb.username 
-                    && account.email == accountFromDb.email){
-                        callback(AUTHORIZATION_FAIL, null);
+                if(!activeAccount.username == accountFromDb.username 
+                    && activeAccount.email == accountFromDb.email){
+                        callback(ERROR_ENUM.AUTHORIZATION_FAIL, null);
                         return;
                     }
             });
-            teamsRepository.joinTeam(teamName, account.id, (error, results) => {
-                if(error){
+            teamsRepository.joinTeam(teamName, activeAccount.id, (error, results) => {
+                if(error) {
                     callback(error, null)
-                }else{
+                }else {
                     callback(null, results)
                 }
             })
         },
         getTeam: (activeAccount, callback) => {
-            if(!activeAccount){
+            if(!activeAccount) {
                 callback(ERROR_ENUM.AUTHORIZATION_FAIL, null);
                 return;
             }
@@ -120,7 +122,6 @@ module.exports = function({ teamsRepository, barsManager, accountRepository }){
                     }
                     try {
                         const parsed = parsePubcrawl(pubcrawl.pub_list);
-                        console.log("parsed:", parsed);
                         const bars = {
                             parsed,
                             raw: pubcrawl,
@@ -132,10 +133,8 @@ module.exports = function({ teamsRepository, barsManager, accountRepository }){
                         };
                         callback(null, data)
                     } catch (e) {
-                        
                         //Using sequilze the data is already parsed
                         const parsed = pubcrawl.pub_list;
-                        console.log("parsed e:", pubcrawl);
                         const bars = {
                             parsed,
                             raw: pubcrawl,
@@ -147,17 +146,14 @@ module.exports = function({ teamsRepository, barsManager, accountRepository }){
                         };
                         callback(null, data)
                     }
-                    
-
-                    
                 }
             })
         },
-        updateTeamPubcrawl: (team_id, account, pubcrawl_id, callback) => {
+        updateTeamPubcrawl: (team_id, activeAccount, pubcrawl_id, callback) => {
             // Featch pubcrawl and check if account.id is owner id
             barsManager.deletePubcrawlById(
                 pubcrawl_id,
-                account,
+                activeAccount,
                 async (error, result) => {
                     if (error) {
                         callback(error, null);
@@ -166,7 +162,7 @@ module.exports = function({ teamsRepository, barsManager, accountRepository }){
                         const pubcrawl = barlist.getRandom();
                         barsManager.storePubcrawl(
                             pubcrawl,
-                            account.id,
+                            activeAccount.id,
                             (error, result) => {
                                 if (error) {
                                     callback(error, null);

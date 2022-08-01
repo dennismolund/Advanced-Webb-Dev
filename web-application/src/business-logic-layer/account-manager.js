@@ -26,7 +26,7 @@ module.exports = ({ accountRepository }) => {
             });
         },
 
-        getAccountByUsername: (account, callback) => {
+        loginRequest: (account, callback) => {
             // Validate the login credentials.
             const errors = accountValidator.getErrorsLogin(account);
 
@@ -35,7 +35,7 @@ module.exports = ({ accountRepository }) => {
                 return;
             }
 
-            accountRepository.getAccountByUsername(
+            accountRepository.loginRequest(
                 account,
                 (error, accountFromDb) => {
 

@@ -37,7 +37,7 @@ module.exports = function({}){
 			}
 		})
 		},
-		getAccountByUsername: (account, callback) => {
+		loginRequest: (account, callback) => {
 		
 			const query = "SELECT * FROM account WHERE username = ?";
 			const values = [account.enteredUsername];

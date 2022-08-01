@@ -22,7 +22,7 @@ module.exports = ({}) => {
                 else callback(ERROR_ENUM.SERVER_ERROR, null);
             }
         },
-        getAccountByUsername: async ({ enteredUsername }, callback) => { 
+        loginRequest: async ({ enteredUsername }, callback) => { 
             try {
                 const account = await Account.findOne({ 
                     where: { 
