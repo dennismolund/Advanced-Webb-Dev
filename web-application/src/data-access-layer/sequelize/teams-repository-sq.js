@@ -2,7 +2,7 @@ const Sequelize = require('./connection-sq');
 const Team = require('./models/Team')
 const Account = require('./models/Account')
 const Pubcrawl = require('./models/Pubcrawl');
-const ERROR_ENUM = require('./models/error_enum');
+const ERROR_ENUM = require('../error_enum');
 
 module.exports = ({}) => {
     

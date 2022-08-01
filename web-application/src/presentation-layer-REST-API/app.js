@@ -18,17 +18,17 @@ app.use(bodyParser.urlencoded({
 // Import the ones we want to use (real or mockup), real in this case.
 const accountRouter = require ('./routers/account-router-api');
 const accountManager = require('../business-logic-layer/account-manager');
-const accountRepository = require('../data-access-layer/account-repository');
+const accountRepository = require('../data-access-layer/mysql/account-repository');
 
 const pubcrawlRouter = require('./routers/pubcrawl-router-api');
 const pubcrawlManager = require('../business-logic-layer/pubcrawl-manager');
-const pubcrawlRepository = require('../data-access-layer/pubcrawl-repository');
-const pubcrawlRepositorySq = require('../data-access-layer/pubcrawl-repository-sq');
+const pubcrawlRepository = require('../data-access-layer/mysql/pubcrawl-repository');
+const pubcrawlRepositorySq = require('../data-access-layer/sequelize/pubcrawl-repository-sq');
 
 // const teamsRouter = require('./routers/teams-router-api');
 const teamsManager = require('../business-logic-layer/teams-manager');
-const teamsRepository = require('../data-access-layer/teams-repository');
-const teamsRepositorySq = require('../data-access-layer/teams-repository-sq');
+const teamsRepository = require('../data-access-layer/mysql/teams-repository');
+const teamsRepositorySq = require('../data-access-layer/sequelize/teams-repository-sq');
 
 // Create a container and add the dependencies we want to use.
 const container = awilix.createContainer();

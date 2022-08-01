@@ -1,4 +1,4 @@
-const ERROR_ENUM = require('./models/error_enum');
+const ERROR_ENUM = require('../error_enum');
 const db = require('./db')
 
 module.exports = function({}){
