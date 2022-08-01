@@ -1,6 +1,5 @@
 import parseJwt from './helpers.js';
 import AjaxClient from './api.js';
-
 class Account {
     constructor() {
         this.pubcrawl_id = null;

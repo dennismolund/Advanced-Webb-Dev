@@ -1,7 +1,6 @@
 import ViewController from './modules/view.controller.js';
 import AjaxClient from './modules/api.js';
 import Account from './modules/account.state.js';
-
 const client_id = "YmFycnVuZGFfc3BhX2NsaWVudF9pZF9oZWpjb24=";
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -75,6 +74,7 @@ const setListeners = () => {
         if (!Account.isSignedIn()) changeView('login');
         createPubcrawl();
     });
+
     document.addEventListener('removePubcrawlClick', (evt) => {
         if (!Account.isSignedIn()) changeView('login');
         removePubcrawl();
@@ -88,6 +88,7 @@ const signup = async () => {
         ViewController.changeView('home');
         return;
     }
+
     const newUser = {};
     newUser.username = document.querySelector('#new_username').value || '';
     newUser.email = document.querySelector('#new_email').value || '';
@@ -103,7 +104,6 @@ const signup = async () => {
     }
 
     const response = await AjaxClient.post('http://localhost:3002/api/anvandare', newUser);
-
     const requestError = checkResponse(response);
 
     if (requestError) return;
@@ -135,8 +135,10 @@ const checkResponse = (pack) => {
 const login = async () => {
     ViewController.hideError();
     ViewController.changeView('loader');
+
     const username = document.querySelector('#username_in').value;
     const password = document.querySelector('#password_in').value;
+
     if (!username) {
         ViewController.showError('Fyll i användarnamn');
         return;
@@ -156,7 +158,6 @@ const login = async () => {
 
     const url = `http://localhost:3002/api/anvandare/login-sessions`;
     const response = await AjaxClient.post(url, body);
-
     const requestError = checkResponse(response);
 
     if (requestError) return;
@@ -169,6 +170,7 @@ const login = async () => {
 const createPubcrawl = async () => {
     ViewController.hideError();
     let response;
+
     if (Account.pubcrawl_id) {
         response = await AjaxClient.put(`http://localhost:3002/api/pubcrawl/${Account.pubcrawl_id}`, {})
     } else {
@@ -187,7 +189,7 @@ const removePubcrawl = async () => {
     ViewController.hideError();
     const id = Account.pubcrawl_id;
     const response = await AjaxClient.delete(`http://localhost:3002/api/pubcrawl/${id}`);
-
+    
     const errorResponse = checkResponse(response);
     if (errorResponse) return;
 

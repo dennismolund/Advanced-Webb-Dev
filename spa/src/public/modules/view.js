@@ -1,5 +1,4 @@
 import Account from './account.state.js';
-
 export default class View {
     constructor(view) {
         this.element = view;
@@ -12,6 +11,7 @@ export default class View {
     hide() {
         this.element.setAttribute('style', 'display: none');
     }
+    
     show(display = 'flex') {
         this.element.setAttribute('style', `display: ${display}`);
     }

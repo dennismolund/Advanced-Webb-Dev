@@ -1,6 +1,5 @@
 import View from './view.js';
 import Account from './account.state.js';
-
 class ViewController {
     constructor(){
         this.activeView = null;

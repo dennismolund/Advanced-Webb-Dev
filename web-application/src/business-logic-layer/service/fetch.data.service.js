@@ -1,7 +1,5 @@
 const axios = require('axios');
-
 const Pubs = require('../models/pubcrawlFactory');
-
 const API_KEY = 'AIzaSyDPwirw4Wvb4y4vDRGUgAsx5yEcSfQR08Q';
 const NEARBY_SEARCH_URL = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?';
 const path = 'location=57.78261370000001,14.1617876&radius=1500&types=bar&key=AIzaSyDPwirw4Wvb4y4vDRGUgAsx5yEcSfQR08Q';

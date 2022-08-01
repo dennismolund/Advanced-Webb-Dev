@@ -1,5 +1,4 @@
 import ViewController from "./view.controller.js";
-
 export default class AjaxClient {
 
     static async post(url, body, method = 'POST') {
@@ -9,7 +8,6 @@ export default class AjaxClient {
                 'Authorization': `Bearer ${localStorage.accessToken}`,
                 'Content-Type': 'application/json'
             };
-
             const response = await fetch(url, {
                 method: method,
                 headers,

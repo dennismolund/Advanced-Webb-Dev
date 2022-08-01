@@ -14,7 +14,6 @@ class Pubcrawl {
     constructor() {
         this.list = [];
     }
-
     //pubs retrieved from Google API
     aggregate(rawPubs) {
         rawPubs.forEach((pubItem) => {
