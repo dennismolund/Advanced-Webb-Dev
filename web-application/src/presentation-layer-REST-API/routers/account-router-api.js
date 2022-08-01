@@ -73,7 +73,7 @@ module.exports = function({accountManager}){
                         };
                         const idToken = {
                             sub: account.id,
-                            user: payload,
+                            account: payload,
                             iss: "api.barrundan.se",
                             iat: Date.now(),
                             exp: Date.now() + 1000 * 60 * 60,

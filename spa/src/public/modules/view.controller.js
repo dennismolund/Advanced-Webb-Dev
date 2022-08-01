@@ -1,5 +1,5 @@
 import View from './view.js';
-import User from './user.state.js';
+import Account from './account.state.js';
 
 class ViewController {
     constructor(){
@@ -16,7 +16,7 @@ class ViewController {
 
     setTopPub() {
         const topPub = document.querySelector('.top-pub');
-        if (User.isSignedIn()) {
+        if (Account.isSignedIn()) {
             topPub.setAttribute('style', 'display: flex');
         } else {
             topPub.setAttribute('style', 'display: none');
@@ -30,7 +30,7 @@ class ViewController {
         if (viewName === this.activeView?.name) return;
     
         if (
-            !User.isSignedIn() &&
+            !Account.isSignedIn() &&
              (viewName !== 'login' && viewName !== 'signup')
         ) goTo = 'login';
     
@@ -55,7 +55,7 @@ class ViewController {
 
     goToHome() {
         const homeView = this.getView('home');
-        if(User.hasPubcrawl()) {
+        if(Account.hasPubcrawl()) {
             homeView.showComponent('pub_list');
         } else {
             homeView.showComponent('pub_create');

@@ -77,7 +77,7 @@ module.exports = function({ teamsRepository, pubcrawlManager, accountRepository 
             });
         },
         joinTeam: (teamName, activeAccount, callback) => {
-            //Check if user is logged in.
+            //Check if an account is logged in.
             if(!activeAccount) {
                 callback(ERROR_ENUM.AUTHORIZATION_FAIL, null);
                 return;

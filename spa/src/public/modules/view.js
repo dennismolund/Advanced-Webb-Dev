@@ -1,4 +1,4 @@
-import User from './user.state.js';
+import Account from './account.state.js';
 
 export default class View {
     constructor(view) {
@@ -40,8 +40,8 @@ export default class View {
     displayPubs(listComp) {
         listComp.setAttribute('style', 'display: block');
         const listItems = listComp.querySelectorAll('.pub__list--item');
-        for (let i = 0; i < User.pubList.length; i++) {
-            const text = `${i + 1}. ${User.pubList[i].name}`
+        for (let i = 0; i < Account.pubList.length; i++) {
+            const text = `${i + 1}. ${Account.pubList[i].name}`
             listItems[i].innerHTML = text;
         }
     }

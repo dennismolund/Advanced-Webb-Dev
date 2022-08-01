@@ -16,12 +16,12 @@ module.exports = function({}){
                         });
                     }
                     else {
-                        // Update user
+                        // Update account
                         const query = 'UPDATE account SET pubcrawl_id = ? WHERE id = ?';
                         const values = [result.insertId, userId];
                         db.query(query, values, (e, r) => {
                             if (e) {
-                                console.log('Failed to update user after creating pubcrawl');
+                                console.log('Failed to update account after creating pubcrawl');
                                 return db.rollback(() => {
                                     callback(ERROR_ENUM.SERVER_ERROR, null);
                                 });

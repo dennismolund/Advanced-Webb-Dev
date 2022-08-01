@@ -22,7 +22,8 @@ const verifyAccessToken = (request, response, next) => {
             console.log('Could not verify token');
             return;
         }
-        request.account = verifiedToken.user;
+        console.log("verified token:", verifiedToken);
+        request.account = verifiedToken.account;
         if (!err) request.isLoggedIn = true;
         next();
     });

@@ -9,7 +9,7 @@ const ERROR_ENUM = require('./models/error_enum');
 module.exports = ({ pubcrawlRepository }) => {
 
     const storePubcrawl = (pubcrawl, userId, callback) => {
-        //userId is derived from an active session. Checks if a user is logged in.
+        //userId is derived from an active session. Checks if an account is logged in.
         if(!userId) callback(ERROR_ENUM.AUTHORIZATION_FAIL, null)
 
         if (!validatePubcrawl('storePubcrawl', pubcrawl)) {
@@ -22,7 +22,7 @@ module.exports = ({ pubcrawlRepository }) => {
     
 
     const getPubcrawl = (activeAccount, callback) => {
-        //Checks if a user is logged in.
+        //Checks if an account is logged in.
         if(!activeAccount) callback(ERROR_ENUM.AUTHORIZATION_FAIL, null)
 
         if (!validatePubcrawl('getPubcrawl', {activeAccount})) {
@@ -81,7 +81,7 @@ module.exports = ({ pubcrawlRepository }) => {
     }
 
     const getPubcrawlById = (activeAccount, id, callback) => {
-        //Checks if a user is logged in.
+        //Checks if an account is logged in.
         if(!activeAccount) callback(ERROR_ENUM.AUTHORIZATION_FAIL, null)
         pubcrawlRepository.getPubcrawlById(id, (error, pubcrawl) => {
             console.log("in pubcrawlbyid after fetch");
