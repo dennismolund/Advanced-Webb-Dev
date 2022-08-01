@@ -16,7 +16,6 @@ let redisClient = createClient({
 })
 redisClient.connect().catch(console.error)
 
-
 //Sequilze DB connection
 require('../data-access-layer/sequelize/connection-sq');
 
@@ -56,7 +55,6 @@ app.use(session({
   //set true when site is available as HTTPS
   cookie: { secure: false }
 }))
-
 
 app.get('/', async (req, res) => {
     //if account is active, show home page

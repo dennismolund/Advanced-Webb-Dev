@@ -5,7 +5,6 @@ const { getPubsFromGoogleAPI } = require('./service/fetch.data.service');
 const ERROR_ENUM = require('../business-logic-layer/models/error_enum');
 
 module.exports = function({ teamsRepository, pubcrawlManager, accountRepository }){
-
     return {
         createTeam: function(team, activeAccount, callback){
             if(!activeAccount) {
@@ -58,6 +57,7 @@ module.exports = function({ teamsRepository, pubcrawlManager, accountRepository 
                 }
             })
         },
+
         delete: (account_id, team_id, callback) => {
             teamsRepository.getTeamById(team_id, (error, team) => {
                 if (account_id == team?.creator_id) {
@@ -76,6 +76,7 @@ module.exports = function({ teamsRepository, pubcrawlManager, accountRepository 
                 }
             });
         },
+
         joinTeam: (teamName, activeAccount, callback) => {
             //Check if an account is logged in.
             if(!activeAccount) {
@@ -101,6 +102,7 @@ module.exports = function({ teamsRepository, pubcrawlManager, accountRepository 
                 }
             })
         },
+        
         getTeam: (activeAccount, callback) => {
             console.log("active acc", activeAccount);
             if(!activeAccount) {
@@ -150,6 +152,7 @@ module.exports = function({ teamsRepository, pubcrawlManager, accountRepository 
                 }
             })
         },
+        
         updateTeamPubcrawl: (team_id, activeAccount, pubcrawl_id, callback) => {
             // Featch pubcrawl and check if account.id is owner id
             pubcrawlManager.deletePubcrawlById(

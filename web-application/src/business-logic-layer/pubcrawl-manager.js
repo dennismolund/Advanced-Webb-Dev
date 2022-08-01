@@ -10,7 +10,7 @@ const {
 } = require('./service/fetch.data.service');
 
 module.exports = ({ pubcrawlRepository }) => {
-
+    
     const createPubcrawl = async () => {
         await getPubsFromGoogleAPI();
         const pubcrawl = Pubcrawl.getRandom();

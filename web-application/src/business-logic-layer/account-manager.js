@@ -4,7 +4,6 @@ var bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 module.exports = ({ accountRepository }) => {
-
     return {
         createAccount: (account, callback) => {
             // Validate the account.
