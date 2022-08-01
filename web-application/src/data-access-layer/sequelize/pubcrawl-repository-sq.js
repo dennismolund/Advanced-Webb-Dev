@@ -46,7 +46,6 @@ module.exports = ({}) => {
             }
         },
         getPubcrawl: async (account, callback) => {
-            console.log('Get pub crawl: account ', account);
             const transaction = await Sequelize.transaction();
             try {
                 console.log(account.username);

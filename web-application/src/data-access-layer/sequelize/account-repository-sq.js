@@ -29,7 +29,6 @@ module.exports = ({}) => {
                         username: enteredUsername 
                     }
                 });
-                console.log("account: ", account);
                 if (!!account) callback(null, account.dataValues);
 				else callback(null, null);
             } catch (e) {

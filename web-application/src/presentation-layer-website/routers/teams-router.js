@@ -44,6 +44,7 @@ module.exports = ({teamsManager}) => {
 
     router.get("/", (req,res) => {
         const showteam = req.query.showteam === "true" ? true : false
+        console.log(req.session.activeAccount);
         teamsManager.getTeam(
             req.session.activeAccount,
             (error, team) => {

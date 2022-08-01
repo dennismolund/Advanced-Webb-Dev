@@ -10,6 +10,11 @@ const validatePubcrawl = (fName, pubcrawl) => {
 }
 
 const validateRows = (pubcrawl) => {
+    console.log("pubcrawl:", pubcrawl);
+    console.log("pubcrawl.length:", pubcrawl.length);
+    console.log("pubcrawl[0]:", pubcrawl[0]);
+    console.log("pubcrawl[0].data:", pubcrawl[0].data);
+    
     return pubcrawl.length > 0 && pubcrawl[0] && pubcrawl[0].data;
 }
 
