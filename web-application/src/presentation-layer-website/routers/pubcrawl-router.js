@@ -15,15 +15,15 @@ module.exports = function({pubcrawlManager, teamsManager, accountManager}){
                 res.render("start.hbs", { activeAccount: account });
             } else if (pubcrawl){
                 const pubs = pubcrawl.parsed.list;
-                const pubid = pubcrawl.raw.id;
+                const pubcrawlId = pubcrawl.raw.id;
                 res.render(
                     "barrundasolo.hbs",
-                    { pubid, pubs, activeAccount: account }
+                    { pubcrawlId, pubs, activeAccount: account }
                 );
             } else {
                 res.render(
                     "barrundasolo.hbs",
-                    { pubid, pubs: [], activeAccount: account }
+                    { pubcrawlId, pubs: [], activeAccount: account }
                 );
             }
         });
@@ -32,7 +32,7 @@ module.exports = function({pubcrawlManager, teamsManager, accountManager}){
     router.post('/', async (req, res) => {
         await getPubsFromGoogleAPI();
         const pubcrawl = Pubcrawl.getRandom();
-        let pubid = null
+        let pubcrawlId = null
         pubcrawlManager.storePubcrawl(
             pubcrawl,
             req.session.activeAccount.id,
@@ -42,12 +42,12 @@ module.exports = function({pubcrawlManager, teamsManager, accountManager}){
                     console.log(error);
                     res.render("start.hbs", { error })
                 } else {
-                    pubid = result.insertId
-                    req.session.activeAccount.pubcrawl_id = pubid;
+                    pubcrawlId = result.insertId
+                    req.session.activeAccount.pubcrawl_id = pubcrawlId;
                     res.render(
                         "barrundasolo.hbs",
                         {
-                            pubid,
+                            pubcrawlId,
                             pubs: pubcrawl.list,
                             activeAccount: req.session.activeAccount
                         }
