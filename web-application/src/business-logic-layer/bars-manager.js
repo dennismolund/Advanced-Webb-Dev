@@ -9,6 +9,9 @@ const ERROR_ENUM = require('./models/error_enum');
 module.exports = ({ barsRepository }) => {
 
     const storePubcrawl = (pubcrawl, userId, callback) => {
+        //userId is derived from an active session. Checks if a user is logged in.
+        if(!userId) callback(ERROR_ENUM.AUTHORIZATION_FAIL, null)
+
         if (!validatePubcrawl('storePubcrawl', pubcrawl)) {
             const e = new Error('Invalid Params');
             callback(e, null);
@@ -18,12 +21,15 @@ module.exports = ({ barsRepository }) => {
     };
     
 
-    const getPubcrawl = (account, callback) => {
-        if (!validatePubcrawl('getPubcrawl', {account})) {
+    const getPubcrawl = (activeAccount, callback) => {
+        //Checks if a user is logged in.
+        if(!activeAccount) callback(ERROR_ENUM.AUTHORIZATION_FAIL, null)
+        
+        if (!validatePubcrawl('getPubcrawl', {activeAccount})) {
             const e = new Error('Invalid Params');
             callback(e, null);
         } else {
-            barsRepository.getPubcrawl(account, (error, pubcrawl) => {
+            barsRepository.getPubcrawl(activeAccount, (error, pubcrawl) => {
 
                 if (error) {
                     callback(error, null);
@@ -48,12 +54,12 @@ module.exports = ({ barsRepository }) => {
         }
     };
 
-    const deletePubcrawlById = (id, account, callback) => {
-        getPubcrawl(account, (error, pubcrawl) => {
+    const deletePubcrawlById = (id, activeAccount, callback) => {
+        getPubcrawl(activeAccount, (error, pubcrawl) => {
             if (error) {
                 callback(error, null);
             } else {
-                if (pubcrawl.raw.owner_id !== account.id) {
+                if (pubcrawl.raw.owner_id !== activeAccount.id) {
                     callback(ERROR_ENUM.UNAUTHORIZED, null);
                 } else {
                     barsRepository.deletePubcrawlById(id, (error, result) => {
@@ -91,7 +97,7 @@ module.exports = ({ barsRepository }) => {
         });
     }    
 
-    const updatePubcrawl = (id, account, newPubcrawlData, callback) => {
+    const updatePubcrawl = (id, activeAccount, newPubcrawlData, callback) => {
         getPubcrawlById(id, (error, pubcrawl) => {
             let id;
             if (error) {
@@ -104,7 +110,7 @@ module.exports = ({ barsRepository }) => {
                 return;
             }
 
-            if (pubcrawl.raw.owner_id !== account.id) {
+            if (pubcrawl.raw.owner_id !== activeAccount.id) {
                 callback(ERROR_ENUM.MUST_BE_OWNER, null);
                 return;
             }
