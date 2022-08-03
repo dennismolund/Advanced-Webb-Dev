@@ -65,25 +65,25 @@ module.exports = function({accountManager}){
                                 });
                         }
                     } else {
-                        const payload = {
+                        const account_info = {
                             id: account.id,
                             username: account.username,
                             pubcrawl_id: account.pubcrawl_id,
                             team_id: account.team_id
                         };
-                        const idToken = {
+                        const payload = {
                             sub: account.id,
-                            account: payload,
+                            account: account_info,
                             iss: "api.barrundan.se",
                             iat: Date.now(),
                             exp: Date.now() + 1000 * 60 * 60,
                         }
-                        const access_token = jwt.sign(idToken, SECRET);
-                        console.log("idToken:", SECRET);
+                        const id_token = jwt.sign(payload, SECRET);
+                        console.log("idToken:", id_token);
 
                         response.status(200).send({
-                            access_token,
-                            token_type: "Bearer",
+                            id_token,
+                            token_type: "Bearer"
                         });
                     }
                 }
