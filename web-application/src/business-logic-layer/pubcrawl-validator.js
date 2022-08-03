@@ -9,15 +9,6 @@ const validatePubcrawl = (fName, pubcrawl) => {
     return true;
 }
 
-const validateRows = (pubcrawl) => {
-    console.log("pubcrawl:", pubcrawl);
-    console.log("pubcrawl.length:", pubcrawl.length);
-    console.log("pubcrawl[0]:", pubcrawl[0]);
-    console.log("pubcrawl[0].data:", pubcrawl[0].data);
-    
-    return pubcrawl.length > 0 && pubcrawl[0] && pubcrawl[0].data;
-}
-
 const parsePubcrawl = (pubcrawl) => {
     let response = pubcrawl;
     if (typeof pubcrawl === 'object') return pubcrawl;
@@ -28,6 +19,5 @@ const parsePubcrawl = (pubcrawl) => {
 
 module.exports = {
     validatePubcrawl,
-    validateRows,
     parsePubcrawl,
 }
