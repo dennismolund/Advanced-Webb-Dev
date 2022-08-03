@@ -6,7 +6,7 @@ CREATE TABLE account (
     pubcrawl_id INT,
     team_id INT
 );
--- data:JSON stores all pub objects within the pubcrawl.
+
 CREATE TABLE pubcrawl (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     owner_id INT NOT NULL,

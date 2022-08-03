@@ -19,8 +19,11 @@ const validateRows = (pubcrawl) => {
 }
 
 const parsePubcrawl = (pubcrawl) => {
+    let response = pubcrawl;
     if (typeof pubcrawl === 'object') return pubcrawl;
-    return JSON.parse(pubcrawl);
+    response = JSON.parse(pubcrawl);
+    if(typeof response === 'string') response = JSON.parse(response);
+    return response
 }
 
 module.exports = {

@@ -12,7 +12,6 @@ const getPubsFromGoogleAPI = async () => {
         const response = await axios.get(url);
         res = Pubs.aggregate(response.data.results);
     } catch (e) {
-        console.log('Got error');
         if (e.response && e.response.data) console.log(e.response.data);
         else console.log(e.message);
     }

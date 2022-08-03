@@ -46,7 +46,6 @@ module.exports = ({ pubcrawlRepository }) => {
                 if (pubcrawl.owner_id !== activeAccount.id) {
                     callback(ERROR_ENUM.AUTHORIZATION_FAIL, null);
                 }
-
                 try {
                     const parsed = parsePubcrawl(pubcrawl.pub_list);
                     const data = {
