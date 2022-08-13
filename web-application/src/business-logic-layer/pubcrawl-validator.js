@@ -2,7 +2,6 @@
 const validatePubcrawl = (fName, pubcrawl) => {
     Object.keys(pubcrawl).forEach((key) => {
         if (!pubcrawl[key]) {
-            console.log('Missing value for param', key, 'when running', fName);
             return false;
         } 
     });

@@ -26,7 +26,6 @@ export default class AjaxClient {
             ViewController.hideLoader();
             return res;
         } catch (error) {
-            console.log('Post error: ', error);
             ViewController.hideLoader();
             return;
         }
@@ -46,7 +45,6 @@ export default class AjaxClient {
             try {
                 data = await response.json();
             } catch (e) {
-                console.log('Error could not parse data ', e);
             }
             const res = {
                 response,
@@ -55,7 +53,6 @@ export default class AjaxClient {
             ViewController.hideLoader();
             return res;            
         } catch (e) {
-            console.log('Get error: ', e);
             ViewController.hideLoader();
             return;
         }
@@ -75,7 +72,6 @@ export default class AjaxClient {
             try {
                 data = await response.json();
             } catch (e) {
-                console.log('Error could not parse data ', e);
             }
             const res = {
                 response,
@@ -84,7 +80,6 @@ export default class AjaxClient {
             ViewController.hideLoader();
             return res;
         } catch (e) {
-            console.log('Get error: ', e);
             ViewController.hideLoader();
             return;
         }

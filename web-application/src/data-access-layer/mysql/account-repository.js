@@ -9,7 +9,6 @@ module.exports = function({}){
 		  const values = [id];
 		  db.query(query, values, (error, accounts) => {
 			if (error) {
-				console.log('Error getting acocunt from db: ', error);
 				callback(ERROR_ENUM.SERVER_ERROR, null);
 				return;
 			}
@@ -23,7 +22,6 @@ module.exports = function({}){
 		
 		db.query(query, values, (error, results) => {
 			if(error){
-				console.log("Error in database: ", error.code);
 				if (error.code === "ER_DUP_ENTRY") {
 					if (error.sqlMessage.includes('email')) {
 						callback(ERROR_ENUM.EMAIL_TAKEN, null);

@@ -9,7 +9,6 @@ class ViewController {
     setViewList() {
         const htmlViews = document.querySelectorAll('.view');
         const a = Array.from(htmlViews);
-        console.log(htmlViews);
         this.views = a.map((item) => new View(item));
     }
 
@@ -36,14 +35,13 @@ class ViewController {
         if (goTo === window.location.pathname) return;
     
         this.views.forEach((view) => {
-            console.log(view.name);
+
             if (view.name === goTo) view.show();
             else view.hide();
         });
         this.activeView = this.getView(goTo)
     
         if (goTo !== 'loader' && !_wasPopState) {
-            console.log('Pushing state: ', goTo);
             history.pushState({ view: goTo }, '', `/${goTo}`);
         }
     }
@@ -71,7 +69,6 @@ class ViewController {
     }
 
     showError(msg) {
-        console.log('Show error', this.activeView);
         this.activeView.showError(msg);
     }
 

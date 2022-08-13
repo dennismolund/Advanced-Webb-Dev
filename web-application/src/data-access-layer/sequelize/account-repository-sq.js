@@ -12,7 +12,6 @@ module.exports = ({}) => {
                 });
                 callback(null, newAccount.dataValues.id);
             } catch (e) {
-                console.log(e);
                 if (e.original?.code === "ER_DUP_ENTRY") {
                     if (e.original?.sqlMessage.includes('email')) {
                         callback(ERROR_ENUM.EMAIL_TAKEN, null);
@@ -32,7 +31,6 @@ module.exports = ({}) => {
                 if (!!account) callback(null, account.dataValues);
 				else callback(null, null);
             } catch (e) {
-                console.log(e);
                 callback(ERROR_ENUM.SERVER_ERROR, null);
             }
 
@@ -43,7 +41,6 @@ module.exports = ({}) => {
                 if (!!account) callback(null, account.dataValues);
                 else callback(null, null);
             } catch (e) {
-                console.log(e);
                 callback(ERROR_ENUM.SERVER_ERROR, null);
             }
         }

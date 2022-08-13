@@ -19,10 +19,8 @@ const verifyAccessToken = (request, response, next) => {
                 error: 'invalid_grant',
                 error_description: 'Invalid token'
             });
-            console.log('Could not verify token');
             return;
         }
-        console.log("verified token:", verifiedToken);
         request.account = verifiedToken.account;
         if (!err) request.isLoggedIn = true;
         next();

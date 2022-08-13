@@ -36,8 +36,6 @@ module.exports = function({accountManager}){
         }
         
         if (!supportedClients.includes(client_id)) {
-            console.log(supportedClients);
-            console.log(client_id);
             response.status(400).send({
                 error: "invalid_client",
                 error_description: "The client is not registered"
@@ -51,7 +49,6 @@ module.exports = function({accountManager}){
                 (error, account) => {
                     //Display server error or if username or password is incorrect.
                     if(error){
-                        console.log("errors ", error);
                         if (error === ERROR_ENUM.SERVER_ERROR) {
                             response
                                 .status(500)
@@ -65,6 +62,7 @@ module.exports = function({accountManager}){
                                 });
                         }
                     } else {
+                        
                         const account_info = {
                             id: account.id,
                             username: account.username,
@@ -72,18 +70,25 @@ module.exports = function({accountManager}){
                             team_id: account.team_id
                         };
                         const payload = {
-                            sub: account.id,
+                            account: account_info
+                        }
+
+                        const id_payload = {
                             account: account_info,
+                            sub: account.id,
                             iss: "api.barrundan.se",
                             iat: Date.now(),
                             exp: Date.now() + 1000 * 60 * 60,
+                            aud: client_id,
                         }
+
                         const access_token = jwt.sign(payload, SECRET);
-                        console.log("access_token:", access_token);
+                        const id_token = jwt.sign(id_payload, SECRET);
 
                         response.status(200).send({
                             access_token,
-                            token_type: "Bearer"
+                            token_type: "Bearer",
+                            id_token
                         });
                     }
                 }

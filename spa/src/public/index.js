@@ -6,16 +6,11 @@ const client_id = "YmFycnVuZGFfc3BhX2NsaWVudF9pZF9oZWpjb24=";
 document.addEventListener('DOMContentLoaded', async () => {
     setListeners();
     ViewController.setViewList();
-    // ViewController.changeView('loader');
     await setPage();
 });
 
 const setPage = async () => {
     const pathname = window.location.pathname;
-    console.log('Pathname: ', pathname);
-    // if (Account.token) {
-    //     await silentLogin();
-    // }
     if (!Account.isSignedIn()) {
         if (pathname.includes('login')) {
             ViewController.changeView('login');
@@ -29,7 +24,6 @@ const setPage = async () => {
 
 const setListeners = () => {
     window.onpopstate = (evt) => {
-        console.log('Popping state: ', evt.state);
         if (!evt.state) history.back();
         else ViewController.changeView(evt.state.view, true);
     };
@@ -113,14 +107,12 @@ const signup = async () => {
 }
 
 const checkResponse = (pack) => {
-    console.log(pack);
     if (pack.response && pack.response.status === 204) return;
     else if (!pack.response) {
         ViewController.showError('There was an error');
         return true;
     }
     else if (pack.response.status !== 200) {
-        console.log(pack.response);
         if (pack.data) {
             if (pack.data.error_description) ViewController.showError(pack.data.error_description);
             else ViewController.showError(pack.data.error);
@@ -203,19 +195,15 @@ const onPubcrawlRemoved = () => {
 }
 
 const onPubcrawlReceived = (data) => {
-    console.log("data:", data);
     Account.setPubs(data);
     if (ViewController.activeView.name === 'home') {
-        console.log('Displaying pub list');
         ViewController.showPublist();
     } else {
-        console.log('Changing view to home');
         ViewController.changeView('home');
     }
 }
 
 const validateNewUser = (account) => {
-    console.log('Validate new account: ', account);
     const keys = Object.keys(account);
     for(let i = 0; i < keys.length; i++) {
         if (!account[keys[i]]) {

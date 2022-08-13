@@ -12,7 +12,7 @@ class Account {
     }
 
     init(pack) {
-        const { account } = parseJwt(pack.access_token);
+        const { account } = parseJwt(pack.id_token);
         const { pubcrawl_id, id, team_id, username } = account;
         this.token = pack.access_token ? pack.access_token : this.token;
         this.pubcrawl_id = pubcrawl_id;

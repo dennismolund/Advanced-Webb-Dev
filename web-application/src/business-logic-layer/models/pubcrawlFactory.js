@@ -25,7 +25,6 @@ class Pubcrawl {
 
     logBy(prop) {
         this.list.forEach((item) => {
-            console.log('Pub: ', item[prop]);
         })
     }
 

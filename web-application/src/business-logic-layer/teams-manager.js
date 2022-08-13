@@ -104,7 +104,6 @@ module.exports = function({ teamsRepository, pubcrawlManager, accountRepository 
         },
         
         getTeam: (activeAccount, callback) => {
-            console.log("active acc", activeAccount);
             if(!activeAccount) {
                 callback(ERROR_ENUM.AUTHORIZATION_FAIL, null);
                 return;
@@ -116,7 +115,7 @@ module.exports = function({ teamsRepository, pubcrawlManager, accountRepository 
 
             teamsRepository.getTeam(activeAccount.team_id, (errors, team, pubcrawl, teamMembers) => {
                 if (errors) {
-                    console.log("Errors in teams-manager:", errors);
+
                     callback(errors, null);
                 } else {
                     if(team.id !== activeAccount.team_id){
@@ -172,7 +171,6 @@ module.exports = function({ teamsRepository, pubcrawlManager, accountRepository 
                                     callback(error, null);
                                 } else {
                                     // Update members
-                                    console.log('Stored new pubcrawl');
                                     const data = {
                                         id: result.insertId
                                     };

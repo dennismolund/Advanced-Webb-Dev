@@ -13,8 +13,7 @@ module.exports = ({ pubcrawlManager, accountManager }) => {
     router.post('', hasTeamCheck, async (req, res) => {
         await getPubsFromGoogleAPI();
         const pubcrawl = publist.getRandom();
-        const token = req.headers['authorization'].split(' ')[1];
-        const { sub: account_id } = decode(token);
+        const account_id = req.account.id;
         
         pubcrawlManager.storePubcrawl(pubcrawl, account_id, (error, result) => {
             if (error) {
@@ -92,10 +91,8 @@ module.exports = ({ pubcrawlManager, accountManager }) => {
         const { account } = req;
         await getPubsFromGoogleAPI();
         const pubcrawl = publist.getRandom();
-        console.log('/pubcrawl id:', id);
         pubcrawlManager.updatePubcrawl(id, account, pubcrawl, (error, data) => {
             if (error) {
-                console.log('GOT ERROR: ', error);
                 if (error === ERROR_ENUM.SERVER_ERROR) {
                     res.status(500).json({ error: ERROR_ENUM.SERVER_ERROR });
                     return;

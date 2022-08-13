@@ -25,7 +25,6 @@ module.exports = ({}) => {
                 result.insertId = result.id;
                 callback(null, result);
             } catch (e) {
-                console.log('Error creating new team: ', e.parent);
                 await transaction.rollback();
                 
                 if (e.parent.code === 'ER_DUP_ENTRY') {
@@ -82,7 +81,6 @@ module.exports = ({}) => {
                     usernameList
                 );
             } catch (e) {
-                console.log('Error getting team: ', e);
                 await transaction.rollback();
                 callback(['databaseError']);
             }
@@ -103,7 +101,6 @@ module.exports = ({}) => {
                 await transaction.commit();
                 callback(null, null)
             } catch (e) {
-                console.log('Error deleting team: ', e);
                 await transaction.rollback();
                 callback(e, null);
             }
@@ -116,7 +113,6 @@ module.exports = ({}) => {
                 );
                 callback(null, null);
             } catch (e) {
-                console.log('Error leaving team:', e);
                 callback(error, null);
             }
         },
@@ -136,7 +132,6 @@ module.exports = ({}) => {
                 await transaction.commit();
                 callback(null, team.dataValues.id);
             } catch (e) {
-                console.log('Error joining team: ', e);
                 await transaction.rollback();
                 callback(ERROR_ENUM.SERVER_ERROR, null);
             }

@@ -58,7 +58,6 @@ module.exports = function({pubcrawlManager}){
         pubcrawlManager.deletePubcrawlById(pubcrawl_id , activeAccount, (error, result) => {
             if (error) console.log('Failed to delete pubcrawl: ', error);
             else {
-                console.log('Succesfully deleted pubcrawl');
                 res.render("start.hbs", {activeAccount});
             }
         });

@@ -1,5 +1,4 @@
 function parseJwt (token) {
-    console.log("token",token);
     var base64Url = token.split('.')[1];
     var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {

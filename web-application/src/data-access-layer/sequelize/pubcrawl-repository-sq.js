@@ -24,7 +24,6 @@ module.exports = ({}) => {
                 callback(null, result);
             } catch (e) {
                 await transaction.rollback();
-                console.log('Error creating pub crawl: ', e);
                 callback(new Error(ERROR_ENUM.SERVER_ERROR), null);
             }
         },
@@ -38,17 +37,14 @@ module.exports = ({}) => {
                         id
                     }
                 });
-                console.log('Successfull update');
                 callback(null, result);
             } catch (e) {
-                console.log(e);
                 callback(e, null);
             }
         },
         getPubcrawl: async (account, callback) => {
             const transaction = await Sequelize.transaction();
             try {
-                console.log(account.username);
                 const [accountRes] = await Account.findAll(
                     { where: { username: account.username } }
                 );
@@ -67,7 +63,6 @@ module.exports = ({}) => {
                 callback(null, pubRes.dataValues);
             } catch (e) {
                 await transaction.rollback();
-                console.log('Error getting pub crawl for account: ', e);
                 callback(ERROR_ENUM.SERVER_ERROR, null);
             }
         },
@@ -80,7 +75,6 @@ module.exports = ({}) => {
                 });
                 callback(null, pubsRes.dataValues);
             } catch (e) {
-                console.log('Pubs res got error: ', e);
                 callback(ERROR_ENUM.SERVER_ERROR, null);
             }   
         },
@@ -96,7 +90,6 @@ module.exports = ({}) => {
                 callback(null, null);
 
             } catch (e) {
-                console.log('Error deleting pub crawl: ', e);
                 await transaction.rollback();
                 callback(ERROR_ENUM.SERVER_ERROR, null);
             }

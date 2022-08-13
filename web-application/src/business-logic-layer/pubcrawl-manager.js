@@ -54,7 +54,6 @@ module.exports = ({ pubcrawlRepository }) => {
                     }
                     callback(null, data);
                 } catch (e) {
-                    console.log(e);
                     callback(ERROR_ENUM.SERVER_ERROR, null);
                 }
             }   
@@ -75,7 +74,6 @@ module.exports = ({ pubcrawlRepository }) => {
                         if (error) {
                             callback(error, null);
                         } else {
-                            console.log('successfully deleted pubcrawl');
                             callback(null, 'success');
                         }
                     });
@@ -88,7 +86,6 @@ module.exports = ({ pubcrawlRepository }) => {
         //Checks if an account is logged in.
         if(!activeAccount) callback(ERROR_ENUM.AUTHORIZATION_FAIL, null);
         pubcrawlRepository.getPubcrawlById(id, (error, pubcrawl) => {
-            console.log("in pubcrawlbyid after fetch");
             if (error) {
                 callback(error, null);
             } else if (!pubcrawl) {
@@ -104,7 +101,6 @@ module.exports = ({ pubcrawlRepository }) => {
                         callback(ERROR_ENUM.UNAUTHORIZED, null);
                     }else callback(null, data);
                 } catch (e) {
-                    console.log(e);
                     callback(ERROR_ENUM.SERVER_ERROR, null);
                 }
             }
@@ -136,7 +132,6 @@ module.exports = ({ pubcrawlRepository }) => {
                 newPubcrawlData,
                 (error, result) => {
                     if (error) {
-                        console.log(error);
                         callback(ERROR_ENUM.SERVER_ERROR, null);
                         return;
                     }

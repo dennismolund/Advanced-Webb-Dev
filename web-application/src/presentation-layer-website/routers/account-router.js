@@ -34,7 +34,6 @@ module.exports = ({accountManager}) => {
         };
         accountManager.createAccount(account, (error, results) => {
             if(error){
-                console.log("error:" , error);
                 const errors = [];
                 errors.push(error);
                 response.render("signup.hbs", {errors});
@@ -51,12 +50,10 @@ module.exports = ({accountManager}) => {
         };
         accountManager.loginRequest(account, (error, account) => {
             if(error){
-                console.log("errors ", error);
                 const errors = [];
                 errors.push(error);
                 response.render("login.hbs", {errors});
             }else{
-                console.log(account);
                 request.session.activeAccount = account;
                 
                 response.redirect("/");
@@ -65,7 +62,6 @@ module.exports = ({accountManager}) => {
     });
     
     router.get("/logout", (request, response) => {
-        console.log("Destroying session");
         request.session.destroy((error) => {
             console.log(error);
         });

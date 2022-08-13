@@ -21,7 +21,7 @@ module.exports = function({}){
                         const values = [result.insertId, userId];
                         db.query(query, values, (e, r) => {
                             if (e) {
-                                console.log('Failed to update account after creating pubcrawl');
+
                                 return db.rollback(() => {
                                     callback(ERROR_ENUM.SERVER_ERROR, null);
                                 });

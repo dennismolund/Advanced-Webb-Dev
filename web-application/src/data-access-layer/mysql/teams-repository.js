@@ -12,7 +12,6 @@ module.exports = function({}){
             const query3 = `SELECT * FROM team WHERE id = ?`;
             db.query(query, values, (error, result) => {
                 if (error) {
-                    console.log("Error in database: ", error);
                     if (error.code === 'ER_DUP_ENTRY') {
                         callback(ERROR_ENUM.TEAM_NAME_TAKEN, null);
                     } else callback(ERROR_ENUM.SERVER_ERROR, null);
@@ -33,14 +32,12 @@ module.exports = function({}){
 		    const values = [null, null, team_id]
             db.query(query, values, (error, result) => {
                 if(error){
-                    console.log("ERROR WHEN UPDATING ACCOUNT", error);
                     callback(error, null)
                 } else {
                     const query2 = `DELETE FROM team WHERE id = ?`
 		            const values2 = [team_id]
                     db.query(query2, values2, (error, results) => {
                         if(error){
-                            console.log("ERROR WHEN DELETING TEAM", error);
                             callback(ERROR_ENUM.SERVER_ERROR, null)
                         } else callback(null, null)
                     })
@@ -64,7 +61,6 @@ module.exports = function({}){
             
             db.query(query, values, (error, teamFromDb) => {
                 if(error){
-                    console.log("error in database (join team):", error);
                     callback(ERROR_ENUM.SERVER_ERROR, null)
                 } else {
                     if (!teamFromDb.length) {
@@ -75,7 +71,6 @@ module.exports = function({}){
                     const value2 = [teamFromDb[0].id,account_id]
                     db.query(query2, value2, (error, result) => {
                         if(error){
-                            console.log("error in database (join team):", error);
                             callback(ERROR_ENUM.SERVER_ERROR, null)
                         }else{
                             callback(null, team_id)
@@ -89,7 +84,6 @@ module.exports = function({}){
             const values = [id];
             db.query(query, values, (error, teams) => {
                 if (error) {
-                    console.log(error);
                     callback(ERROR_ENUM.SERVER_ERROR, error);
                 } else {
                     callback(null, teams[0]);
@@ -104,23 +98,19 @@ module.exports = function({}){
             
             db.query(query, values, (error, teamFromDb) => {
                 if(error){
-                    console.log("Error in database: ", error);
                     callback(['databaseError'], null, null, null)
                 } else {
                     const team = teamFromDb[0]
-                    console.log("team in teams repo:", team);
                     if (!team) callback(TEAM_NOT_FOUND, null, null, null);
                     else db.query(query2, team.creator_id, (error, pubcrawlFromDb) => {
                         if(error){
-                            console.log("error getTeam in repository", error);
                             callback(['databaseError'], null, null, null)
                         }
                         else {
-                            console.log('Found barrundor?: ', pubcrawlFromDb.length);
                             const pubcrawl = pubcrawlFromDb.pop();
                             db.query(query3, values, (error, usernamesFromDb) => {
                                 if (error) {
-                                    console.log("ERROR WHEN GETTING TEAMMEMBERS", error);
+
                                     callback(
                                         null,
                                         team.dataValues,
@@ -145,12 +135,10 @@ module.exports = function({}){
             })
         },
         updatePubcrawlForMembers: (team_id, pubcrawlid, callback) => {
-            console.log('settings pubcrawl id: ', pubcrawlid);
             const query = 'UPDATE account SET pubcrawl_id = ? WHERE team_id = ?';
             const values = [pubcrawlid, team_id];
             db.query(query, values, (error, _) => {
                 if (error) {
-                    console.log(error);
                     callback(ERROR_ENUM.SERVER_ERROR, null);
                 }
                 else callback(null, null);

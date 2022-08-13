@@ -49,7 +49,6 @@ module.exports = ({teamsManager}) => {
             req.session.activeAccount,
             (error, team) => {
                 if (error) {
-                    console.log("ERROR TRIGGER IN TEAMS-ROUTER (GetTeam)", error);
                     res.render(
                         "start.hbs",
                         { activeAccount: req.session.activeAccount }
@@ -119,7 +118,6 @@ module.exports = ({teamsManager}) => {
             pubcrawl_id,
             (error, result) => {
                 if (error) {
-                    console.log('Error in update team pubcrawl router', error);
                     res.redirect('/teams')
                 } else {
                     req.session.activeAccount.pubcrawl_id = result.id;
