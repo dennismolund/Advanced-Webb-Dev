@@ -16,7 +16,7 @@ CREATE TABLE pubcrawl (
 
 CREATE TABLE team (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    teamname VARCHAR(50) NOT NULL UNIQUE,
+    name VARCHAR(50) NOT NULL UNIQUE,
     creator_id INT NOT NULL,
     pubcrawl_id INT,
     FOREIGN KEY (creator_id) REFERENCES account(id) ON DELETE CASCADE

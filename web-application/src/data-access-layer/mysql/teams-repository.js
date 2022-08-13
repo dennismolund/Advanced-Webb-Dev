@@ -6,7 +6,7 @@ module.exports = function({}){
     return{
         
         createTeam: (team, callback) => {
-            const query = `INSERT INTO team (teamname, creator_id) VALUES (?, ?)`;
+            const query = `INSERT INTO team (name, creator_id) VALUES (?, ?)`;
             const values = [team.teamName, team.creatorId];
             const query2 = `UPDATE account SET team_id = ? WHERE id = ?`;
             const query3 = `SELECT * FROM team WHERE id = ?`;
@@ -58,7 +58,7 @@ module.exports = function({}){
             })
         },
         joinTeam: (teamName, account_id, callback) => {
-            const query = `SELECT * FROM team WHERE teamname = ?`;
+            const query = `SELECT * FROM team WHERE name = ?`;
             const query2 = `UPDATE account SET team_id = ? WHERE id = ?`;
 		    const values = [teamName]
             

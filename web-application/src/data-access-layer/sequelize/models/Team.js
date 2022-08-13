@@ -8,7 +8,7 @@ module.exports = sequelize.define("team", {
         allowNull: false,
         primaryKey: true
     },
-    teamname: {
+    name: {
         type: Sequelize.STRING,
         allowNull: false,
         unique: true

@@ -13,7 +13,7 @@ module.exports = function({accountManager}){
         res.status(200).json('hello');
     });
 
-    router.post("/login-sessions", function(request, response) {
+    router.post("/tokens", function(request, response) {
     
         const {
             grant_type,
@@ -78,11 +78,11 @@ module.exports = function({accountManager}){
                             iat: Date.now(),
                             exp: Date.now() + 1000 * 60 * 60,
                         }
-                        const id_token = jwt.sign(payload, SECRET);
-                        console.log("idToken:", id_token);
+                        const access_token = jwt.sign(payload, SECRET);
+                        console.log("access_token:", access_token);
 
                         response.status(200).send({
-                            id_token,
+                            access_token,
                             token_type: "Bearer"
                         });
                     }

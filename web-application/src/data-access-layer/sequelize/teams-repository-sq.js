@@ -13,7 +13,7 @@ module.exports = ({}) => {
             const transaction = await Sequelize.transaction();
             try {
                 const newTeam = await Team.create({
-                    teamname: team.teamName,
+                    name: team.teamName,
                     creator_id: team.creatorId
                 });
                 const updateteam_ids = await Account.update(
@@ -125,7 +125,7 @@ module.exports = ({}) => {
             try {
                 const [team] = await Team.findAll({ 
                     where: {
-                        teamname: teamName
+                        name: teamName
                     }
                 });
                 if (!team) callback(ERROR_ENUM.TEAM_NOT_FOUND, null); 

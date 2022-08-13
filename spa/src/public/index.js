@@ -156,7 +156,7 @@ const login = async () => {
         client_id
     };
 
-    const url = `http://localhost:3002/api/anvandare/login-sessions`;
+    const url = `http://localhost:3002/api/anvandare/tokens`;
     const response = await AjaxClient.post(url, body);
     const requestError = checkResponse(response);
 
@@ -203,7 +203,8 @@ const onPubcrawlRemoved = () => {
 }
 
 const onPubcrawlReceived = (data) => {
-    Account.setpubcrawl(data);
+    console.log("data:", data);
+    Account.setPubs(data);
     if (ViewController.activeView.name === 'home') {
         console.log('Displaying pub list');
         ViewController.showPublist();
