@@ -23,7 +23,6 @@ module.exports = ({}) => {
 
                 callback(null, result);
             } catch (e) {
-                console.log("error:", e);
                 await transaction.rollback();
                 callback(new Error(ERROR_ENUM.SERVER_ERROR), null);
             }

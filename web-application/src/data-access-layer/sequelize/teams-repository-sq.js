@@ -75,8 +75,6 @@ module.exports = ({}) => {
                     .dataValues
                     .username
                 );
-                console.log("team found", team.dataValues);
-                console.log("pubcrawl", pubcrawl.dataValues.id);
                 await transaction.commit();
                 callback(
                     null,
@@ -141,8 +139,6 @@ module.exports = ({}) => {
             }
         },
         updatePubcrawlForMembers: async (team_id, pubcrawl_id, callback) =>{
-            console.log("team:", team_id);
-            console.log("pubcrawl_id", pubcrawl_id);
             const transaction = await Sequelize.transaction();
             try {
                 const update = await Account.update(

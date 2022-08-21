@@ -95,7 +95,6 @@ module.exports = function({}){
 		    const values = [id]
             const query2 = `SELECT * FROM pubcrawl WHERE owner_id = ?`
             const query3 = `SELECT username FROM account WHERE team_id = ?`
-            console.log("getTeam");
             db.query(query, values, (error, teamFromDb) => {
                 if(error){
                     callback(['databaseError'], null, null, null)
@@ -122,8 +121,6 @@ module.exports = function({}){
                                     usernamesFromDb.forEach(element => {
                                         teamMembers.push(element.username)
                                     });
-                                    console.log("team found", team);
-                                    console.log("pubcrawl", pubcrawl.id);
                                     callback(null, team, pubcrawl, teamMembers)
                                 }   
                             })
