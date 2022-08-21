@@ -44,7 +44,6 @@ module.exports = ({teamsManager}) => {
 
     router.get("/", (req,res) => {
         const showteam = req.query.showteam === "true" ? true : false
-        console.log(req.session.activeAccount);
         teamsManager.getTeam(
             req.session.activeAccount,
             (error, team) => {
@@ -64,6 +63,7 @@ module.exports = ({teamsManager}) => {
                     if(model.data.team.creator_id == model.activeAccount.id) {
                         model.owner = true
                     }
+                    console.log("team:", model.team);
                     res.render("barrundan.hbs", model);
                 }
             }
