@@ -88,15 +88,15 @@ const teamsRepositorySq = require('../data-access-layer/sequelize/teams-reposito
 const container = awilix.createContainer()
 container.register("accountRouter", awilix.asFunction(accountRouter))
 container.register("accountManager", awilix.asFunction(accountManager))
-container.register("accountRepository", awilix.asFunction(accountRepositorySq))
+container.register("accountRepository", awilix.asFunction(accountRepository))
 
 container.register("pubcrawlRouter", awilix.asFunction(pubcrawlRouter))
 container.register("pubcrawlManager", awilix.asFunction(pubcrawlManager))
-container.register("pubcrawlRepository", awilix.asFunction(pubcrawlRepositorySq))
+container.register("pubcrawlRepository", awilix.asFunction(pubcrawlRepository))
 
 container.register("teamsRouter", awilix.asFunction(teamsRouter))
 container.register("teamsManager", awilix.asFunction(teamsManager))
-container.register("teamsRepository", awilix.asFunction(teamsRepositorySq))
+container.register("teamsRepository", awilix.asFunction(teamsRepository))
 
 // Retrieve the router, which resolves all other dependencies.
 const theAccountRouter = container.resolve("accountRouter")

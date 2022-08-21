@@ -33,13 +33,16 @@ module.exports = ({}) => {
             }
         },
         getTeamById: async (id, callback) => {
+            const transaction = await Sequelize.transaction();
             try {
                 const team = await Team.findOne({
                     where: { id }
                 });
+                await transaction.commit();
                 callback(null, team?.dataValues);
             } catch (e) {
                 console.log('error getting team', e);
+                await transaction.rollback();
                 callback(e, null);
             }
         },
@@ -72,7 +75,8 @@ module.exports = ({}) => {
                     .dataValues
                     .username
                 );
-
+                console.log("team found", team.dataValues);
+                console.log("pubcrawl", pubcrawl.dataValues.id);
                 await transaction.commit();
                 callback(
                     null,
@@ -131,6 +135,23 @@ module.exports = ({}) => {
                 );
                 await transaction.commit();
                 callback(null, team.dataValues.id);
+            } catch (e) {
+                await transaction.rollback();
+                callback(ERROR_ENUM.SERVER_ERROR, null);
+            }
+        },
+        updatePubcrawlForMembers: async (team_id, pubcrawl_id, callback) =>{
+            console.log("team:", team_id);
+            console.log("pubcrawl_id", pubcrawl_id);
+            const transaction = await Sequelize.transaction();
+            try {
+                const update = await Account.update(
+                    { pubcrawl_id: pubcrawl_id },
+                    { where: { team_id: team_id }}
+                );
+                await transaction.commit();
+                callback(null, null);
+
             } catch (e) {
                 await transaction.rollback();
                 callback(ERROR_ENUM.SERVER_ERROR, null);

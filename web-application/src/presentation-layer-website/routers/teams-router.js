@@ -121,6 +121,7 @@ module.exports = ({teamsManager}) => {
                     res.redirect('/teams')
                 } else {
                     req.session.activeAccount.pubcrawl_id = result.id;
+                    console.log("s", result.id);
                     res.redirect('/teams');
                 }
         });

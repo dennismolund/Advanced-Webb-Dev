@@ -95,7 +95,7 @@ module.exports = function({}){
 		    const values = [id]
             const query2 = `SELECT * FROM pubcrawl WHERE owner_id = ?`
             const query3 = `SELECT username FROM account WHERE team_id = ?`
-            
+            console.log("getTeam");
             db.query(query, values, (error, teamFromDb) => {
                 if(error){
                     callback(['databaseError'], null, null, null)
@@ -122,7 +122,8 @@ module.exports = function({}){
                                     usernamesFromDb.forEach(element => {
                                         teamMembers.push(element.username)
                                     });
-                                    
+                                    console.log("team found", team);
+                                    console.log("pubcrawl", pubcrawl.id);
                                     callback(null, team, pubcrawl, teamMembers)
                                 }   
                             })
@@ -134,9 +135,9 @@ module.exports = function({}){
                 }
             })
         },
-        updatePubcrawlForMembers: (team_id, pubcrawlid, callback) => {
+        updatePubcrawlForMembers: (team_id, pubcrawl_id, callback) => {
             const query = 'UPDATE account SET pubcrawl_id = ? WHERE team_id = ?';
-            const values = [pubcrawlid, team_id];
+            const values = [pubcrawl_id, team_id];
             db.query(query, values, (error, _) => {
                 if (error) {
                     callback(ERROR_ENUM.SERVER_ERROR, null);
