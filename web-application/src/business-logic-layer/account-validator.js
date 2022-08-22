@@ -14,7 +14,6 @@ const MIN_PASSWORD_LENGTH = 3;
 const MAX_PASSWORD_LENGTH = 30;
 
 exports.getErrorsNewAccount = function(account) {
-	
 	const errors = [];
 	
 	// Validate username.

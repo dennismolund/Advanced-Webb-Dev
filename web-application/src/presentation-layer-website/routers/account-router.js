@@ -3,7 +3,7 @@ const express = require('express');
 const alreadySignedInCheck = (req, res, next) => {
     if (!req.session.activeAccount) next();
     else {
-        res.redirect('/bars');
+        res.redirect('/pubcrawl');
     }
 }
 
@@ -34,7 +34,6 @@ module.exports = ({accountManager}) => {
         };
         accountManager.createAccount(account, (error, results) => {
             if(error){
-                console.log("error:" , error);
                 const errors = [];
                 errors.push(error);
                 response.render("signup.hbs", {errors});
@@ -49,9 +48,8 @@ module.exports = ({accountManager}) => {
             enteredUsername: request.body.username,
             enteredPassword: request.body.password,
         };
-        accountManager.getAccountByUsername(account, (error, account) => {
+        accountManager.loginRequest(account, (error, account) => {
             if(error){
-                console.log("errors ", error);
                 const errors = [];
                 errors.push(error);
                 response.render("login.hbs", {errors});
@@ -64,7 +62,6 @@ module.exports = ({accountManager}) => {
     });
     
     router.get("/logout", (request, response) => {
-        console.log("Destroying session");
         request.session.destroy((error) => {
             console.log(error);
         });

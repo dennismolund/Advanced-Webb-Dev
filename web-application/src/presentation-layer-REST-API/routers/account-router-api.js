@@ -1,10 +1,7 @@
 const express = require('express')
-var bcrypt = require('bcrypt');
 const ERROR_ENUM = require('../../../business-logic-layer/models/error_enum');
-const { authenticateToken } = require('../middleware/authenticateToken');
 const { jwt_secret, supportedClients } = require('../const');
 const jwt = require("jsonwebtoken");
-const saltRounds = 10;
 
 const SECRET = jwt_secret;
 
@@ -16,7 +13,7 @@ module.exports = function({accountManager}){
         res.status(200).json('hello');
     });
 
-    router.post("/login-sessions", function(request, response) {
+    router.post("/tokens", function(request, response) {
     
         const {
             grant_type,
@@ -37,18 +34,8 @@ module.exports = function({accountManager}){
             });
             return;
         }
-
-        if (!enteredUsername || !enteredPassword || !client_id) {
-            response.status(400).send({
-                error: "invalid_request",
-                error_description: "Missing parameter in request"
-            });
-            return;
-        }
         
         if (!supportedClients.includes(client_id)) {
-            console.log(supportedClients);
-            console.log(client_id);
             response.status(400).send({
                 error: "invalid_client",
                 error_description: "The client is not registered"
@@ -57,11 +44,11 @@ module.exports = function({accountManager}){
         }
         
         accountManager
-            .getAccountByUsername(
+            .loginRequest(
                 loginAccount,
                 (error, account) => {
+                    //Display server error or if username or password is incorrect.
                     if(error){
-                        console.log("errors ", error);
                         if (error === ERROR_ENUM.SERVER_ERROR) {
                             response
                                 .status(500)
@@ -75,24 +62,33 @@ module.exports = function({accountManager}){
                                 });
                         }
                     } else {
-                        const payload = {
+                        
+                        const account_info = {
                             id: account.id,
                             username: account.username,
                             pubcrawl_id: account.pubcrawl_id,
                             team_id: account.team_id
                         };
-                        const idToken = {
+                        const payload = {
+                            account: account_info
+                        }
+
+                        const id_payload = {
+                            account: account_info,
                             sub: account.id,
-                            user: payload,
                             iss: "api.barrundan.se",
                             iat: Date.now(),
                             exp: Date.now() + 1000 * 60 * 60,
+                            aud: client_id,
                         }
-                        const access_token = jwt.sign(idToken, SECRET);
+
+                        const access_token = jwt.sign(payload, SECRET);
+                        const id_token = jwt.sign(id_payload, SECRET);
 
                         response.status(200).send({
                             access_token,
                             token_type: "Bearer",
+                            id_token
                         });
                     }
                 }

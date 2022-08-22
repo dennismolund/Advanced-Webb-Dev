@@ -1,40 +1,33 @@
 const express = require('express')
-const session = require('express-session')
-const Pubcrawl = require('../../business-logic-layer/models/pubcrawlFactory')
-const {
-    getPlaces
-} = require('../../data-access-layer/service/fetch.data.service');
 
-module.exports = function({barsManager, teamsManager, accountManager}){
+module.exports = function({pubcrawlManager}){
 
     const router = express.Router()
 
     router.get("/", (req, res) => {
         const account = req.session.activeAccount;
-        barsManager.getPubcrawl(account, (error, pubcrawl) => {
+        pubcrawlManager.getPubcrawl(account, (error, pubcrawl) => {
             if (error) {
                 res.render("start.hbs", { activeAccount: account });
             } else if (pubcrawl){
-                const bars = pubcrawl.parsed.list;
-                const barid = pubcrawl.raw.id;
+                const pubs = pubcrawl.parsed.list;
+                const pubcrawl_id = pubcrawl.raw.id;
                 res.render(
                     "barrundasolo.hbs",
-                    { barid, bars, activeAccount: account }
+                    { pubcrawl_id, pubs, activeAccount: account }
                 );
             } else {
                 res.render(
                     "barrundasolo.hbs",
-                    { barid, bars: [], activeAccount: account }
+                    { pubcrawl_id, pubs: [], activeAccount: account }
                 );
             }
         });
     });
 
     router.post('/', async (req, res) => {
-        await getPlaces();
-        const pubcrawl = Pubcrawl.getRandom();
-        let barid = null
-        barsManager.storePubcrawl(
+        const pubcrawl = await pubcrawlManager.createPubcrawl();
+        pubcrawlManager.storePubcrawl(
             pubcrawl,
             req.session.activeAccount.id,
             (error, result) => {
@@ -43,13 +36,14 @@ module.exports = function({barsManager, teamsManager, accountManager}){
                     console.log(error);
                     res.render("start.hbs", { error })
                 } else {
-                    barid = result.insertId
-                    req.session.activeAccount.pubcrawl_id = barid;
+                    let pubcrawl_id = null
+                    pubcrawl_id = result.insertId
+                    req.session.activeAccount.pubcrawl_id = pubcrawl_id;
                     res.render(
                         "barrundasolo.hbs",
                         {
-                            barid,
-                            bars: pubcrawl.list,
+                            pubcrawl_id,
+                            pubs: pubcrawl.list,
                             activeAccount: req.session.activeAccount
                         }
                     );
@@ -58,14 +52,13 @@ module.exports = function({barsManager, teamsManager, accountManager}){
         );
     });
     
-    router.get('/delete/:id', (req, res, next) => {
-        const { id } = req.params;
-        const user = req.session.activeAccount;
-        barsManager.deletePubcrawlById(id, user, (error, result) => {
+    router.get('/delete/:id', (req, res) => {
+        const { id: pubcrawl_id } = req.params;
+        const activeAccount = req.session.activeAccount;
+        pubcrawlManager.deletePubcrawlById(pubcrawl_id , activeAccount, (error, result) => {
             if (error) console.log('Failed to delete pubcrawl: ', error);
             else {
-                console.log('Succesfully deleted pubcrawl');
-                res.render("start.hbs", {activeAccount: user});
+                res.render("start.hbs", {activeAccount});
             }
         });
     });

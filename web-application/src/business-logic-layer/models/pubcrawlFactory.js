@@ -1,32 +1,30 @@
 const scrambleArray = require('../helpFunctions')
-class BarTemplate {
-    constructor(bar) {
-        this.raw = bar;
-        this.name = bar.name;
-        this.vicinity = bar.vicinity;
-        this.rating = bar.rating;
-        this.tot_rating = bar.user_rating_total;
-        this.price_level = bar.price_level;
-        this.types = bar.types;
+class PubTemplate {
+    constructor(pub) {
+        this.raw = pub;
+        this.name = pub.name;
+        this.vicinity = pub.vicinity;
+        this.rating = pub.rating;
+        this.tot_rating = pub.user_rating_total;
+        this.price_level = pub.price_level;
+        this.types = pub.types;
     }
 }
 class Pubcrawl {
     constructor() {
         this.list = [];
     }
-
-    //bars retrieved from Google API
-    aggregate(rawBars) {
-        rawBars.forEach((barItem) => {
-            const bar = new BarTemplate(barItem)
-            this.list.push(bar);
+    //pubs retrieved from Google API
+    aggregate(rawPubs) {
+        rawPubs.forEach((pubItem) => {
+            const pub = new PubTemplate(pubItem)
+            this.list.push(pub);
         });
         return this;
     }
 
     logBy(prop) {
         this.list.forEach((item) => {
-            console.log('Bar: ', item[prop]);
         })
     }
 

@@ -1,22 +1,21 @@
 const express = require('express');
 const { decode } = require('jsonwebtoken');
-const { hasTeamCheck } = require('../middleware/barsMiddlewares');
+const { hasTeamCheck } = require('../middleware/pubcrawlMiddlewares');
 const {
-    getPlaces
-} = require('../../../data-access-layer/service/fetch.data.service');
-const barlist = require('../../../business-logic-layer/models/pubcrawlFactory')
-const ERROR_ENUM = require('../../../business-logic-layer/models/error_enum');
+    getPubsFromGoogleAPI
+} = require('../../business-logic-layer/service/fetch.data.service');
+const publist = require('../../business-logic-layer/models/pubcrawlFactory')
+const ERROR_ENUM = require('../../business-logic-layer/models/error_enum');
 
-module.exports = ({ barsManager, accountManager }) => {
+module.exports = ({ pubcrawlManager, accountManager }) => {
     const router = express.Router();
 
     router.post('', hasTeamCheck, async (req, res) => {
-        await getPlaces();
-        const pubcrawl = barlist.getRandom();
-        const token = req.headers['authorization'].split(' ')[1];
-        const { sub: userId } = decode(token);
+        await getPubsFromGoogleAPI();
+        const pubcrawl = publist.getRandom();
+        const account_id = req.account.id;
         
-        barsManager.storePubcrawl(pubcrawl, userId, (error, result) => {
+        pubcrawlManager.storePubcrawl(pubcrawl, account_id, (error, result) => {
             if (error) {
                 if (error === ERROR_ENUM.SERVER_ERROR) {
                     return res
@@ -46,7 +45,7 @@ module.exports = ({ barsManager, accountManager }) => {
             return;
         }
 
-        barsManager.deletePubcrawlById(id, req.account, (error, result) => {
+        pubcrawlManager.deletePubcrawlById(id, req.account, (error, result) => {
             if (error) {
                 if (error === ERROR_ENUM.SERVER_ERROR) {
                     return res.status(500).send({ error: ERROR_ENUM.SERVER_ERROR });
@@ -67,7 +66,7 @@ module.exports = ({ barsManager, accountManager }) => {
     router.get('/:pubcrawlid', (req, res) => {
         const { pubcrawlid: id } = req.params;
         const { account } = req;
-        barsManager.getPubcrawlById(id, (error, data) => {
+        pubcrawlManager.getPubcrawlById(account, id, (error, data) => {
             if (error) {
                 if (error === ERROR_ENUM.SERVER_ERROR) {
                     res.status(500).json({ error: ERROR_ENUM.SERVER_ERROR });
@@ -90,12 +89,10 @@ module.exports = ({ barsManager, accountManager }) => {
     router.put('/:pubcrawlid', async (req, res) => {
         const { pubcrawlid: id } = req.params;
         const { account } = req;
-        await getPlaces();
-        const pubcrawl = barlist.getRandom();
-        console.log('/pubcrawl id:', id);
-        barsManager.updatePubcrawl(id, account, pubcrawl, (error, data) => {
+        await getPubsFromGoogleAPI();
+        const pubcrawl = publist.getRandom();
+        pubcrawlManager.updatePubcrawl(id, account, pubcrawl, (error, data) => {
             if (error) {
-                console.log('GOT ERROR: ', error);
                 if (error === ERROR_ENUM.SERVER_ERROR) {
                     res.status(500).json({ error: ERROR_ENUM.SERVER_ERROR });
                     return;

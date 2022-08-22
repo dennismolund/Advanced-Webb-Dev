@@ -1,6 +1,5 @@
 import View from './view.js';
-import User from './user.state.js';
-
+import Account from './account.state.js';
 class ViewController {
     constructor(){
         this.activeView = null;
@@ -10,55 +9,53 @@ class ViewController {
     setViewList() {
         const htmlViews = document.querySelectorAll('.view');
         const a = Array.from(htmlViews);
-        console.log(htmlViews);
         this.views = a.map((item) => new View(item));
     }
 
-    setTopBar() {
-        const topBar = document.querySelector('.top-bar');
-        if (User.isSignedIn()) {
-            topBar.setAttribute('style', 'display: flex');
+    setTopPub() {
+        const topPub = document.querySelector('.top-pub');
+        if (Account.isSignedIn()) {
+            topPub.setAttribute('style', 'display: flex');
         } else {
-            topBar.setAttribute('style', 'display: none');
+            topPub.setAttribute('style', 'display: none');
         }
     }
 
     changeView(viewName, _wasPopState) {
-        this.setTopBar();
+        this.setTopPub();
         let goTo = viewName;
         if (this.activeView) this.activeView.hideError();
         if (viewName === this.activeView?.name) return;
     
         if (
-            !User.isSignedIn() &&
+            !Account.isSignedIn() &&
              (viewName !== 'login' && viewName !== 'signup')
         ) goTo = 'login';
     
         if (goTo === window.location.pathname) return;
     
         this.views.forEach((view) => {
-            console.log(view.name);
+
             if (view.name === goTo) view.show();
             else view.hide();
         });
         this.activeView = this.getView(goTo)
     
         if (goTo !== 'loader' && !_wasPopState) {
-            console.log('Pushing state: ', goTo);
             history.pushState({ view: goTo }, '', `/${goTo}`);
         }
     }
 
-    showBarlist() {
-        this.activeView.showComponent('bar_list');
+    showPublist() {
+        this.activeView.showComponent('pub_list');
     }
 
     goToHome() {
         const homeView = this.getView('home');
-        if(User.hasPubcrawl()) {
-            homeView.showComponent('bar_list');
+        if(Account.hasPubcrawl()) {
+            homeView.showComponent('pub_list');
         } else {
-            homeView.showComponent('bar_create');
+            homeView.showComponent('pub_create');
         }
         this.changeView('home');
     }
@@ -72,7 +69,6 @@ class ViewController {
     }
 
     showError(msg) {
-        console.log('Show error', this.activeView);
         this.activeView.showError(msg);
     }
 

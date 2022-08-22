@@ -1,6 +1,3 @@
-const {
-  getPlaces
-} = require('../data-access-layer/service/fetch.data.service.js');
 const { isSignedIn } = require('./middlewares/auth.middleware.js');
 const express = require('express');
 const hbs = require('express-handlebars');
@@ -19,9 +16,8 @@ let redisClient = createClient({
 })
 redisClient.connect().catch(console.error)
 
-
 //Sequilze DB connection
-require('../data-access-layer/connection-sq');
+require('../data-access-layer/sequelize/connection-sq');
 
 const app = express();
 
@@ -60,13 +56,12 @@ app.use(session({
   cookie: { secure: false }
 }))
 
-
 app.get('/', async (req, res) => {
     //if account is active, show home page
     if(req.session.activeAccount) {
       const account = req.session.activeAccount
       if(req.session.activeAccount.team_id) res.redirect('/teams');
-      else if(req.session.activeAccount.pubcrawl_id) res.redirect('/bars');
+      else if(req.session.activeAccount.pubcrawl_id) res.redirect('/pubcrawl');
       else res.render('start.hbs', {activeAccount: account});
     }
     //if account is not active, show login page
@@ -76,40 +71,41 @@ app.get('/', async (req, res) => {
 // Import the ones we want to use (real or mockup), real in this case.
 const accountRouter = require('./routers/account-router');
 const accountManager = require('../business-logic-layer/account-manager');
-const accountRepository = require('../data-access-layer/account-repository');
-const accountRepositorySq = require('../data-access-layer/account-repository-sq');
+const accountRepository = require('../data-access-layer/mysql/account-repository');
+const accountRepositorySq = require('../data-access-layer/sequelize/account-repository-sq');
 
-const barsRouter = require('./routers/bars-router');
-const barsManager = require('../business-logic-layer/bars-manager');
-const barsRepository = require('../data-access-layer/bars-repository');
-const barsRepositorySq = require('../data-access-layer/bars-repository-sq');
+const pubcrawlRouter = require('./routers/pubcrawl-router');
+const pubcrawlManager = require('../business-logic-layer/pubcrawl-manager');
+const pubcrawlRepository = require('../data-access-layer/mysql/pubcrawl-repository');
+const pubcrawlRepositorySq = require('../data-access-layer/sequelize/pubcrawl-repository-sq');
 
 const teamsRouter = require('./routers/teams-router');
 const teamsManager = require('../business-logic-layer/teams-manager');
-const teamsRepository = require('../data-access-layer/teams-repository');
-const teamsRepositorySq = require('../data-access-layer/teams-repository-sq');
+const teamsRepository = require('../data-access-layer/mysql/teams-repository');
+const teamsRepositorySq = require('../data-access-layer/sequelize/teams-repository-sq');
 
 // Create a container and add the dependencies we want to use.
-const container = awilix.createContainer();
-container.register("accountRouter", awilix.asFunction(accountRouter));
-container.register("accountManager", awilix.asFunction(accountManager));
-container.register("accountRepository", awilix.asFunction(accountRepository));
+const container = awilix.createContainer()
+container.register("accountRouter", awilix.asFunction(accountRouter))
+container.register("accountManager", awilix.asFunction(accountManager))
+container.register("accountRepository", awilix.asFunction(accountRepository))
 
-container.register("barsRouter", awilix.asFunction(barsRouter));
-container.register("barsManager", awilix.asFunction(barsManager));
-container.register("barsRepository", awilix.asFunction(barsRepository));
+container.register("pubcrawlRouter", awilix.asFunction(pubcrawlRouter))
+container.register("pubcrawlManager", awilix.asFunction(pubcrawlManager))
+container.register("pubcrawlRepository", awilix.asFunction(pubcrawlRepository))
 
-container.register("teamsRouter", awilix.asFunction(teamsRouter));
-container.register("teamsManager", awilix.asFunction(teamsManager));
-container.register("teamsRepository", awilix.asFunction(teamsRepository));
+container.register("teamsRouter", awilix.asFunction(teamsRouter))
+container.register("teamsManager", awilix.asFunction(teamsManager))
+container.register("teamsRepository", awilix.asFunction(teamsRepository))
 
-// Retrieve the router, which resolves all other dependencies.;
-const theAccountRouter = container.resolve("accountRouter");
-const theBarsRouter = container.resolve("barsRouter");
-const theTeamsRouter = container.resolve("teamsRouter");
+// Retrieve the router, which resolves all other dependencies.
+const theAccountRouter = container.resolve("accountRouter")
+const thepubcrawlRouter = container.resolve("pubcrawlRouter")
+const theTeamsRouter = container.resolve("teamsRouter")
 
-app.use("/anvandare", theAccountRouter);
-app.use("/bars", isSignedIn, theBarsRouter);
-app.use("/teams", isSignedIn, theTeamsRouter);
+app.use("/anvandare", theAccountRouter)
+app.use("/pubcrawl", isSignedIn, thepubcrawlRouter)
+app.use("/teams", isSignedIn, theTeamsRouter)
+
 
 module.exports = app;

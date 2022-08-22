@@ -1,6 +1,5 @@
-const { Sequelize } = require('sequelize');
-const Account = require('../business-logic-layer/models/Account');
-const ERROR_ENUM = require('../business-logic-layer/models/error_enum');
+const Account = require('./models/Account');
+const ERROR_ENUM = require('../error_enum');
 
 module.exports = ({}) => { 
     return { 
@@ -13,7 +12,6 @@ module.exports = ({}) => {
                 });
                 callback(null, newAccount.dataValues.id);
             } catch (e) {
-                console.log(e);
                 if (e.original?.code === "ER_DUP_ENTRY") {
                     if (e.original?.sqlMessage.includes('email')) {
                         callback(ERROR_ENUM.EMAIL_TAKEN, null);
@@ -23,28 +21,26 @@ module.exports = ({}) => {
                 else callback(ERROR_ENUM.SERVER_ERROR, null);
             }
         },
-        getAccountByUsername: async (account, callback) => { 
+        loginRequest: async ({ enteredUsername }, callback) => { 
             try {
-                const users = await Account.findAll({ 
+                const account = await Account.findOne({ 
                     where: { 
-                        username: account.enteredUsername 
+                        username: enteredUsername 
                     }
                 });
-                if (users.length) callback(null, users[0].dataValues);
+                if (!!account) callback(null, account.dataValues);
 				else callback(null, null);
             } catch (e) {
-                console.log(e);
                 callback(ERROR_ENUM.SERVER_ERROR, null);
             }
 
         },
         getAccountById: async (id, callback) => {
             try {
-                const users = await Account.findAll({ where: { id }});
-                if (users.length) callback(null, users[0].dataValues);
+                const account = await Account.findOne({ where: { id }});
+                if (!!account) callback(null, account.dataValues);
                 else callback(null, null);
             } catch (e) {
-                console.log(e);
                 callback(ERROR_ENUM.SERVER_ERROR, null);
             }
         }

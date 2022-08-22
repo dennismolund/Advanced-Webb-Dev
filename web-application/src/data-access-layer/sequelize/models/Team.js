@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const sequelize = require('../../data-access-layer/connection-sq');
+const sequelize = require('../connection-sq');
 
 module.exports = sequelize.define("team", {
     id: {
@@ -8,7 +8,7 @@ module.exports = sequelize.define("team", {
         allowNull: false,
         primaryKey: true
     },
-    teamname: {
+    name: {
         type: Sequelize.STRING,
         allowNull: false,
         unique: true

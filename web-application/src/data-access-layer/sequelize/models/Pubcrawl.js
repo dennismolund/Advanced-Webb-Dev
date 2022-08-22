@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const sequelize = require('../../data-access-layer/connection-sq');
+const sequelize = require('../connection-sq');
 
 module.exports = sequelize.define('pubcrawl', {
     id: {
@@ -12,7 +12,7 @@ module.exports = sequelize.define('pubcrawl', {
         type: Sequelize.INTEGER,
         allowNull: false
     },
-    data: {
+    pub_list: {
         type: Sequelize.JSON,
         allowNull: false
     }

@@ -12,7 +12,7 @@
           <div class=" blackboard has-text-centered mb-4">
             <h3 class="subtitle is-3 mt-3 chalk"> </span> Bar Rundan <span class="chalk-line"></span></h3>
             <div class="chalk">
-                {{#each bars}}
+                {{#each pubs}}
                     <h4 class="subtitle is-4 mt-3 chalk"> </span> {{counter @index}}. {{this.name}}</h4>
                 {{/each}}
         
@@ -21,13 +21,13 @@
       </section>
 
       <div class="columns is-centered mt-4">
-        <form action="/bars" method="post">
+        <form action="/pubcrawl" method="post">
           <input class="button" type="submit" value="Visa Runda"></input>
         </form>
-        <form action="/bars/delete" method="post">
+        <form action="/pubcrawl/delete" method="post">
           <input class="button ml-4" type="submit" value="Visa Team"></input>
         </form>
-        <form action="/bars/delete" method="post">
+        <form action="/pubcrawl/delete" method="post">
           <input class="button ml-4" type="submit" value="Ny runda"></input>
         </form>
       </div>

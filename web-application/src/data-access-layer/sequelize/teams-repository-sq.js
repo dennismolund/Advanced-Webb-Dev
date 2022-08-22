@@ -1,14 +1,8 @@
 const Sequelize = require('./connection-sq');
-const Team = require('../business-logic-layer/models/Team')
-const Account = require('../business-logic-layer/models/Account')
-const Pubcrawl = require('../business-logic-layer/models/Pubcrawl');
-const ERROR_ENUM = require('../business-logic-layer/models/error_enum');
-
-
-const errHandler = (err) =>{
-    console.error("Error: ", err);
-    
-}
+const Team = require('./models/Team')
+const Account = require('./models/Account')
+const Pubcrawl = require('./models/Pubcrawl');
+const ERROR_ENUM = require('../error_enum');
 
 module.exports = ({}) => {
     
@@ -19,7 +13,7 @@ module.exports = ({}) => {
             const transaction = await Sequelize.transaction();
             try {
                 const newTeam = await Team.create({
-                    teamname: team.teamName,
+                    name: team.teamName,
                     creator_id: team.creatorId
                 });
                 const updateteam_ids = await Account.update(
@@ -31,23 +25,24 @@ module.exports = ({}) => {
                 result.insertId = result.id;
                 callback(null, result);
             } catch (e) {
-                console.log('Error creating new team: ', e.parent);
                 await transaction.rollback();
-                const err = {
-                    code: e.parent.code,
-                    message: ERROR_ENUM.SERVER_ERROR
-                };
-                callback(err, null);
+                
+                if (e.parent.code === 'ER_DUP_ENTRY') {
+                    callback(ERROR_ENUM.TEAM_NAME_TAKEN, null);
+                } else callback(ERROR_ENUM.SERVER_ERROR, null);
             }
         },
         getTeamById: async (id, callback) => {
+            const transaction = await Sequelize.transaction();
             try {
                 const team = await Team.findOne({
                     where: { id }
                 });
+                await transaction.commit();
                 callback(null, team?.dataValues);
             } catch (e) {
                 console.log('error getting team', e);
+                await transaction.rollback();
                 callback(e, null);
             }
         },
@@ -61,7 +56,7 @@ module.exports = ({}) => {
                     }
                 });
                 if (!team) {
-                    callback('No team found', null, null, null);
+                    callback(TEAM_NOT_FOUND, null, null, null);
                     return;
                 } 
                 const [pubcrawl] = await Pubcrawl.findAll({ 
@@ -76,11 +71,10 @@ module.exports = ({}) => {
                 });
 
                 const usernameList = teamMembers.map((member) =>
-                                                        member
-                                                        .dataValues
-                                                        .username
-                                                    );
-
+                    member
+                    .dataValues
+                    .username
+                );
                 await transaction.commit();
                 callback(
                     null,
@@ -89,7 +83,6 @@ module.exports = ({}) => {
                     usernameList
                 );
             } catch (e) {
-                console.log('Error getting team: ', e);
                 await transaction.rollback();
                 callback(['databaseError']);
             }
@@ -110,42 +103,54 @@ module.exports = ({}) => {
                 await transaction.commit();
                 callback(null, null)
             } catch (e) {
-                console.log('Error deleting team: ', e);
                 await transaction.rollback();
                 callback(e, null);
             }
         },
-        leaveTeam: async (accountId, callback) => {
+        leaveTeam: async (account_id, callback) => {
             try {
                 const update = await Account.update(
                     { team_id: null, pubcrawl_id: null },
-                    { where: { id: accountId } }
+                    { where: { id: account_id } }
                 );
                 callback(null, null);
             } catch (e) {
-                console.log('Error leaving team:', e);
                 callback(error, null);
             }
         },
-        joinTeam: async (teamName, accountId, callback) => {
+        joinTeam: async (teamName, account_id, callback) => {
             const transaction = await Sequelize.transaction();
             try {
                 const [team] = await Team.findAll({ 
                     where: {
-                        teamname: teamName
+                        name: teamName
                     }
                 });
-                if (!team) callback('No team found', null); 
+                if (!team) callback(ERROR_ENUM.TEAM_NOT_FOUND, null); 
                 const update = await Account.update(
                     { team_id: team.dataValues.id },
-                    { where: { id: accountId }}
+                    { where: { id: account_id }}
                 );
                 await transaction.commit();
                 callback(null, team.dataValues.id);
             } catch (e) {
-                console.log('Error joining team: ', e);
                 await transaction.rollback();
-                callback(e, null);
+                callback(ERROR_ENUM.SERVER_ERROR, null);
+            }
+        },
+        updatePubcrawlForMembers: async (team_id, pubcrawl_id, callback) =>{
+            const transaction = await Sequelize.transaction();
+            try {
+                const update = await Account.update(
+                    { pubcrawl_id: pubcrawl_id },
+                    { where: { team_id: team_id }}
+                );
+                await transaction.commit();
+                callback(null, null);
+
+            } catch (e) {
+                await transaction.rollback();
+                callback(ERROR_ENUM.SERVER_ERROR, null);
             }
         }
     }

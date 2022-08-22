@@ -1,23 +1,17 @@
 import ViewController from './modules/view.controller.js';
 import AjaxClient from './modules/api.js';
-import User from './modules/user.state.js';
-
+import Account from './modules/account.state.js';
 const client_id = "YmFycnVuZGFfc3BhX2NsaWVudF9pZF9oZWpjb24=";
 
 document.addEventListener('DOMContentLoaded', async () => {
     setListeners();
     ViewController.setViewList();
-    // ViewController.changeView('loader');
     await setPage();
 });
 
 const setPage = async () => {
     const pathname = window.location.pathname;
-    console.log('Pathname: ', pathname);
-    // if (User.token) {
-    //     await silentLogin();
-    // }
-    if (!User.isSignedIn()) {
+    if (!Account.isSignedIn()) {
         if (pathname.includes('login')) {
             ViewController.changeView('login');
         } else if (pathname.includes('signup')) {
@@ -30,7 +24,6 @@ const setPage = async () => {
 
 const setListeners = () => {
     window.onpopstate = (evt) => {
-        console.log('Popping state: ', evt.state);
         if (!evt.state) history.back();
         else ViewController.changeView(evt.state.view, true);
     };
@@ -42,13 +35,13 @@ const setListeners = () => {
 
     document.addEventListener('navigateLogin', (evt) => {
         evt.preventDefault();
-        if(User.isSignedIn()) User.logout();
+        if(Account.isSignedIn()) Account.logout();
         ViewController.changeView('login');
     });
 
     document.addEventListener('navigateSignup', (evt) => {
         evt.preventDefault();
-        if(User.isSignedIn()) User.logout();
+        if(Account.isSignedIn()) Account.logout();
         ViewController.changeView('signup')
     });
 
@@ -67,16 +60,17 @@ const setListeners = () => {
     });
 
     document.addEventListener('createPubcrawlClick', (evt) => {
-        if (!User.isSignedIn()) changeView('login');
+        if (!Account.isSignedIn()) changeView('login');
         createPubcrawl();
     });
 
     document.addEventListener('newPubcrawlClick', (evt) => {
-        if (!User.isSignedIn()) changeView('login');
+        if (!Account.isSignedIn()) changeView('login');
         createPubcrawl();
     });
+
     document.addEventListener('removePubcrawlClick', (evt) => {
-        if (!User.isSignedIn()) changeView('login');
+        if (!Account.isSignedIn()) changeView('login');
         removePubcrawl();
     });
 }
@@ -84,10 +78,11 @@ const setListeners = () => {
 const signup = async () => {
     ViewController.hideError();
 
-    if (User.isSignedIn()) {
+    if (Account.isSignedIn()) {
         ViewController.changeView('home');
         return;
     }
+
     const newUser = {};
     newUser.username = document.querySelector('#new_username').value || '';
     newUser.email = document.querySelector('#new_email').value || '';
@@ -103,7 +98,6 @@ const signup = async () => {
     }
 
     const response = await AjaxClient.post('http://localhost:3002/api/anvandare', newUser);
-
     const requestError = checkResponse(response);
 
     if (requestError) return;
@@ -113,14 +107,12 @@ const signup = async () => {
 }
 
 const checkResponse = (pack) => {
-    console.log(pack);
     if (pack.response && pack.response.status === 204) return;
     else if (!pack.response) {
         ViewController.showError('There was an error');
         return true;
     }
     else if (pack.response.status !== 200) {
-        console.log(pack.response);
         if (pack.data) {
             if (pack.data.error_description) ViewController.showError(pack.data.error_description);
             else ViewController.showError(pack.data.error);
@@ -135,8 +127,10 @@ const checkResponse = (pack) => {
 const login = async () => {
     ViewController.hideError();
     ViewController.changeView('loader');
+
     const username = document.querySelector('#username_in').value;
     const password = document.querySelector('#password_in').value;
+
     if (!username) {
         ViewController.showError('Fyll i användarnamn');
         return;
@@ -154,25 +148,25 @@ const login = async () => {
         client_id
     };
 
-    const url = `http://localhost:3002/api/anvandare/login-sessions`;
+    const url = `http://localhost:3002/api/anvandare/tokens`;
     const response = await AjaxClient.post(url, body);
-
     const requestError = checkResponse(response);
 
     if (requestError) return;
 
-    User.init(response.data);
-    await User.loadData();
+    Account.init(response.data);
+    await Account.loadData();
     ViewController.goToHome();
 }
 
 const createPubcrawl = async () => {
     ViewController.hideError();
     let response;
-    if (User.pubcrawl_id) {
-        response = await AjaxClient.put(`http://localhost:3002/api/bars/${User.pubcrawl_id}`, {})
+
+    if (Account.pubcrawl_id) {
+        response = await AjaxClient.put(`http://localhost:3002/api/pubcrawl/${Account.pubcrawl_id}`, {})
     } else {
-        response = await AjaxClient.post('http://localhost:3002/api/bars', {});
+        response = await AjaxClient.post('http://localhost:3002/api/pubcrawl', {});
     }
 
 
@@ -185,9 +179,9 @@ const createPubcrawl = async () => {
 
 const removePubcrawl = async () => {
     ViewController.hideError();
-    const id = User.pubcrawl_id;
-    const response = await AjaxClient.delete(`http://localhost:3002/api/bars/${id}`);
-
+    const id = Account.pubcrawl_id;
+    const response = await AjaxClient.delete(`http://localhost:3002/api/pubcrawl/${id}`);
+    
     const errorResponse = checkResponse(response);
     if (errorResponse) return;
 
@@ -195,32 +189,29 @@ const removePubcrawl = async () => {
 }
 
 const onPubcrawlRemoved = () => {
-    User.barList = [];
-    User.pubcrawl_id = null;
+    Account.pubList = [];
+    Account.pubcrawl_id = null;
     ViewController.goToHome();
 }
 
 const onPubcrawlReceived = (data) => {
-    User.setBars(data);
+    Account.setPubs(data);
     if (ViewController.activeView.name === 'home') {
-        console.log('Displaying bar list');
-        ViewController.showBarlist();
+        ViewController.showPublist();
     } else {
-        console.log('Changing view to home');
         ViewController.changeView('home');
     }
 }
 
-const validateNewUser = (user) => {
-    console.log('Validate new user: ', user);
-    const keys = Object.keys(user);
+const validateNewUser = (account) => {
+    const keys = Object.keys(account);
     for(let i = 0; i < keys.length; i++) {
-        if (!user[keys[i]]) {
+        if (!account[keys[i]]) {
             return `Please enter ${keys[i]}`;
         }
     };
 
-    if (user.password !== user.confirmPassword) {
+    if (account.password !== account.confirmPassword) {
         return 'Passwords must match'
     }
 }

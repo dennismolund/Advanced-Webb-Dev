@@ -2,25 +2,21 @@ const accountValidator = require('./account-validator')
 const ERROR_ENUM = require('./models/error_enum');
 var bcrypt = require('bcrypt');
 const saltRounds = 10;
-const { ERROR_BCRYPT } = require("../business-logic-layer/models/error_enum")
 
 module.exports = ({ accountRepository }) => {
-    // Name all the dependencies in the curly brackets above.
-    
     return {
         createAccount: (account, callback) => {
-
             // Validate the account.
             const errors = accountValidator.getErrorsNewAccount(account);
             
             if(errors.length){
-                callback(errors[0], null);
+                callback(errors, null);
                 return;
             }
 
             bcrypt.hash(account.password, saltRounds, (error, hash) => {
                 if (error) { 
-                    callback(ERROR_BCRYPT, null);
+                    callback(ERROR.ENUM.ERROR_BCRYPT, null);
                     return;
                 }
                 account.password = hash;
@@ -28,7 +24,7 @@ module.exports = ({ accountRepository }) => {
             });
         },
 
-        getAccountByUsername: (account, callback) => {
+        loginRequest: (account, callback) => {
             // Validate the login credentials.
             const errors = accountValidator.getErrorsLogin(account);
 
@@ -37,7 +33,7 @@ module.exports = ({ accountRepository }) => {
                 return;
             }
 
-            accountRepository.getAccountByUsername(
+            accountRepository.loginRequest(
                 account,
                 (error, accountFromDb) => {
 

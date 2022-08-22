@@ -1,5 +1,4 @@
-import User from './user.state.js';
-
+import Account from './account.state.js';
 export default class View {
     constructor(view) {
         this.element = view;
@@ -12,6 +11,7 @@ export default class View {
     hide() {
         this.element.setAttribute('style', 'display: none');
     }
+    
     show(display = 'flex') {
         this.element.setAttribute('style', `display: ${display}`);
     }
@@ -29,19 +29,19 @@ export default class View {
     }
 
     showComponent(id) {
-        const listComp = this.element.querySelector('#bar_list');
-        const createComp = this.element.querySelector('#bar_create');
+        const listComp = this.element.querySelector('#pub_list');
+        const createComp = this.element.querySelector('#pub_create');
         listComp.setAttribute('style', 'display: none');
         createComp.setAttribute('style', 'display: none');
-        if (listComp.id === id) this.displayBars(listComp);
+        if (listComp.id === id) this.displayPubs(listComp);
         else createComp.setAttribute('style', 'display: block');
     }
 
-    displayBars(listComp) {
+    displayPubs(listComp) {
         listComp.setAttribute('style', 'display: block');
-        const listItems = listComp.querySelectorAll('.bar__list--item');
-        for (let i = 0; i < User.barList.length; i++) {
-            const text = `${i + 1}. ${User.barList[i].name}`
+        const listItems = listComp.querySelectorAll('.pub__list--item');
+        for (let i = 0; i < Account.pubList.length; i++) {
+            const text = `${i + 1}. ${Account.pubList[i].name}`
             listItems[i].innerHTML = text;
         }
     }

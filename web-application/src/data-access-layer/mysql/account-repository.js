@@ -1,31 +1,27 @@
 const db = require('./db');
-const ERROR_ENUM = require('../business-logic-layer/models/error_enum');
+const ERROR_ENUM = require('../error_enum');
 
 module.exports = function({}){
 	// Name all the dependencies in the curly brackets above (none in this case). 
-
 	return {
 	  getAccountById: (id, callback) => {
 		  const query = 'SELECT * FROM account WHERE id = ?';
 		  const values = [id];
-		  db.query(query, values, (error, account) => {
+		  db.query(query, values, (error, accounts) => {
 			if (error) {
-				console.log('Error getting acocunt from db: ', error);
 				callback(ERROR_ENUM.SERVER_ERROR, null);
 				return;
 			}
-			callback(null, account[0]);
+			callback(null, accounts[0]);
 		  });
 	  },
 
 	  createAccount: (account, callback) => {
-	
 		const query = `INSERT INTO account (username, email, password) VALUES (?, ?, ?)`;
 		const values = [account.username, account.email, account.password];
 		
 		db.query(query, values, (error, results) => {
 			if(error){
-				console.log("Error in database: ", error.code);
 				if (error.code === "ER_DUP_ENTRY") {
 					if (error.sqlMessage.includes('email')) {
 						callback(ERROR_ENUM.EMAIL_TAKEN, null);
@@ -39,15 +35,15 @@ module.exports = function({}){
 			}
 		})
 		},
-		getAccountByUsername: (account, callback) => {
+		loginRequest: (account, callback) => {
 		
 			const query = "SELECT * FROM account WHERE username = ?";
 			const values = [account.enteredUsername];
 		
-			db.query(query, values, (error, accountFromDb) => {
+			db.query(query, values, (error, accounts) => {
 				if(error) callback(ERROR_ENUM.SERVER_ERROR, null);
 
-				else if(accountFromDb) callback(null, accountFromDb[0]);
+				else if(accounts) callback(null, accounts[0]);
 
 				else callback(ERROR_ENUM.USER_NOT_FOUND, null);
 			});

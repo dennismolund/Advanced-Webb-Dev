@@ -1,7 +1,6 @@
 import parseJwt from './helpers.js';
 import AjaxClient from './api.js';
-
-class User {
+class Account {
     constructor() {
         this.pubcrawl_id = null;
         this.username = null;
@@ -9,12 +8,12 @@ class User {
         this.id = null;
         this.token = null;
         this.signedIn = false;
-        this.barList = [];
+        this.pubList = [];
     }
 
     init(pack) {
-        const { user } = parseJwt(pack.access_token);
-        const { pubcrawl_id, id, team_id, username } = user;
+        const { account } = parseJwt(pack.id_token);
+        const { pubcrawl_id, id, team_id, username } = account;
         this.token = pack.access_token ? pack.access_token : this.token;
         this.pubcrawl_id = pubcrawl_id;
         this.id = id;
@@ -31,22 +30,22 @@ class User {
         this.id = null;
         this.token = null;
         this.signedIn = false;
-        this.barList = [];
+        this.pubList = [];
         localStorage.removeItem('accessToken');
     }
 
     async loadData() {
         if (!this.pubcrawl_id) return;
-        const { data } = await AjaxClient.get(`http://localhost:3002/api/bars/${this.pubcrawl_id}`);
+        const { data } = await AjaxClient.get(`http://localhost:3002/api/pubcrawl/${this.pubcrawl_id}`);
         if (data?.parsed?.list) {
-            this.barList = data.parsed.list;
+            this.pubList = data.parsed.list;
         }
     }
 
-    setBars(data) {
+    setPubs(data) {
         const { pubcrawl: list, id } = data;
         this.pubcrawl_id = id;
-        this.barList = list || [];
+        this.pubList = list || [];
     }
 
     hasPubcrawl() {
@@ -61,4 +60,4 @@ class User {
     }
 }
 
-export default new User();
+export default new Account();

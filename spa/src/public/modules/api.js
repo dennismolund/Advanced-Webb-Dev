@@ -1,5 +1,4 @@
 import ViewController from "./view.controller.js";
-
 export default class AjaxClient {
 
     static async post(url, body, method = 'POST') {
@@ -9,7 +8,6 @@ export default class AjaxClient {
                 'Authorization': `Bearer ${localStorage.accessToken}`,
                 'Content-Type': 'application/json'
             };
-
             const response = await fetch(url, {
                 method: method,
                 headers,
@@ -28,7 +26,6 @@ export default class AjaxClient {
             ViewController.hideLoader();
             return res;
         } catch (error) {
-            console.log('Post error: ', error);
             ViewController.hideLoader();
             return;
         }
@@ -48,7 +45,6 @@ export default class AjaxClient {
             try {
                 data = await response.json();
             } catch (e) {
-                console.log('Error could not parse data ', e);
             }
             const res = {
                 response,
@@ -57,7 +53,6 @@ export default class AjaxClient {
             ViewController.hideLoader();
             return res;            
         } catch (e) {
-            console.log('Get error: ', e);
             ViewController.hideLoader();
             return;
         }
@@ -77,7 +72,6 @@ export default class AjaxClient {
             try {
                 data = await response.json();
             } catch (e) {
-                console.log('Error could not parse data ', e);
             }
             const res = {
                 response,
@@ -86,7 +80,6 @@ export default class AjaxClient {
             ViewController.hideLoader();
             return res;
         } catch (e) {
-            console.log('Get error: ', e);
             ViewController.hideLoader();
             return;
         }
