@@ -19,7 +19,7 @@ CREATE TABLE team (
     name VARCHAR(50) NOT NULL UNIQUE,
     creator_id INT NOT NULL,
     pubcrawl_id INT,
-    FOREIGN KEY (creator_id) REFERENCES account(id) ON DELETE CASCADE
+    FOREIGN KEY (creator_id) REFERENCES account(id)
 );
 
 ALTER TABLE account ADD CONSTRAINT FOREIGN KEY (pubcrawl_id) REFERENCES pubcrawl(id) ON DELETE SET NULL;
